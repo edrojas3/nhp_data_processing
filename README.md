@@ -24,3 +24,13 @@ In this section  we will use the subject `sub-032125` of the site-ucdavis data a
 
 ### T1 weighted sequence preprocessing 
 
+1. Some images need to be cropped to keep only skull and brain. Open the image with your favorite viewer and  choose the  the  slice from wich you want to cut (z axis). Then simply use `fslroi` tool:
+
+   `fslroi <input> <output> <xmin> <xsize> <ymin> <ysize> <zmin> <zsize>`
+
+   **Example:**
+
+    ```fslroi sub-032125_ses-001_run-1_T1w.nii.gz  sub-032125_ses-001_run-1_T1w_cropped.nii.gz 0 480 0 512 246 200```
+
+   ![](https://github.com/edrojas3/nhp_data_processing/blob/main/media/cropping.png)
+
