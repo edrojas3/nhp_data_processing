@@ -1,5 +1,5 @@
 # NHP-MXCH  project
-
+![](https://github.com/edrojas3/nhp_data_processing/blob/main/media/monkey3.png)
 *Project Description:*
 
 This repository is intended to serve as a container for code, analyses and results of the Mexican-Chinese non-human primate collaboration. Till now, the main goal of this project is to carry out comparisons of Fronto-Striatal network connectivity (functional and structural) between **macaques** (data obtained from the [PRIME-DE](https://fcon_1000.projects.nitrc.org/indi/indiPRIME.html) dataset) and **humans**  (data obtained from the [HCP](http://www.humanconnectomeproject.org/) or [ENIGMA](http://enigma.ini.usc.edu/)).
