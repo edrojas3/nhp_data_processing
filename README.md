@@ -1,4 +1,4 @@
-# NHP-MXCH  project
+# **NHP-MXCH  project**
 ![](https://github.com/edrojas3/nhp_data_processing/blob/main/media/monkey3.png)
 
 ### *Project Description:*
