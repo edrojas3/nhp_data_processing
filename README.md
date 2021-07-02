@@ -24,9 +24,7 @@ In this section  we will use the subject `sub-032125` of the site-ucdavis data a
 
 ### T1 weighted sequence preprocessing 
 
-1. Some images need to be cropped to keep only skull and brain. Open the image with your favorite viewer and  choose the  the  slice from wich you want to cut (z axis). Then simply use `fslroi` tool:
-
-   `fslroi <input> <output> <xmin> <xsize> <ymin> <ysize> <zmin> <zsize>`
+1. Some images need to be cropped to keep only skull and brain. Open the image with your favorite viewer and  choose the  the  slice (z axis coordinate ) from which you want to cut. Then simply use `fslroi` tool: `fslroi <input> <output> <xmin> <xsize> <ymin> <ysize> <zmin> <zsize>`
 
    **Example:**
 
