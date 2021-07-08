@@ -137,11 +137,11 @@ if ( $AW == 1 ) then
 	    # get first anat out of any possible ones in basic subj dir--
 	    # but there is only one anat per subj here
 	    if ( $BFC == 1 ) then
-		 set all_anat = `find ${dir_basic}/${subj} -type f -name "sub*N4*nii*" `
+		 set all_anat = `find ${dir_basic}/${subj} -type f -name "sub*N4*nii*" | sort `
 	    else
-	   	 set all_anat = `find ${dir_basic}/${subj} -type f -name "sub*T1w*nii*" `
+	   	 set all_anat = `find ${dir_basic}/${subj} -type f -name "sub*T1w*nii*" | sort `
 	    endif
-	
+
 	    set anat_subj = "${all_anat[1]}"
 	    echo "++ Found anat:"
 	    echo "     ${anat_subj}"
