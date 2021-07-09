@@ -16,6 +16,8 @@ This repository is intended to serve as a container for code, analyses and resul
 
 - scripts and code (till now): [afni](https://github.com/edrojas3/nhp_data_processing/tree/main/afni) folder. 
 
+
+# Image processing steps
 ##  **Resting-State preprocessing  pipeline for macaques**
 
 In this section  we will use the subject `sub-032125` of the site-ucdavis data available at the PRIME-DE website. To process the  images we are currently using  tools from  [ANTs](https://stnava.github.io/ANTs/), [AFNI](https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/index.html) and [FSL](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki)
