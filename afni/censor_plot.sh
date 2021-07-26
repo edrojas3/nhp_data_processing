@@ -32,11 +32,11 @@ done
 
 # Censor metrics
 if [ "$type" = enorm ]; then
-	metric=$apdir/sub-${sub}/sub-${sub}.results/motion_sub-${sub}_enorm.1D
-	cfile=$apdir/sub-${sub}/sub-${sub}.results/motion_sub-${sub}_censor.1D
+	metric=$apdir/${sub}/${sub}.results/motion_${sub}_enorm.1D
+	cfile=$apdir/${sub}/${sub}.results/motion_${sub}_censor.1D
 elif [ "$type" = outliers ]; then
-	metric=$apdir/sub-${sub}/sub-${sub}.results/outcount.r01.1D
-	cfile=$apdir/sub-${sub}/sub-${sub}.results/outcount_sub-${sub}_censor.1D
+	metric=$apdir/${sub}/${sub}.results/outcount.r01.1D
+	cfile=$apdir/${sub}/${sub}.results/outcount_${sub}_censor.1D
 else
 	echo "Wrong type of metric. Your choices are 'enorm' or 'outliers'"
 	exit 1

@@ -34,11 +34,11 @@ while getopts "d:s:t:hT" opt; do
 done
 
 # Censor metrics
-enorm=$apdir/sub-${sub}/sub-${sub}.results/motion_sub-${sub}_enorm.1D
-enorm_c=$apdir/sub-${sub}/sub-${sub}.results/motion_sub-${sub}_censor.1D
+enorm=$apdir/${sub}/${sub}.results/motion_${sub}_enorm.1D
+enorm_c=$apdir/${sub}/${sub}.results/motion_${sub}_censor.1D
 
-outlier=$apdir/sub-${sub}/sub-${sub}.results/outcount.r01.1D
-outlier_c=$apdir/sub-${sub}/sub-${sub}.results/outcount_sub-${sub}_censor.1D
+outlier=$apdir/${sub}/${sub}.results/outcount.r01.1D
+outlier_c=$apdir/${sub}/${sub}.results/outcount_${sub}_censor.1D
 
 ## stats
 total_vols=$(cat $enorm | wc -l)

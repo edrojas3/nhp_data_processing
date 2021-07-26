@@ -258,6 +258,7 @@ if ( $AP == 1 ) then
 	        -regress_apply_mot_types  demean deriv                                \
 	        -regress_censor_motion    0.10                                        \
 	        -regress_censor_outliers  0.02                                        \
+		-regress_band_pass	  0.01 0.08                                   \
 	        -regress_est_blur_errts                                               \
 	        -regress_est_blur_epits                                               \
 	        -regress_run_clustsim     no                                          \
