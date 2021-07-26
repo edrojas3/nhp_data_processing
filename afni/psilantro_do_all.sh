@@ -118,5 +118,5 @@ fi
 animal_proc=$(find $maindir -type f -name animal_proc.tcsh) # loog for animal_proc.tcsh command inside $maindir
 
 # run everything inside container
-singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container $animal_proc -i $DIR -s ${all_subj} -o $PREFIX -aw $aw -ap $ap -pp $pp
+singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container $animal_proc -i $DIR -s ${all_subj} -o $PREFIX -b $BFC -aw $aw -ap $ap -pp $pp
 
