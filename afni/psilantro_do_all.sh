@@ -62,7 +62,7 @@ ap=0
 pp=0
 
 
-while getopts "bi:o:s:m:awpPh" opt; do
+while getopts "bi:o:s:m:c:awpPh" opt; do
 	case ${opt} in
 		b) BFC=1;; # ANTs bias field correction
 		i) DIR=${OPTARG};; # dir with subjects
