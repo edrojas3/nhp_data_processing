@@ -15,7 +15,7 @@ help ()
 	echo
 	echo "-s: specify a single subject. Ex. sub-032212. It has to be a directory within the directory specified with the -i option."
 	echo
-	echo "-b: perform ANTs N4BiasFieldCorrection and use the output for anatomical registration."
+	echo "-b: perform ANTs N4BiasFieldCorrection and use the output for anatomical registration. If there are more than one anatomical volume, the script will perform the bias field correction on every anatomical it finds."
 	echo
        	echo "-w: perform anatomical registration with @animal_warper" 
 	echo
@@ -59,10 +59,11 @@ container=/misc/purcell/alfonso/tmp/container/afni.sif
 BFC=0
 aw=0
 ap=0
+av=0
 pp=0
 
 
-while getopts "bi:o:s:m:awpPh" opt; do
+while getopts "bi:o:s:m:c:awpvPh" opt; do
 	case ${opt} in
 		b) BFC=1;; # ANTs bias field correction
 		i) DIR=${OPTARG};; # dir with subjects
@@ -71,10 +72,12 @@ while getopts "bi:o:s:m:awpPh" opt; do
 		   ;;
 		a) aw=1
 		   ap=1
+		   av=1
 		   pp=1
 		   ;;
 		w) aw=1;; # run animal warper
 		p) ap=1;; # run afni_proc.py
+		v) av=1;; # run afni_proc.py for sbca
 		P) pp=1;; # run post processing
 		m) maindir=${OPTARG};; # sort of home directory
 		o) PREFIX=${OPTARG};; # prefix of output directories
@@ -103,12 +106,16 @@ if [ $BFC -eq 1 ]; then
 	echo "++ Bias Field Correction..."
 	for sub in "${subj_paths[@]}"; do 
 		anat_subj=$(find $sub -type f -name "sub*T1w*.nii.gz" | grep -v N4)
-		anat_dir=$(dirname ${anat_subj})
-	     	anat_base=$(basename ${anat_subj} | cut -d . -f 1)
-	     	anat_N4=$anat_dir/${anat_base}_N4.nii.gz
-		if [ ! -f $anat_N4 ]; then
-	    		N4BiasFieldCorrection -v -i $anat_subj -o $anat_N4
-		fi
+		anat_n=$(echo $anat_subj | awk '{print NF}')
+		for anat in $(seq 1 $anat_n); do 
+			a=$(echo $anat_subj | awk '{print $'$anat'}')
+			anat_dir=$(dirname ${a})
+	     		anat_base=$(basename ${a} | cut -d . -f 1)
+	     		anat_N4=${anat_dir}/${anat_base}_N4.nii.gz
+			if [ ! -f $anat_N4 ]; then
+	    			N4BiasFieldCorrection -v -i $anat_subj -o $anat_N4
+			fi
+		done
 	done
 fi
 
@@ -117,6 +124,11 @@ fi
 # look for animal_proc.tcsh command inside $maindir
 animal_proc=$(find $maindir -type f -name animal_proc.tcsh) # loog for animal_proc.tcsh command inside $maindir
 
+echo "Entering singularity..."
 # run everything inside container
-singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container $animal_proc -i $DIR -s ${all_subj} -o $PREFIX -b $BFC -aw $aw -ap $ap -pp $pp
+if [ $subj_list -eq 1 ]; then
+	singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container $animal_proc -i $DIR -s ${all_subj} -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp
+else
+	singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container $animal_proc -i $DIR -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp
+fi
 
