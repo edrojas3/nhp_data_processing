@@ -22,10 +22,20 @@ output <- as.character(args[3])
 
 # Section 2:  Set-up  and load required  R packages
 
-if (!require(pacman)){
-  install.packages("pacman")  
+if (!require(neurobase)){
+  install.packages("neurbase") 
 }
-pacman::p_load(neurobase, magrittr,purrr)
+library(neurobase)
+
+if (!require(magrittr)){
+  install.packages("magrittr") 
+}
+library(magrittr)
+
+if (!require(purrr)){
+  install.packages("purrr") 
+}
+library(purrr)
 
 # Section 3: import nifti files into R
 func <- RNifti::readNifti(dataset)
