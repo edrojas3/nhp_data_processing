@@ -14,7 +14,7 @@ This repository is intended to serve as a container for code, analyses and resul
 
 ### *Usage:* 
 
-- scripts and code (till now): [afni](https://github.com/edrojas3/nhp_data_processing/tree/main/afni) folder. 
+- scripts and code (till now): [code](https://github.com/edrojas3/nhp_data_processing/tree/main/code) folder. 
 
 
 # Image processing steps
