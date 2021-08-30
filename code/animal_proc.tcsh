@@ -17,8 +17,8 @@
 set OUTPREFIX = data_
 set REFDIR = /misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm
 set subj_list = 0
-set BFC = 1
-set AW = 1
+set BFC = 0
+set AW = 0
 set AP = 0
 set APV = 0
 set PP = 0
@@ -296,7 +296,7 @@ if ( $APV == 1 ) then
 	
 	    set odir_aw = ${dir_aw}/${subj}
 	    # Note this is in the 'vox' one
-	    set odir_ap = ${dir_ap_vox}/${subj}
+	    set odir_ap = ${dir_apv}/${subj}
 	    mkdir -p ${odir_ap}
 	
 	    # lpa+zz cost func for some macaques who have MION; lpc+zz for the
