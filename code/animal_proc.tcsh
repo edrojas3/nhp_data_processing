@@ -280,8 +280,6 @@ endif
 # -----------------------------------------------------------------
 
 if ( $APV == 1 ) then
-	echo OK APV
-	exit 0
 	foreach subj ( ${all_subj} )
 	    
 	    # get all EPI runs per subj, in the order of acquisition--- there
