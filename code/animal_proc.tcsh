@@ -50,7 +50,7 @@ foreach n ( `seq 1 2 $nargs` )
 				set AP = $argv[$val]
 				breaksw
 			case -apv:
-				set AP = $argv[$val]
+				set APV = $argv[$val]
 				breaksw
 			case -pp:
 				set PP = $argv[$val]
@@ -80,6 +80,12 @@ endif
 if ( $AP > 1 ) then
 	set AP = 1
 else if ( $AP < 0 ) then
+	set AP = 0
+endif
+
+if ( $APV > 1 ) then
+	set AP = 1
+else if ( $APV < 0 ) then
 	set AP = 0
 endif
 
