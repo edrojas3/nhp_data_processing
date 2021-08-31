@@ -23,7 +23,7 @@ output <- as.character(args[3])
 # Section 2:  Set-up  and load required  R packages
 
 if (!require(neurobase)){
-  install.packages("neurbase") 
+  install.packages("neurobase") 
 }
 library(neurobase)
 
