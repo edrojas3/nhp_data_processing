@@ -8,6 +8,13 @@ source=$3
 outdir=$site/$4/$subj
 mask=$5
 
+echo $#
+echo $1
+echo $2
+echo $3
+echo $4
+exit 0
+
 # MASK
 if [ $# -lt 5 ]
 then
