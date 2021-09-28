@@ -5,7 +5,7 @@
 # https://github.com/alffajardo
 
 #########################################################################################################################################
-# Description of this script: estract all voxel time series from a 4d dataset and a ROI binary mask
+# Description of this script: extract all voxel time series from a 4d dataset and a ROI binary mask
 # Compulsory arguments (positional): 
 #nhp_chmx_get_timeseries <functional dataset> ROI mask, output name
 # Example to run in bash: 

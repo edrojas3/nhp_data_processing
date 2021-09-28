@@ -23,7 +23,13 @@ then
 		echo "Brain mask found."
 	fi
 else
-	if [ ! -f $mask ] && echo "$mask not found."; exit 0
+	if [ -f $mask ]
+	then
+		echo "$(basename $mask) will be used"
+	else
+		echo "$mask not found."
+	       	exit 0
+	fi
 fi
 
 # CONFOUND REGRESSORS
