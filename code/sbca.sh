@@ -1,36 +1,37 @@
 #!/bin/bash
 
-# all brain sbca with different sources
+# all brain sbca with different targetss
 
-site=$1
-subj=$2
-source=$3
-outdir=$site/$4/$subj
-mask=$5
+site=$1 # site path
+subj=$2 # subject id
+targets=$3 # path and base name of targets file ex. /path/to/targets
+outdir=$site/$4/$subj # folder name inside $site to save outputs
+seeds=$5 # /path/to/seeds
 
-# MASK
+# SEED MASK. If not specified the code will try to use a subject brain mask
 if [ $# -lt 5 ]
 then
-	# brain mask
-	echo "Subject brain mask will be used ..."
-	mask=$site/data_aw/$subj/*nsu_mask.nii.gz
+	# brain seeds
+	echo "Subject brain seeds will be used ..."
+	seedsvol=$site/data_aw/$subj/*nsu_mask.nii.gz
 	
-	if [ ! -f $mask ]
+	if [ ! -f $seeds ]
 	then
-		echo  "Brain mask NOT found. I'll create one."
+		echo  "Brain seeds NOT found. I'll create one."
 		fslmaths $site/data_aw/$subj/*nsu.nii.gz -bin $site/data_aw/$subj/${subj}_anat_warp2std_nsu_mask.nii.gz
 	else
-		echo "Brain mask found."
+		echo "Brain seeds found."
 	fi
 else
-	if [ -f $mask ]
-	then
-		echo "$(basename $mask) will be used"
-	else
-		echo "$mask not found."
-	       	exit 0
+	seedsvol=$seeds.nii.gz
+#	seedstsv=$seeds.tsv
+
+	if [ ! -f $seedsvol -o ! -f $seedstsv ]; then
+		echo "Seeds files not found."
+		exit 0
 	fi
 fi
+
 
 # CONFOUND REGRESSORS
 echo "Check for confounds txt file..."
@@ -42,31 +43,36 @@ else
 	echo "Confounds file found."
 fi
 
-source_n=$(fslstats $source -R | awk '{print $2}' | cut -d. -f1)
+#targets_n=$(fslstats $targets -R | awk '{print $2}' | cut -d. -f1)
+targetsvol=$targets.nii.gz
+targetstsv=$targets.tsv
+targets_n=$(tail $targetstsv -n +2 | wc -l)
+
 epi=$site/data_apv/$subj/${subj}.results/errts.$subj.tproject+tlrc.nii.gz
 
 if [ -f $epi ]
 then
-	# resample mask and source volumes
-	echo "Resample brain mask and source file to subject's epi."
-	3dresample -in $mask -master $epi -prefix $outdir/mask_in_${subj}_epi.nii.gz
-	3dresample -in $source -master $epi -prefix $outdir/source_in_${subj}_epi.nii.gz
+	# resample mask and targets volumes
+	echo "Resampling seeds and targets to subject's epi."
+	3dresample -in $seeds -master $epi -prefix $outdir/seeds_in_${subj}_epi.nii.gz
+	3dresample -in $targets -master $epi -prefix $outdir/targets_in_${subj}_epi.nii.gz
 	
 	if [ ! -d $outdir/corr_files ]; then mkdir $outdir/corr_files; fi
 
-	echo "SBCA for all rois in source volume..." 
-	for n in $(seq 1 $source_n)
+	echo "SBCA for all targets..." 
+	for n in $(seq 1 $targets_n)
 	do
-		echo "sbca for source $n of $source_n..."
-		mask_from_roi_index.sh $outdir/source_in_${subj}_epi.nii.gz $n $outdir/source_mask	
+		echo "sbca for targets $n of $targets_n..."
+		index=$(cat $targetstsv | awk -v idx="$n" '$1 == idx' | awk '{print $1}')
+		mask_from_roi_index.sh $outdir/targets_in_${subj}_epi.nii.gz $index $outdir/target_mask	
 		
 		fsl_sbca -i $epi \
-			-s $outdir/mask_in_${subj}_epi.nii.gz \
-			-t $outdir/source_mask.nii.gz \
-			-o $outdir/corr_files/source_${n} \
+			-s $outdir/seeds_in_${subj}_epi.nii.gz \
+			-t $outdir/target_mask.nii.gz \
+			-o $outdir/corr_files/target_${n} \
 			--conf=$outdir/confounds.txt 
 	
-		rm $outdir/source_mask*nii.gz
+		rm $outdir/target_mask*nii.gz
 	done
 
 	echo DONE
