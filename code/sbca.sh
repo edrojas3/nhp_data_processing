@@ -2,11 +2,24 @@
 
 # all brain sbca with different targetss
 
-site=$1 # site path
-subj=$2 # subject id
-targets=$3 # path and base name of targets file ex. /path/to/targets
-outdir=$site/$4/$subj # folder name inside $site to save outputs
-seeds=$5 # /path/to/seeds
+
+awdir=data_aw
+apvoxdir=data_apv
+
+while getopts "s:t:o:w:v:" opt; do
+	case ${opt} in
+		s ) seed=${OPTARG};;	
+		t ) target=${OPTARG};;
+		o ) outdir=${OPTARG}/$subj;;
+		w ) awdir=${OPTARG};;
+		v ) apvoxdir=${OPTARG};;
+	esac	
+done
+
+site=${@:$OPTIND:1}
+subj=${@:$OPTIND+1:1}
+outdir=$(echo $(echo $outdir)$(echo $subj))
+
 
 # SEED MASK. If not specified the code will try to use a subject brain mask
 if [ $# -lt 5 ]
@@ -81,6 +94,5 @@ else
 	echo "epi set at $epi"
 	
 fi	
-	
 	
 	
