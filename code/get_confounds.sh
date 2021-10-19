@@ -47,7 +47,7 @@ test ! -f $epi && 3dAFNItoNIFTI -prefix $epi $apv/errts.${subj}.tproject+tlrc.
 echo "+ Tissue masks"
 
 echo "++ Segmenting..."
-fast -o $outdir $aw/$subj/${subj}_anat_warp2std_nsu.nii.gz
+fast -o $outdir $aw/${subj}_anat_warp2std_nsu.nii.gz
 
 echo "++ Creating CSF and WM masks..."
 fslmaths $outdir/*pve_0*.nii.gz -thr 0.5 $outdir/csf_in_${subj}_epi
