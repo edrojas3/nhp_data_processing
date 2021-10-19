@@ -71,8 +71,8 @@ fslmeants -i $epi --eig -m $wm -o $outdir/WM_eigts.txt
 # paste txt tissue and motion files to creat confound file
 echo "++ Creating file with tissue timeseries and motion parameters"
 motion=$apv/dfile_rall.1D
-cp $motion $apv/motion_params.txt
-mv $apv/motion_params.txt $outdir
+cp $motion $outdir/motion_params.txt
+#mv $apv/motion_params.txt $outdir
 
 # join files to create confoundsjls
 
