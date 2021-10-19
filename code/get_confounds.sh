@@ -50,10 +50,12 @@ echo "++ Segmenting..."
 fast -o $outdir/$subj $aw/${subj}_anat_warp2std_nsu.nii.gz
 
 echo "++ Creating CSF and WM masks..."
-fslmaths $outdir/*pve_0*.nii.gz -thr 0.5 $outdir/csf_in_${subj}_epi
+3dresample -in $outdir/*pve_0*.nii.gz -master $epi -prefix pve_0_in_${subj}.nii.gz
+fslmaths $outdir/pve_0_in_${subj}.nii.gz -thr 0.5 $outdir/csf_in_${subj}_epi
 fslmaths $outdir/csf_in_${subj}_epi.nii.gz -bin $outdir/csf_in_${subj}_mask
  
-fslmaths $outdir/*pve_2*.nii.gz -thr 0.5 $outdir/wm_in_${subj}_epi
+3dresample -in $outdir/*pve_2*.nii.gz -master $epi -prefix pve_2_in_${subj}.nii.gz
+fslmaths $outdir/pve_2_in_${subj}.nii.gz -thr 0.5 $outdir/wm_in_${subj}_epi
 fslmaths $outdir/wm_in_${subj}_epi.nii.gz -bin $outdir/wm_in_${subj}_mask
 
 csf=$outdir/csf_in_${subj}_mask.nii.gz
