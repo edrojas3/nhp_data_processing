@@ -36,8 +36,46 @@ In this section  we will use the subject `sub-032125` of the site-ucdavis data a
 
    **Example:** ```N4BiasFieldCorrection  -v -i sub-032125_ses-001_run-1_T1w_cropped.nii.gz -o sub-032125_ses-001_run-1_T1w_cropped_n4.nii.gz```
 
+3. **Animal Warper (AFNI):** Performs non-linear registration from subject to standard space. It was the best option among other "available" pipelines like PREEMACS or cvet-macaque.
+   **Basic usage**: `@animal_warper -input <anatomical image> -base <standard volume> -outdir <anatomical image registered to standard>`
+ 
+4. **Functional preprocessing:** we used `afni_proc.py` for basic preprocessing steps:
+    - align slices to the beginning of TR
+    - registration to anatomical space
+    - spatial blurring: 3mm of FWHM filter
 
-3. **Animal Warper (AFNI):** 
+5. **Seed based correlation anlysis (SBCA):** Use `fsl_sbca` function to extract the 1st principal component of a target roi and do partial correlations with different seeds of interests. The mean signal of white matter, cerebro-spinal fluid, and motion derivatives were included as confounds.
+  - targets (bilateral):
+    - vmpfc: BAs 10, 32, 25
+    - anterior insula
+    - basal ganglia structures: dorsal striatum, accumbens, putamen, globus pallidus, amygdala, caudate
+    - hippocampus
+  - seeds:
+    - area 9/46
+    - area 44
+    - sma
+    - area 8
+    - m1
+    - s1
+    - parietal operculum
+    - anterior inferior parietal sulcus
+    - posterior inferior parietal lobule   
+    - area 23ab
+    - retrosplenial cortex
+    - perirhinal cortex
+    - temporal pole
+    - ventral striatum
+    - caudate head
+    - putamen
+    - hippocampus
+    - amygdala
+    - hypothalamus
+    - vta
+
+6. **Spider plots:** The results of the sbca are represented with spider plots which show the correlation of a single target ROI with every seed. 
+   
+
+   
 
    
 
