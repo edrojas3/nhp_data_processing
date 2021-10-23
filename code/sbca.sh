@@ -1,8 +1,15 @@
 #!/bin/bash
 
-# all brain sbca with different targetss
+help(){
+	echo
+	echo "$(basename "$0") <-s seed_base -t target_base -o outputdir> [-w awdir | -v apvoxdir] <site subject>" 
+	echo
+	exit 0
+}
 
+# FLAG OPTIONS
 
+## defaults
 awdir=data_aw
 apvoxdir=data_apv
 
@@ -16,13 +23,17 @@ while getopts "s:t:o:w:v:" opt; do
 	esac	
 done
 
+# POSITIONAL ARGUMENTS
 site=${@:$OPTIND:1}
 subj=${@:$OPTIND+1:1}
 outdir=$(echo $(echo $outdir)$(echo $subj))
 
+if [ -z ${seed+x} ] || [ -z ${target+x} ] || [ $# -lt 3 ]; then
+	help
+fi
 
 # SEED MASK. If not specified the code will try to use a subject brain mask
-if [ $# -lt 5 ]
+if [ -z ${seed+x} ]
 then
 	# brain seeds
 	echo "Subject brain seeds will be used ..."
