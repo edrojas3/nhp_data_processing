@@ -1,5 +1,22 @@
 #!/bin/bash
 
+help(){
+	echo 
+	echo "Extracts the voxel of max correlation for each seed."
+	echo
+	echo "USAGE: $(basename "$0") <sbcadir> <subject> [outfile.tsv]"
+	echo
+	echo "sbcadir: directory where sbca results are located. Ex. path/to/site-ecnu/sbca"
+	echo "subject: subject id. Ex. sub-032202"
+	echo "outfile.tsv: name of output file. Default: path/to/sbcadir/corrtable.tsv"
+	echo
+}
+
+if [ $# -lt 2 ]; then
+	help
+       	exit 0
+fi
+
 sbcadir=$1
 subj=$2
 out=$3
