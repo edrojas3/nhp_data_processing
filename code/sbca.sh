@@ -48,7 +48,7 @@ then
 	fi
 else
 	seedsvol=$seeds.nii.gz
-#	seedstsv=$seeds.tsv
+	seedstsv=$seeds.tsv
 
 	if [ ! -f $seedsvol -o ! -f $seedstsv ]; then
 		echo "Seeds files not found."
