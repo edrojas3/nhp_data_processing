@@ -33,29 +33,29 @@ if [ -z ${seed+x} ] || [ -z ${target+x} ] || [ $# -lt 3 ]; then
 fi
 
 # SEED MASK. If not specified the code will try to use a subject brain mask
-if [ -z ${seed+x} ]
-then
-	# brain seeds
-	echo "Subject brain seeds will be used ..."
-	seedsvol=$site/data_aw/$subj/*nsu_mask.nii.gz
-	
-	if [ ! -f $seeds ]
-	then
-		echo  "Brain seeds NOT found. I'll create one."
-		fslmaths $site/data_aw/$subj/*nsu.nii.gz -bin $site/data_aw/$subj/${subj}_anat_warp2std_nsu_mask.nii.gz
-	else
-		echo "Brain seeds found."
-	fi
-else
+#if [ -z ${seed+x} ]
+#then
+#	# brain seeds
+#	echo "Subject brain seeds will be used ..."
+#	seedsvol=$site/data_aw/$subj/*nsu_mask.nii.gz
+#	
+#	if [ ! -f $seeds ]
+#	then
+#		echo  "Brain seeds NOT found. I'll create one."
+#		fslmaths $site/data_aw/$subj/*nsu.nii.gz -bin $site/data_aw/$subj/${subj}_anat_warp2std_nsu_mask.nii.gz
+#	else
+#		echo "Brain seeds found."
+#	fi
+#else
 	seedsvol=$seeds.nii.gz
 	seedstsv=$seeds.tsv
-
-	if [ ! -f $seedsvol -o ! -f $seedstsv ]; then
-		echo "Seeds files not found."
-		exit 0
-	fi
-fi
-
+#
+#	if [ ! -f $seedsvol -o ! -f $seedstsv ]; then
+#		echo "Seeds files not found."
+#		exit 0
+#	fi
+#fi
+#
 
 # CONFOUND REGRESSORS
 
