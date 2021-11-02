@@ -19,7 +19,9 @@ help ()
 	echo
        	echo "-w: perform anatomical registration with @animal_warper" 
 	echo
-	echo "-p: perform EPI preprocessing with afni_proc.py. Needs an existing @animal_warper output directory."
+	echo "-p: perform EPI preprocessing with afni_proc.py. No voxel smoothing. Needs an existing @animal_warper output directory."
+	echo
+	echo "-v: EPI preprocessing with voxel smoothing. Needs an existing @animal_warper output directory."
 	echo
 	echo "-P: get correlation matrices. Needs an existing afni_proc.py output directory."
 	echo
@@ -127,8 +129,8 @@ nhp-chmx_animal_proc=$(find $maindir -type f -name nhp-chmx_animal_proc.tcsh) # 
 echo "Entering singularity..."
 # run everything inside container
 if [ $subj_list -eq 1 ]; then
-	singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container $nhp-chmx_animal_proc -i $DIR -s ${all_subj} -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp
+	singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container ${nhp-chmx_animal_proc} -i $DIR -s ${all_subj} -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp
 else
-	singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container $nhp-chmx_animal_proc -i $DIR -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp
+	singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container ${nhp-chmx_animal_proc} -i $DIR -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp
 fi
 
