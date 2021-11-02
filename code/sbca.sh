@@ -58,14 +58,15 @@ fi
 
 
 # CONFOUND REGRESSORS
-echo "Check for confounds txt file..."
-if [ ! -f $outdir/confounds.txt ]
-then
-	echo "Confound regressors not found..."
-	get_confounds.sh $site $subj $4
-else
-	echo "Confounds file found."
-fi
+
+#echo "Check for confounds txt file..."
+#if [ ! -f $outdir/confounds.txt ]
+#then
+#	echo "Confound regressors not found..."
+#	get_confounds.sh $site $subj $4
+#else
+#	echo "Confounds file found."
+#fi
 
 #targets_n=$(fslstats $targets -R | awk '{print $2}' | cut -d. -f1)
 targetsvol=$targets.nii.gz
@@ -77,9 +78,9 @@ epi=$site/data_apv/$subj/${subj}.results/errts.$subj.tproject+tlrc.nii.gz
 if [ -f $epi ]
 then
 	# resample mask and targets volumes
-	echo "Resampling seeds and targets to subject's epi."
-	3dresample -in $seeds -master $epi -prefix $outdir/seeds_in_${subj}_epi.nii.gz
-	3dresample -in $targets -master $epi -prefix $outdir/targets_in_${subj}_epi.nii.gz
+	#echo "Resampling seeds and targets to subject's epi."
+	#3dresample -in $seeds -master $epi -prefix $outdir/seeds_in_${subj}_epi.nii.gz
+	#3dresample -in $targets -master $epi -prefix $outdir/targets_in_${subj}_epi.nii.gz
 	
 	if [ ! -d $outdir/corr_files ]; then mkdir $outdir/corr_files; fi
 
