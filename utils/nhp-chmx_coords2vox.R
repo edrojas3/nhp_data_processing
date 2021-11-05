@@ -5,7 +5,7 @@ formals(print.data.frame)$row.names <- FALSE
 args <- commandArgs(T)
 
 file=as.character(args[1])
-matrix_x_y_z = as.matrix(read.csv(file),header = FALSE)
+matrix_x_y_z = as.matrix(read.csv(file, header = F))
 
 voxel_size = c(0.25,0.25,0.25)
 vox0 = c(120, 200, 88)
