@@ -34,11 +34,11 @@ echo "+ Getting confounds file for $subj in $(echo $site | rev | cut -d/ -f1 | r
 
 test ! -d $outdir && mkdir -p $outdir
 
-#aw=$site/data_aw/$subj
-#apv=$site/data_apv/$subj/$subj.results
+aw=$site/data_aw/$subj
+apv=$site/data_apv/$subj/$subj.results
 
-aw=$site/data_01_aw/$subj
-apv=$site/data_02_ap_vox/$subj/$subj.results
+#aw=$site/data_01_aw/$subj
+#apv=$site/data_02_ap_vox/$subj/$subj.results
 epi=$apv/errts.${subj}.tproject+tlrc.nii.gz
 
 test ! -f $epi && 3dAFNItoNIFTI -prefix $epi $apv/errts.${subj}.tproject+tlrc.
