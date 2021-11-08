@@ -4,7 +4,7 @@ help ()
 {
 	echo "\"User friendly\" script for non-human primate anatomical registration, functional preprocessing, and ROI connectivity."
 	echo
-	echo "USAGE: $(basename $0) -i <directory/with/subjects> [-o|-s|-b|-w|-p|-P|-a|-m|-h]"
+	echo "USAGE: $(basename $0) -i <directory/with/subjects> [-o|-s|-b|-w|-p|-v|-P|-a|-m|-r|-h]"
 	echo
 	echo "The script performs a functional connectivity processing sequence, or a set of substeps. Except for bias field correction, everything is done inside a container (/misc/purcell/alfonso/tmp/container/afni.sif). An error will occur with printing the correlation matrices because matplotlib.pyplot."
 	echo 
@@ -28,6 +28,8 @@ help ()
 	echo "-a: performs the whole processing sequence. Equivalent to -wpP."
 	echo
 	echo "-m: set main directory. HOME directory is default. This directory is binded to the container /home directory."
+	echo
+	echo "-r: reference directory"
 	echo
 	echo "-c: set container path. Default: /misc/purcell/alfonso/tmp/container/afni.sif "
 	echo
@@ -84,6 +86,7 @@ while getopts "bi:o:s:m:c:awpvPh" opt; do
 		m) maindir=${OPTARG};; # sort of home directory
 		o) PREFIX=${OPTARG};; # prefix of output directories
 		c) container=${OPTARG};;
+		r) REF=${OPTARG};;
 		h) help
 		   exit
 		   ;;
@@ -131,6 +134,6 @@ echo "Entering singularity..."
 if [ $subj_list -eq 1 ]; then
 	singularity exec -B /mnt:/mnt -B $maindir:/home --cleanenv $container ${nhp-chmx_animal_proc} -i $DIR -s ${all_subj} -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp
 else
-	singularity exec -B /mnt:/mnt -B $maindir:/home --cleanenv $container ${nhp-chmx_animal_proc} -i $DIR -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp
+	singularity exec -B /mnt:/mnt -B $maindir:/home --cleanenv $container ${nhp-chmx_animal_proc} -i $DIR -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp -r $REF
 fi
 

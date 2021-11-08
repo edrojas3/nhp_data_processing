@@ -5,7 +5,7 @@
 # -o: output directory
 # -s: string with subjects to preproces (ex: 'sub-1 sub-2 sub-5')
 # -r: directory with template and atlas. DEFAULT: $HOME/mri/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm
-# -b: ANTs bias field correction. Default = 1. 
+# -b: ANTs bias field correction. Looks for N4 suffix in subjects anat folder. Default = 0. 
 # -h: display this help
 
 # The script is inspirated by (ie. copy-pasted) nhp-chmx_do_all.tcsh file available with @INSTALL_MACAQUE_DEMO in afni.
@@ -97,6 +97,7 @@ else if ( $PP < 0 ) then
 endif
 
 ################################################################# 
+
 
 # Input and output directiores
 set dir_basic  = $INPUTDIR   	
