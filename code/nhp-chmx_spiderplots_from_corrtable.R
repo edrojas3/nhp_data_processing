@@ -12,8 +12,6 @@ print('reading file')
 file = as.character(args[1])
 outfile=as.character(args[2])
 
-file = "/home/eduardo/mri/tezca/data/primeDE/site-ucdavis/sbca/sub-032126/corrtable.tsv"
-
 df = read.delim(file)
 
 if (length(args) > 2) {
@@ -45,14 +43,12 @@ for (tn in target_names) {
   png(outname)
   seeds_n = length(unique(targ_subset$seed))
   
-  print('creating dataframe for radarchart')
   spider_df <- as.data.frame(rbind(rep(max_val,seeds_n),
                      rep(0,seeds_n),
                      targ_subset[,3]))
   
   colnames(spider_df)<-unique(targ_subset$seed)
   
-  print('radarchart')
   radarchart(spider_df, axistype = 1, 
              cglcol="black", 
              cglty=1, 
