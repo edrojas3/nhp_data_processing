@@ -132,8 +132,8 @@ nhp-chmx_animal_proc=$(find $maindir -type f -name nhp-chmx_animal_proc.tcsh) # 
 echo "Entering singularity..."
 # run everything inside container
 if [ $subj_list -eq 1 ]; then
-	singularity exec -B /mnt:/mnt -B $maindir:/home --cleanenv $container ${nhp-chmx_animal_proc} -i $DIR -s ${all_subj} -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp
+	singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container ${nhp-chmx_animal_proc} -i $DIR -s ${all_subj} -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp
 else
-	singularity exec -B /mnt:/mnt -B $maindir:/home --cleanenv $container ${nhp-chmx_animal_proc} -i $DIR -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp -r $REF
+	singularity exec -B /misc:/misc -B $maindir:/home --cleanenv $container ${nhp-chmx_animal_proc} -i $DIR -o $PREFIX -b $BFC -aw $aw -ap $ap -apv $av -pp $pp -r $REF
 fi
 
