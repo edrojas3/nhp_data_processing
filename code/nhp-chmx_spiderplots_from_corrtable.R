@@ -12,6 +12,8 @@ print('reading file')
 file = as.character(args[1])
 outfile=as.character(args[2])
 
+file = "/home/eduardo/mri/tezca/data/primeDE/site-ucdavis/sbca/sub-032126/corrtable.tsv"
+
 df = read.delim(file)
 
 if (length(args) > 2) {
@@ -24,13 +26,13 @@ if (length(args) > 2) {
 df[,3] = abs(df[,3])
 
 seed_names = sort(unique(df$seed))
-seeds_n=length(seed_names)
+# seeds_n=length(seed_names)
 
 print('starting spider plots')
 for (tn in target_names) {
   
   print(tn)
-  targ_subset = df[df$targets == tn,]
+  targ_subset = df[df$target == tn,]
   min_val = min(targ_subset[,3])
   max_val = max(targ_subset[,3])
   
@@ -41,14 +43,14 @@ for (tn in target_names) {
   }
   
   png(outname)
-  seeds_n = length(unique(targ_subset$seeds))
+  seeds_n = length(unique(targ_subset$seed))
   
   print('creating dataframe for radarchart')
   spider_df <- as.data.frame(rbind(rep(max_val,seeds_n),
-                     rep(min_val,seeds_n),
+                     rep(0,seeds_n),
                      targ_subset[,3]))
   
-  colnames(spider_df)<-unique(targ_subset$seeds)
+  colnames(spider_df)<-unique(targ_subset$seed)
   
   print('radarchart')
   radarchart(spider_df, axistype = 1, 
