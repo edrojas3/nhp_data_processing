@@ -37,14 +37,14 @@ if [ $# -lt 3 ]; then
 fi
 touch $out.temp
 
-echo "Correlation tables for $subj..."
+echo "Correlation table for $subj..."
 
 for t in ${targets[@]}
 do
 
 	target_index=$(basename $t | cut -d_ -f2)
 
-	echo "Processing target $target_index of ${#targets[@]}"
+	echo "Processing target $target_index of ${#targets[@]}..."
 
 	for s in ${seeds_index[@]}
 	do
@@ -78,7 +78,7 @@ do
 		targetname=$(cat $targetstxt | awk -v ti="$target_index" '$1 == ti' | awk '{print $3}')
 		seedname=$(cat $seedstxt | awk -v si="$s" '$1 == si' | awk '{print $3}')
 
-		echo $maxval   $vox
+#		echo $maxval   $vox
 
 		# ADD TO TABLE
 		printf "%s\t%s\t%s\t%s\n" \
@@ -89,6 +89,8 @@ do
 
 	done
 done
+
+echo "DONE"
 
 # ADD COLUMN NAMES
 colnames=(target seed rval voxel)

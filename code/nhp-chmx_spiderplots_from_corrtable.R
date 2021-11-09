@@ -1,6 +1,6 @@
 #!/usr/bin/Rscript
 
-# spiderplots_from_corrtable.R file.tsv outfile 
+# spiderplots_from_corrtable.R file.tsv outdir 
 args = commandArgs(T)
 
 if (!require(fmsb)){
@@ -55,7 +55,7 @@ for (tn in target_names) {
              cglcol="black", 
              cglty=1, 
              axislabcol="gray",
-             caxislabels=round(seq(0, max_val, max_val/5), digits=2),
+             caxislabels=round(seq(0, max_val, max_val/4), digits=2),
              cglwd=0.5,
              vlcex=0.8,
              title=tn)
