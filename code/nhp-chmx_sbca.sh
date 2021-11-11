@@ -2,8 +2,23 @@
 
 help(){
 	echo
-	echo "$(basename "$0") <-s seed_base -t target_base -o outputdir> [-w awdir | -v apvoxdir] <site subject>" 
+	echo "$(basename "$0") <-S site> <-s sub-id> <-d seed_base> <-t target_base> [-o outdir | -w awdir | -v apvoxdir | -c containerdir]"
 	echo
+	echo "Performs seed-based correlation analysis including: tissue segmentation (csf and wm), fsl_sbca, and spiderplots"
+	echo
+	echo "MANDATORY INPUTS:"
+	echo "-S: site directory"
+	echo "-s: sub-id"
+	echo "-d: seed_base name for the seeds tsv and nii file. Example: path/to/repo/files/Neubert_seeds_in_NMT"
+	echo "-t: seed_base name for the targets tsv and nii file. Example: path/to/repo/files/targetst_in_NMT"
+	echo
+	echo "OPTIONAL INPUTS"
+	echo "-o: output directory. Default site/sbca"
+	echo "-w: animal_warper results directory. Default: site/data_aw"
+	echo "-v: afni_proc.py results directory. Default: site/data_ap_vox"
+	echo "-c: container directory. Default: /misc/purcell/alfonso/tmp/container/afni.sif"
+	echo
+
 	exit 0
 }
 
@@ -26,7 +41,7 @@ while getopts "S:s:d:t:o:w:v:c:" opt; do
 done
 
 # CHECK INPUT FILES AND DIRECTORIES
-if [ -z ${seed+x} ] || [ -z ${target+x} ] || [ $# -lt 3 ]; then
+if [ -z ${seed+x} ] || [ -z ${target+x} ] || [ $# -eq 0 ]; then
 	help
 fi
 
@@ -36,28 +51,12 @@ if [ -z $outdir ]; then outdir=$site/sbca; fi
 
 if [ ! -d $outdir/$subj ]; then mkdir -p $outdir/$subj; fi
 
-# SEED MASK. If not specified the code will try to use a subject brain mask
-if [ -z ${seed+x} ]
-then
-	# brain seeds
-	echo "Subject brain seeds will be used ..."
-	seedsvol=$site/data_aw/$subj/*nsu_mask.nii.gz
-	
-	if [ ! -f $seeds ]
-	then
-		echo  "Brain seeds NOT found. I'll create one."
-		fslmaths $site/data_aw/$subj/*nsu.nii.gz -bin $site/data_aw/$subj/${subj}_anat_warp2std_nsu_mask.nii.gz
-	else
-		echo "Brain seeds found."
-	fi
-else
-	seedsvol=$seed.nii.gz
-	seedstsv=$seed.tsv
+seedsvol=$seed.nii.gz
+seedstsv=$seed.tsv
 
-	if [ ! -f $seedsvol -o ! -f $seedstsv ]; then
-		echo "Seeds files not found."
-		exit 0
-	fi
+if [ ! -f $seedsvol -o ! -f $seedstsv ]; then
+	echo "Seeds files not found."
+	exit 0
 fi
 
 if [ ! -f $container ]; then echo "Container not found. Specify container path with '-c' option."; exit ; fi
