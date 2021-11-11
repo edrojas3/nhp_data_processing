@@ -10,13 +10,13 @@ help(){
 # FLAG OPTIONS
 
 ## defaults
-awdir=data_aw
-apvoxdir=data_apv
 container=/misc/purcell/alfonso/tmp/container/afni.sif
 
-while getopts "s:t:o:w:v:c:" opt; do
+while getopts "S:s:d:t:o:w:v:c:" opt; do
 	case ${opt} in
-		s ) seed=${OPTARG};;	
+		S) site=${OPTARG};;
+		s) subj=${OPTARG};;
+		d ) seed=${OPTARG};;	
 		t ) target=${OPTARG};;
 		o ) outdir=${OPTARG};;
 		w ) awdir=${OPTARG};;
@@ -25,15 +25,16 @@ while getopts "s:t:o:w:v:c:" opt; do
 	esac	
 done
 
-# POSITIONAL ARGUMENTS
-site=${@:$OPTIND:1}
-subj=${@:$OPTIND+1:1}
-
-
 # CHECK INPUT FILES AND DIRECTORIES
 if [ -z ${seed+x} ] || [ -z ${target+x} ] || [ $# -lt 3 ]; then
 	help
 fi
+
+if [ -z $awdir ]; then awdir=$site/data_aw; fi
+if [ -z $apvoxdir ]; then apvoxdir=$site/data_ap_vox; fi
+if [ -z $outdir ]; then outdir=$site/sbca; fi
+
+if [ ! -d $outdir/$subj ]; then mkdir -p $outdir/$subj; fi
 
 # SEED MASK. If not specified the code will try to use a subject brain mask
 if [ -z ${seed+x} ]
@@ -68,7 +69,7 @@ echo "Check for confounds txt file..."
 if [ ! -f $outdir/$subj/confounds.txt ]
 then
 	echo "Confound regressors not found..."
-	nhp-chmx_get_confounds.sh $site $subj $outdir
+	nhp-chmx_get_confounds.sh -S $site -s $subj -o $outdir -w $awdir -v $apvoxdir
 else
 	echo "Confounds file found."
 fi
@@ -77,7 +78,7 @@ targetsvol=$target.nii.gz
 targetstsv=$target.tsv
 targets_n=$(tail $targetstsv -n +2 | wc -l)
 
-epi=$site/data_apv/$subj/${subj}.results/errts.$subj.tproject+tlrc.nii.gz
+epi=$apvoxdir/$subj/${subj}.results/errts.$subj.tproject+tlrc.nii.gz
 
 if [ -f $epi ]
 then

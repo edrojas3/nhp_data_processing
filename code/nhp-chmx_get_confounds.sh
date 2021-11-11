@@ -1,15 +1,21 @@
 #!/bin/bash
 help(){
 echo
-echo "USAGE: $(basename $0) site subject-id output_directory"
+echo "USAGE: $(basename $0) -S site -s sub-id [options]"
 echo
 echo "Creates a confound.csv file with the eigen timeseries of CSF, white matter, and motion parameters to use in fsl_sbca."
 echo
-echo "Inputs:"
-echo "-site: full path to site directory (ex. /home/someone/mri/data/site-ecnu)"
-echo "-subject-id: ex. sub-032202"
-echo "-output-directory: subfolder within site-directory to save the outputs. If it doesn't exist, the script will create it along with a subject-id subfolder."
+echo "MANDATORY INPUTS:"
+echo "-S: full path to site directory (ex. /home/someone/mri/data/site-ecnu)"
+echo "-s: ex. sub-032202"
 echo 
+echo "OPTIONS"
+echo "-o: output directory, default = site/sbca"
+echo "-w: animal_warper directory, defaulte = site/data_aw"
+echo "-v: afni_proc.py directory, default = site/data_ap_vox"
+echo "-c: afni container directory, default = /misc/purcell/alfonso/tmp/container/afni.sif"
+echo "-h: print this help"
+echo
 echo "Output:"
 echo "-confounds.txt: tab separated file with 8 columns, each one with the eigen timeseries of:"
 echo "* 1. CSF"
@@ -18,39 +24,46 @@ echo "* 3 to 8: motion parameters"
 echo
 echo "CONSIDER THAT:"
 echo "The script segments CSF and WM from the subject anatomical volume registered in template and skull stripped. "
-echo "The script assumes that within the site directory a subfolder called data_apv exists. It takes the epi and motion parameter files (dfile_rall.1D) from this folder."
 }
 
+container=/misc/purcell/alfonso/tmp/container/afni.sif
+
+while getopts "S:s:o:w:v:c:h:" opt; do
+	case ${opt} in
+		S) site=${OPTARG};;
+		s) subj=${OPTARG};;
+		o) outdir=${OPTARG};;
+		w) aw=${OPTARG};;
+		v) apv=${OPTARG};;
+		c) container=${OPTARG};;
+		h) help
+	           exit;;
+		\?) help
+		    exit;;
+    	esac
+done
+ 
 
 if [ $# -lt 3 ]; then help; exit 1; fi
 
-site=$1
-subj=$2
-outdir=$3/$subj
-container=/misc/purcell/alfonso/tmp/container/afni.sif
-
-if [ $# -eq 4 ]; then
-	container=$4
-fi
+if [ -z $aw ]; then aw=$site/data_aw; fi
+if [ -z $apv ]; then apv=$site/data_ap_vox; fi
+if [ -z $outdir ]; then outdir=$site/sbca; fi
 
 echo "+ Getting confounds file for $subj in $(echo $site | rev | cut -d/ -f1 | rev)"
 
-# Tissue regressors
+test ! -d $outdir && mkdir -p $outdir/$subj
 
-test ! -d $outdir && mkdir -p $outdir
-
-aw=$site/data_aw/$subj
-apv=$site/data_apv/$subj/$subj.results
+aw=$aw/$subj
+apv=$apv/$subj/$subj.results
+outdir=$outdir/$subj
 
 if [ ! -d $aw ] || [ ! -d $apv ]; then
 	echo "No animal_warper or ap_vox directory found. They are currently set at:"
 	echo "animal_warper: $aw"
 	echo "ap_vox: $apv"
-	echo "Please rename the animal_warper and/or ap_vox directories, or change the aw and apv variables (lines 40 something) within this script to set the currect directories. And please pardon the coder..."
 fi
 
-#aw=$site/data_01_aw/$subj
-#apv=$site/data_02_ap_vox/$subj/$subj.results
 epi=$apv/errts.${subj}.tproject+tlrc.nii.gz
 
 if [ ! -f $epi ]; then

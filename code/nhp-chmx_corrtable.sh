@@ -53,26 +53,14 @@ do
 
 		# LOCATION OF MAX CORR VOXEL
 
-		## Scale image to obtain the voxel location of  max corr value.
-	        ## Necessary 'cause tha max corr value can be less than 0.
-		minval=$(fslstats $workdir/target_corr_temp.nii.gz -P 0)	
-		minval_sign=$(echo $minval | cut -d. -f1 | sed -e 's/0/1/')
-		if [ $minval_sign -lt 0 ]; then
-			fslmaths $workdir/target_corr_temp.nii.gz -add ${minval#-} $workdir/target_corr_scaled_temp
-		else
-			fslmaths $workdir/target_corr_temp.nii.gz -sub ${minval} $workdir/target_corr_scaled_temp
-		fi
+		fslmaths $workdir/target_corr_temp.nii.gz -abs $workdir/target_corr_abs_temp
 
-		## reset voxels outside mask to 0		
-		fslmaths $workdir/target_corr_scaled_temp.nii.gz -mul $workdir/seed_mask_temp.nii.gz $workdir/target_corr_scaled_temp.nii.gz 
-		maxval=$(fslstats $workdir/target_corr_scaled_temp.nii.gz -P 100)
-		fslmaths $workdir/target_corr_scaled_temp.nii.gz -div $maxval $workdir/target_corr_scaled_temp.nii.gz
 
 		## voxel location
-		vox=$(fslstats $workdir/target_corr_scaled_temp.nii.gz -x) # coordinates of max value
+		vox=$(fslstats $workdir/target_corr_abs_temp.nii.gz -x) # coordinates of max value
 
 		# CORR VAL
-		maxval=$(fslstats $workdir/target_corr_temp.nii.gz -P 100)
+		maxval=$(fslstats $workdir/target_corr_abs_temp.nii.gz -P 100)
 		
 		# TARGET AND SEED NAME
 		targetname=$(cat $targetstxt | awk -v ti="$target_index" '$1 == ti' | awk '{print $3}')
