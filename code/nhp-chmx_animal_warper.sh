@@ -12,7 +12,7 @@ help()
 	echo 
 	echo "OPTIONAL INPUTS"
 	echo "-h: print help"
-	echo "-o: Output directory. DEFAULT: data_aw. If the output directory doesn't exist, the script will create one. The script also creates a folder inside of the output directory named as subject id where all the @animal_warper outputs will be saved." 
+	echo "-o: Output directory. DEFAULT: site/data_aw. If the output directory doesn't exist, the script will create one. The script also creates a folder inside of the output directory named as subject id where all the @animal_warper outputs will be saved." 
 	echo  "-r: NMT_v2 path. DEFAULT:/misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm. Inside of this folder a NMT*SS.nii.gz and a NMT*_brainmask.nii.gz must exist." 
 	echo "-c: AFNI container directory. DEFAULT:/misc/purcell/alfonso/tmp/container/afni.sif."
 	echo "-b: Use a biased field corrected anatomical volume. It has to have a N4 identifier. EX. site-ion/sub-032202/anat/sub-032202_T1_N4.nii.gz. Use ANTS' N4BiasFieldCorrection  function to get one. THIS OPTION DOESN'T NEED AN ARGUMENT."	
@@ -23,7 +23,7 @@ help()
 }
 
 # Defaults
-refdir=/misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm
+refdir=/misc/hahn2/reduardo/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm
 bfc=0
 container=/misc/purcell/alfonso/tmp/container/afni.sif
 
@@ -59,14 +59,18 @@ if [ -z $outdir ]; then outdir=$site/data_aw; fi
 if [ ! -d $ref ]; then echo "No reference $ref found." ; exit 1; fi
 if [ ! -d $site ]; then echo "No site with name $site found."; exit 1; fi
 if [ ! -d $site/$s ]; then echo "No subject with id $s found in $site."; exit 1; fi
-if [ -z "$s_anat" ]; then echo "Couldn't found an anatomical volumen for $s."; exit 1; fi
+if [ -z "$s_anat" ]; then echo "Couldn't found an anatomical volume for $s."; exit 1; fi
 
 if [ ! -d $outdir/$s ]; then mkdir -p $outdir/$s; fi
 
+# copy wm and ventricle mask
+cp $refdir/NMT_WM.nii.gz $outdir/$s
+cp $refdir/NMT_VENT.nii.gz $outdir/$s
+
 refvol=$refdir/NMT*_SS.nii.gz
-refvol_ab=NMT2
-refseg=($refdir/NMT*_segmentation*.nii.gz $refdir/supplemental_masks/NMT*_ventricles*.nii.gz)
-refseg_ab=(SEG VENT)
+#refvol_ab=NMT2
+#refseg=($refdir/NMT*_segmentation*.nii.gz $refdir/supplemental_masks/NMT*_ventricles*.nii.gz)
+#refseg_ab=(SEG VENT)
 refmask=$refdir/NMT*_brainmask.nii.gz
 refmask_ab=MASK
 	
@@ -75,8 +79,11 @@ singularity exec -B /misc:/misc --cleanenv $container @animal_warper \
 	-input ${s_anat} \
 	-input_abbrev ${s}_anat \
 	-base ${refvol} \
-	-base_abbrev ${refvol_ab} \
-	-seg_abbrevs ${refseg_ab} \
+	-base_abbrev NMT \
+	-atlas_followers ${refdir}/CHARM*.nii.gz ${refdir}/D99*.nii.gz \
+	-atlas_abbrevs CHARM D99 \
+	-seg_followers $refdir/NMT*_segmentation*.nii.gz $refdir/NMT*_ventricles*.nii.gz \
+	-seg_abbrevs SEG VENT \
 	-skullstrip  ${refmask} \
 	-outdir $outdir/$s \
 	-ok_to_exist                   

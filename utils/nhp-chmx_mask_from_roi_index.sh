@@ -26,7 +26,7 @@ fslmaths $input -thr $low ${output}_thr_temp.nii.gz
 fslmaths $input -uthr $upper ${output}_uthr_temp.nii.gz
 fslmaths ${output}_thr_temp.nii.gz -mul ${output}_uthr_temp.nii.gz $output
 fslmaths $output.nii.gz -bin $output
-rm $output*temp.nii.gz
+rm $output*thr_temp.nii.gz
 
 
 

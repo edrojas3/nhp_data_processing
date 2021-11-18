@@ -70,23 +70,35 @@ if [ ! -f $epi ]; then
 	singularity exec -B /misc:/misc --cleanenv $container 3dAFNItoNIFTI -prefix $epi $apv/errts.${subj}.tproject+tlrc.
 fi
 
-# resample tissue to subject epi
-echo "+ Tissue masks"
+## resample tissue to subject epi
+#echo "+ Tissue masks"
+#
+#echo "++ Segmenting..."
+#fast -o $outdir/$subj $aw/${subj}_anat_warp2std_nsu.nii.gz
+#
+#echo "++ Creating CSF and WM masks..."
+#singularity exec -B /misc:/misc --cleanenv $container 3dresample -input $outdir/*pve_0*.nii.gz -master $epi -prefix $outdir/pve_0_in_${subj}.nii.gz
+#fslmaths $outdir/pve_0_in_${subj}.nii.gz -thr 0.5 $outdir/csf_in_${subj}_epi
+#fslmaths $outdir/csf_in_${subj}_epi.nii.gz -bin $outdir/csf_in_${subj}_mask
+#fslmaths $outdir/csf_in_${subj}_epi.nii.gz -ero $outdir/csf_in_${subj}_mask_ero
+# 
+#singularity exec -B /misc:/misc --cleanenv $container 3dresample -input $outdir/*pve_2*.nii.gz -master $epi -prefix $outdir/pve_2_in_${subj}.nii.gz
+#fslmaths $outdir/pve_2_in_${subj}.nii.gz -thr 0.5 $outdir/wm_in_${subj}_epi
+#fslmaths $outdir/wm_in_${subj}_epi.nii.gz -bin $outdir/wm_in_${subj}_mask
+#fslmaths $outdir/wm_in_${subj}_epi.nii.gz -ero $outdir/wm_in_${subj}_mask_ero
+#
+#csf=$outdir/csf_in_${subj}_mask_ero.nii.gz
+#wm=$outdir/wm_in_${subj}_mask_ero.nii.gz
 
-echo "++ Segmenting..."
-fast -o $outdir/$subj $aw/${subj}_anat_warp2std_nsu.nii.gz
+echo "+ Tissue to $subj epi..."
+wm_nmt=$aw/NMT_WM.nii.gz
+csf_nmt=$aw/NMT_VENT.nii.gz
 
-echo "++ Creating CSF and WM masks..."
-singularity exec -B /misc:/misc --cleanenv $container 3dresample -input $outdir/*pve_0*.nii.gz -master $epi -prefix $outdir/pve_0_in_${subj}.nii.gz
-fslmaths $outdir/pve_0_in_${subj}.nii.gz -thr 0.5 $outdir/csf_in_${subj}_epi
-fslmaths $outdir/csf_in_${subj}_epi.nii.gz -bin $outdir/csf_in_${subj}_mask
- 
-singularity exec -B /misc:/misc --cleanenv $container 3dresample -input $outdir/*pve_2*.nii.gz -master $epi -prefix $outdir/pve_2_in_${subj}.nii.gz
-fslmaths $outdir/pve_2_in_${subj}.nii.gz -thr 0.5 $outdir/wm_in_${subj}_epi
-fslmaths $outdir/wm_in_${subj}_epi.nii.gz -bin $outdir/wm_in_${subj}_mask
+singularity exec -B /misc:/misc --cleanenv $container 3dresample -input $csf_nmt -master $epi -prefix $outdir/CSF_in_${subj}_epi.nii.gz
+singularity exec -B /misc:/misc --cleanenv $container 3dresample -input $wm_nmt -master $epi -prefix $outdir/WM_in_${subj}_epi.nii.gz
 
-csf=$outdir/csf_in_${subj}_mask.nii.gz
-wm=$outdir/wm_in_${subj}_mask.nii.gz
+csf=$outdir/CSF_in_${subj}_epi.nii.gz
+wm=$outdir/WM_in_${subj}_epi.nii.gz
 
 # tissue eigen time series
 echo "++ Calculating tissue eigen timeseries"
