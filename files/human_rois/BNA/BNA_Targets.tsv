@@ -1,0 +1,25 @@
+Index	Area	Abbreviation	Voxels	Coordinates
+1	Left Medial Area 14	L.A14m	48.5,90.0,32.5	-7, 54, -7
+2	Right Medial Area 14	R.A14m	42.0,86.5,32.5	6, 47, -7
+3	Left Orbital Area 12/47	L.A12/47o	63.0,79.5,28.0	-36, 33, -16
+4	Right Orbital Area 12/47	R.A12/47o	25.0,82.5,29.0	40, 39, -14
+5	Left Lateral Area 11	L.A11l	56.5,82.0,27.0	-23, 38, -18
+6	Right Lateral Area 11	R.A11l	33.5,81.0,27.0	23, 36, -18
+7	Left Medial Area 11	L.A11m	48.0,89.0,26.5	-6, 52, -19
+8	Right Medial Area 11	R.A11m	42.0,91.5,28.0	6, 57, -16
+9	Left Area 13	L.A13	50.0,72.0,26.5	-10, 18, -19
+10	Right Area 13	R.A13	40.5,73.0,26.5	9, 20, -19
+11	Left Lateral Area 12/47	L.A12/47l	65.5,79.0,31.5	-41, 32, -9
+12	Right Lateral Area 12/47	R.A12/47l	24.0,78.5,31.5	42, 31, -9
+13	Left Ventral Caudate	L.Vca	51.0,70.0,36.0	-12, 14, 0
+14	Right Ventral Caudate	R.Vca	37.5,70.0,35.0	15, 14, -2
+15	Left Globus Pallidus	L.Gp	56.0,62.0,38.0	-22, -2, 4
+16	Right Globus Pallidus	R.Gp	34.0,62.0,37.5	22, -2, 3
+17	Left Nucleus Accumbens	L.Nac	53.5,64.5,31.5	-17, 3, -9
+18	Right Nucleus Accumbens	R.Nac	37.5,67.0,31.5	15, 8, -9
+19	Left Ventromedial Putamen	L.Vmpu	56.5,66.5,34.0	-23, 7, -4
+20	Right Ventromedial Putamen	R.Vmpu	34.0,67.0,35.5	22, 8, -1
+21	Left Dorsal Caudate	L.Dca	52.0,64.0,44.0	-14, 2, 16
+22	Right Dorsal Caudate	R.Dca	38.0,65.5,43.0	14, 5, 14
+23	Left Dorsolateral Putamen	L.Dlpu	59.0,60.5,37.0	-28, -5, 2
+24	Right Dorsolateral Putamen	R.Dlpu	30.5,61.5,36.5	29, -3, 1

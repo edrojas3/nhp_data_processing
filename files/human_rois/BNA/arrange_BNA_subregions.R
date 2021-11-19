@@ -64,15 +64,40 @@ names(bn_areas_Right) <- names(bn_areas_Left)
 bn_areas3 <- bind_rows(bn_areas_Left,bn_areas_Right) %>%
 arrange(Label.ID)
 
+### Create Targets Filce
 Targets <- bn_areas3 %>% 
 filter(Gy.Abrevv %in% c("ORG", "BG"))
+Targets$Index <- 1:nrow(Targets)
+Targets_coords <- select(Targets,MNI.X.Y.Z)
+write.table(Targets_coords,file = "BNA_Targets_MNI.csv",sep = ",",
+            quote = F,row.names = F,col.names = F)
+targets_voox <- read.table("BNA_Targets_vox.csv",sep = ' ')
+Targets <- Targets %>%
+  select(Index, Area, Abbreviation) %>%
+  mutate(Voxels = targets_voox$V1, Coordinates = Targets$MNI.X.Y.Z)
+
+
+
+### Seeds File
 
 Seeds <- bn_areas3 %>% 
   filter(Gy.Abrevv %notin% c("ORG", "BG"))
-
 seeds_coords <- Seeds %>%
   select(MNI.X.Y.Z)
+Seeds$Index <- 1:nrow(Seeds)
+write.table(seeds_coords,"BNA_seeds_MNI.csv",quote = F,col.names = F,row.names = F,sep = ,)
+seeds_vox <- read.table("BNA_seeds_vox.csv")
 
-write.table(seeds_coords,"BNA_seed_MNI.csv",quote = F,col.names = F,row.names = F,sep = ,)
+Seeds <- Seeds %>%
+  select(Index,Area,Abbreviation) %>%
+  mutate(Voxels = seeds_vox$V1, Coordinates = Seeds$MNI.X.Y.Z)
+
+# Write table
+write.table(Targets,"BNA_Targets.tsv",quote = F,row.names = F,sep = "\t")
+write.table(Seeds,"BNA_Seeds.tsv",quote = F,row.names = F,sep = "\t")
+
+
+
+
 
 

@@ -1,0 +1,223 @@
+Index	Area	Abbreviation	Voxels	Coordinates
+1	Left Medial Area 8	L.A8m	47.5,70.5,63.0	-5 ,15, 54
+2	Right Medial Area 8	R.A8m	41.5,71.0,63.0	7, 16, 54
+3	Left Dorsolateral Area 8	L.A8dl	54.0,75.0,62.5	-18, 24, 53
+4	Right Dorsolateral Area 8	R.A8dl	34.0,76.0,61.5	22, 26, 51
+5	Left Lateral Area 9	L.A9l	50.5,87.5,56.0	-11, 49, 40
+6	Right Lateral Area 9	R.A9l	38.5,87.0,56.0	13, 48, 40
+7	Left Dorsolateral Area 6	L.A6dl	54.0,62.5,68.5	-18, -1, 65
+8	Right Dorsolateral Area 6	R.A6dl	35.0,65.0,68.0	20, 4, 64
+9	Left Medial Area 6	L.A6m	48.0,60.5,65.0	-6, -5, 58
+10	Right Medial Area 6	R.A6m	41.5,61.0,66.0	7, -4, 60
+11	LeftMedial Area 9	L.A9m	47.5,81.0,55.0	-5, 36, 38
+12	RightMedial Area 9	R.A9m	42.0,82.0,53.5	6, 38, 35
+13	Left Medial Area 10	L.A10m	49.0,91.0,43.5	-8, 56, 15
+14	Right Medial Area 10	R.A10m	41.0,92.0,42.5	8, 58, 13
+15	Left Dorsal Area 9/46	L.A9/46d	58.5,84.5,51.5	-27, 43, 31
+16	Right Dorsal Area 9/46	R.A9/46d	30.0,81.5,54.0	30, 37, 36
+17	Left Inferior Frontal Junction	L.Ifj	66.0,69.5,54.0	-42, 13, 36
+18	Right Inferior Frontal Junction	R.Ifj	24.0,68.5,55.5	42, 11, 39
+19	Left Area 46	L.A46	59.0,91.0,42.0	-28, 56, 12
+20	Right Area 46	R.A46	31.0,90.5,44.5	28, 55, 17
+21	Left Ventral Area 9/46	L.A9/46v	65.5,83.5,44.0	-41, 41, 16
+22	Right Ventral Area 9/46	R.A9/46v	24.0,85.0,43.0	42, 44, 14
+23	Left Ventrolateral Area 8	L.A8vl	61.5,74.5,58.5	-33, 23, 45
+24	Right Ventrolateral Area 8	R.A8vl	24.0,76.5,55.5	42, 27, 39
+25	Left Ventrolateral Area 6	L.A6vl	61.0,65.0,63.5	-32, 4, 55
+26	Right Ventrolateral Area 6	R.A6vl	28.0,67.0,63.0	34, 8, 54
+27	Left Lateral Area10	L.A10l	58.0,93.0,33.0	-26, 60, -6
+28	Right Lateral Area10	R.A10l	32.5,93.5,34.0	25, 61, -4
+29	LeftDorsal Area 44	L.A44d	68.0,69.5,48.0	-46, 13, 24
+30	RightDorsal Area 44	R.A44d	22.5,71.0,48.5	45, 16, 25
+31	Left Inferior Frontal Sulcus	L.Ifs	68.5,79.0,43.0	-47, 32, 14
+32	Right Inferior Frontal Sulcus	R.Ifs	21.0,80.5,42.5	48, 35, 13
+33	Left Caudal Area 45	L.A45c	71.5,74.5,41.5	-53, 23, 11
+34	Right Caudal Area 45	R.A45c	18.0,75.0,42.0	54, 24, 12
+35	Left Rostral Area 45	L.A45r	69.5,81.0,34.5	-49, 36, -3
+36	Right Rostral Area 45	R.A45r	19.5,81.0,35.5	51, 36, -1
+37	Left Opercular Area 44	L.A44op	64.5,74.5,38.0	-39, 23, 4
+38	Right Opercular Area 44	R.A44op	24.0,74.0,37.5	42, 22, 3
+39	Left Ventral Area 44	L.A44v	71.0,69.5,39.0	-52, 13, 6
+40	Right Ventral Area 44	R.A44v	18.0,70.0,41.5	54, 14, 11
+41	Left Area 4(Head And Face Region)	L.A4hf	69.5,59.0,55.5	-49, -8, 39
+42	Right Area 4(Head And Face Region)	R.A4hf	17.5,62.0,52.5	55, -2, 33
+43	Left Caudal Dorsolateral Area 6	L.A6cdl	61.0,58.5,65.0	-32, -9, 58
+44	Right Caudal Dorsolateral Area 6	R.A6cdl	28.5,59.5,64.5	33, -7, 57
+45	Left Area 4(Upper Limb Region)	L.A4ul	58.0,50.5,67.5	-26, -25, 63
+46	Right Area 4(Upper Limb Region)	R.A4ul	28.0,53.5,65.5	34, -19, 59
+47	Left Area 4(Trunk Region)	L.A4t	51.5,53.0,72.5	-13, -20, 73
+48	Right Area 4(Trunk Region)	R.A4t	37.5,52.0,71.5	15, -22, 71
+49	Left Area 4(Tongue And Larynx Region)	L.A4tl	71.0,63.0,40.0	-52, 0, 8
+50	Right Area 4(Tongue And Larynx Region)	R.A4tl	18.0,65.0,40.5	54, 4, 9
+51	Left Caudal Ventrolateral Area 6	L.A6cvl	69.5,65.5,51.0	-49, 5, 30
+52	Right Caudal Ventrolateral Area 6	R.A6cvl	19.5,66.5,51.0	51, 7, 30
+53	Left Area1/2/3 (Lower Limb Region)	L.A1/2/3ll	49.0,44.0,65.0	-8, -38, 58
+54	Right Area1/2/3 (Lower Limb Region)	R.A1/2/3ll	40.0,46.0,63.0	10, -34, 54
+55	Left Area 4	L.A4ll	47.0,51.5,66.5	-4, -23, 61
+56	Right Area 4	R.A4ll	42.5,52.5,66.5	5, -21, 61
+57	Left Medial Area 38	L.A38m	61.0,70.0,19.0	-32, 14, -34
+58	Right Medial Area 38	R.A38m	29.5,70.5,19.0	31, 15, -34
+59	Left Area 41/42	L.A41/42	72.0,47.0,42.0	-54, -32, 12
+60	Right Area 41/42	R.A41/42	18.0,51.0,41.5	54, -24, 11
+61	LeftNA	L.Te1.0 And Te1.2	70.0,57.5,36.5	-50, -11, 1
+62	RightNA	R.Te1.0 And Te1.2	19.5,61.0,35.5	51, -4, -1
+63	Left Caudal Area 22	L.A22c	76.0,46.5,39.5	-62, -33, 7
+64	Right Caudal Area 22	R.A22c	12.0,53.0,39.0	66, -20, 6
+65	Left Lateral Area 38	L.A38l	67.5,68.5,26.0	-45, 11, -20
+66	Right Lateral Area 38	R.A38l	21.5,69.0,26.0	47, 12, -20
+67	Left Rostral Area 22	L.A22r	72.5,61.5,31.0	-55, -3, -10
+68	Right Rostral Area 22	R.A22r	17.0,57.0,33.5	56, -12, -5
+69	Left Caudal Area 21	L.A21c	77.5,48.0,30.0	-65, -30, -12
+70	Right Caudal Area 21	R.A21c	12.5,48.5,29.5	65, -29, -13
+71	Left Rostral Area 21	L.A21r	71.5,64.0,21.0	-53, 2, -30
+72	Right Rostral Area 21	R.A21r	19.5,66.0,20.0	51, 6, -32
+73	Left Dorsolateral Area37	L.A37dl	74.5,34.0,38.0	-59, -58, 4
+74	Right Dorsolateral Area37	R.A37dl	15.0,36.5,37.5	60, -53, 3
+75	Left Anterior Superior Temporal Sulcus	L.Asts	74.0,53.0,31.5	-58, -20, -9
+76	Right Anterior Superior Temporal Sulcus	R.Asts	16.0,55.0,31.0	58, -16, -10
+77	Left Intermediate Ventral Area 20	L.A20iv	67.5,50.0,22.5	-45, -26, -27
+78	Right Intermediate Ventral Area 20	R.A20iv	22.0,56.0,19.5	46, -14, -33
+79	Left Extreme Lateroventral Area37	L.A37elv	70.5,34.5,28.5	-51, -57, -15
+80	Right Extreme Lateroventral Area37	R.A37elv	18.5,37.0,27.0	53, -52, -18
+81	Left Rostral Area 20	L.A20r	66.5,62.0,15.5	-43, -2, -41
+82	Right Rostral Area 20	R.A20r	25.0,63.0,14.5	40, 0, -43
+83	Left Intermediate Lateral Area 20	L.A20il	73.0,55.0,22.0	-56, -16, -28
+84	Right Intermediate Lateral Area 20	R.A20il	17.5,57.5,20.0	55, -11, -32
+85	Left Ventrolateral Area 37	L.A37vl	72.5,33.0,33.0	-55, -60, -6
+86	Right Ventrolateral Area 37	R.A37vl	18.0,34.5,32.0	54, -57, -8
+87	Left Caudolateral Of Area 20	L.A20cl	74.5,42.0,28.0	-59, -42, -16
+88	Right Caudolateral Of Area 20	R.A20cl	14.5,43.0,27.5	61, -40, -17
+89	Left Caudoventral Of Area 20	L.A20cv	72.5,47.5,22.5	-55, -31, -27
+90	Right Caudoventral Of Area 20	R.A20cv	18.0,47.5,23.0	54, -31, -26
+91	Left Rostroventral Area 20	L.A20rv	61.5,55.0,20.0	-33, -16, -32
+92	Right Rostroventral Area 20	R.A20rv	28.5,55.5,19.0	33, -15, -34
+93	Left Medioventral Area37	L.A37mv	60.5,31.0,29.0	-31, -64, -14
+94	Right Medioventral Area37	R.A37mv	29.5,32.0,29.0	31, -62, -14
+95	Left Lateroventral Area37	L.A37lv	66.0,37.5,27.5	-42, -51, -17
+96	Right Lateroventral Area37	R.A37lv	23.5,38.5,26.5	43, -49, -19
+97	Left Rostral Area 35/36	L.A35/36r	58.5,59.5,19.0	-27, -7, -34
+98	Right Rostral Area 35/36	R.A35/36r	31.0,59.0,19.5	28, -8, -33
+99	Left Caudal Area 35/36	L.A35/36c	57.5,50.5,23.0	-25, -25, -26
+100	Right Caudal Area 35/36	R.A35/36c	32.0,51.5,22.5	26, -23, -27
+101	Left Area Tl (Lateral Pphc	L.Tl	59.0,47.0,27.0	-28, -32, -18
+102	Right Area Tl (Lateral Pphc	R.Tl	30.0,48.0,27.0	30, -30, -18
+103	Left Area 28/34 (Ec	L.A28/34	54.5,57.0,21.0	-19, -12, -30
+104	Right Area 28/34 (Ec	R.A28/34	35.5,58.0,21.0	19, -10, -30
+105	Left Area Ti(Temporal Agranular Insular Cortex)	L.Ti	56.5,64.0,20.0	-23, 2, -32
+106	Right Area Ti(Temporal Agranular Insular Cortex)	R.Ti	34.0,63.5,18.0	22, 1, -36
+107	Left Area Th (Medial Pphc)	L.Th	53.5,43.5,31.0	-17, -39, -10
+108	Right Area Th (Medial Pphc)	R.Th	35.5,45.0,30.5	19, -36, -11
+109	Left Rostroposterior Superior Temporal Sulcus	L.Rpsts	72.0,43.0,38.0	-54, -40, 4
+110	Right Rostroposterior Superior Temporal Sulcus	R.Rpsts	18.5,44.5,37.5	53, -37, 3
+111	Left Caudoposterior Superior Temporal Sulcus	L.Cpsts	71.0,38.0,41.5	-52, -50, 11
+112	Right Caudoposterior Superior Temporal Sulcus	R.Cpsts	16.5,43.0,42.0	57, -40, 12
+113	Left Rostral Area 7	L.A7r	53.0,33.0,67.5	-16, -60, 63
+114	Right Rostral Area 7	R.A7r	35.5,34.5,68.5	19, -57, 65
+115	Left Caudal Area 7	L.A7c	52.5,27.5,62.0	-15, -71, 52
+116	Right Caudal Area 7	R.A7c	35.5,28.5,63.0	19, -69, 54
+117	Left Lateral Area 5	L.A5l	61.5,39.5,61.0	-33, -47, 50
+118	Right Lateral Area 5	R.A5l	27.5,42.0,63.0	35, -42, 54
+119	Left Postcentral Area 7	L.A7pc	56.0,39.5,68.5	-22, -47, 65
+120	Right Postcentral Area 7	R.A7pc	33.5,41.5,69.5	23, -43, 67
+121	Left Intraparietal Area 7(Hip3)	L.A7ip	58.5,33.5,63.0	-27, -59, 54
+122	Right Intraparietal Area 7(Hip3)	R.A7ip	29.5,36.0,62.5	31, -54, 53
+123	Left Caudal Area 39(Pgp)	L.A39c	62.0,23.0,50.5	-34, -80, 29
+124	Right Caudal Area 39(Pgp)	R.A39c	22.5,27.5,46.0	45, -71, 20
+125	Left Rostrodorsal Area 39(Hip3)	L.A39rd	64.0,32.5,59.0	-38, -61, 46
+126	Right Rostrodorsal Area 39(Hip3)	R.A39rd	25.5,30.5,58.0	39, -65, 44
+127	Left Rostrodorsal Area 40(Pft)	L.A40rd	70.5,46.5,57.0	-51, -33, 42
+128	Right Rostrodorsal Area 40(Pft)	R.A40rd	21.5,45.5,58.5	47, -35, 45
+129	Left Caudal Area 40(Pfm)	L.A40c	73.0,38.5,55.0	-56, -49, 38
+130	Right Caudal Area 40(Pfm)	R.A40c	16.5,41.0,55.0	57, -44, 38
+131	Left Rostroventral Area 39(Pga)	L.A39rv	68.5,30.5,49.0	-47, -65, 26
+132	Right Rostroventral Area 39(Pga)	R.A39rv	18.5,36.0,48.5	53, -54, 25
+133	Left Rostroventral Area 40(Pfop)	L.A40rv	71.5,47.5,47.5	-53, -31, 23
+134	Right Rostroventral Area 40(Pfop)	R.A40rv	17.5,50.0,49.0	55, -26, 26
+135	Left Medial Area 7(Pep)	L.A7m	47.5,31.5,61.5	-5, -63, 51
+136	Right Medial Area 7(Pep)	R.A7m	42.0,30.5,61.5	6, -65, 51
+137	Left Medial Area 5(Pem)	L.A5m	49.0,39.5,64.5	-8, -47, 57
+138	Right Medial Area 5(Pem)	R.A5m	41.5,39.5,65.0	7, -47, 58
+139	Left Dorsomedial Parietooccipital  Sulcus(Per)	L.Dmpos	51.0,29.5,48.5	-12, -67, 25
+140	Right Dorsomedial Parietooccipital  Sulcus(Per)	R.Dmpos	37.0,31.0,48.5	16, -64, 25
+141	Left Area 31 (Lc1)	L.A31	48.0,35.5,53.0	-6, -55, 34
+142	Right Area 31 (Lc1)	R.A31	42.0,36.0,53.5	6, -54, 35
+143	Left Area 1/2/3(Upper Limb	L.A1/2/3ulhf	70.0,55.0,57.5	-50, -16, 43
+144	Right Area 1/2/3(Upper Limb	R.A1/2/3ulhf	20.0,56.0,58.0	50, -14, 44
+145	Left Area 1/2/3(Tongue And Larynx Region)	L.A1/2/3tonia	73.0,56.0,44.0	-56, -14, 16
+146	Right Area 1/2/3(Tongue And Larynx Region)	R.A1/2/3tonia	17.0,58.0,43.5	56, -10, 15
+147	Left Area 2	L.A2	68.0,48.0,61.0	-46, -30, 50
+148	Right Area 2	R.A2	21.0,51.0,60.0	48, -24, 48
+149	Left Area1/2/3(Trunk Region)	L.A1/2/3tru	55.5,45.5,70.0	-21, -35, 68
+150	Right Area1/2/3(Trunk Region)	R.A1/2/3tru	35.0,46.5,70.5	20, -33, 69
+151	Left Hypergranular Insula	L.G	63.0,53.0,41.0	-36, -20, 10
+152	Right Hypergranular Insula	R.G	26.5,54.0,40.0	37, -18, 8
+153	Left Ventral Agranular Insula	L.Via	61.0,70.0,29.5	-32, 14, -13
+154	Right Ventral Agranular Insula	R.Via	28.5,70.0,29.5	33, 14, -13
+155	Left Dorsal Agranular Insula	L.Dia	62.0,72.0,36.5	-34, 18, 1
+156	Right Dorsal Agranular Insula	R.Dia	27.0,72.0,36.5	36, 18, 1
+157	Left Ventral Dysgranular And Granular Insula	L.Vid/Vig	64.0,61.0,31.5	-38, -4, -9
+158	Right Ventral Dysgranular And Granular Insula	R.Vid/Vig	25.5,62.0,31.5	39, -2, -9
+159	Left Dorsal Granular Insula	L.Dig	64.0,59.0,40.0	-38, -8, 8
+160	Right Dorsal Granular Insula	R.Dig	25.5,59.5,40.0	39, -7, 8
+161	Left Dorsal Dysgranular Insula	L.Did	64.0,65.5,38.5	-38, 5, 5
+162	Right Dorsal Dysgranular Insula	R.Did	26.0,65.5,38.5	38, 5, 5
+163	Left Dorsal Area 23	L.A23d	47.0,43.5,51.5	-4, -39, 31
+164	Right Dorsal Area 23	R.A23d	43.0,44.5,52.0	4, -37, 32
+165	Left Rostroventral Area 24	L.A24rv	46.5,67.0,48.5	-3, 8, 25
+166	Right Rostroventral Area 24	R.A24rv	42.5,74.0,42.0	5, 22, 12
+167	Left Pregenual Area 32	L.A32p	48.0,80.0,46.5	-6, 34, 21
+168	Right Pregenual Area 32	R.A32p	42.5,77.0,49.5	5, 28, 27
+169	Left Ventral Area 23	L.A23v	49.0,39.5,41.0	-8, -47, 10
+170	Right Ventral Area 23	R.A23v	40.5,41.0,41.5	9, -44, 11
+171	Left Caudodorsal Area 24	L.A24cd	47.5,66.5,54.5	-5, 7, 37
+172	Right Caudodorsal Area 24	R.A24cd	43.0,66.0,55.0	4, 6, 38
+173	Left Caudal Area 23	L.A23c	48.5,51.5,56.5	-7, -23, 41
+174	Right Caudal Area 23	R.A23c	42.0,53.0,56.0	6, -20, 40
+175	Left Subgenual Area 32	L.A32sg	47.0,82.5,35.0	-4, 39, -2
+176	Right Subgenual Area 32	R.A32sg	42.5,83.5,39.0	5, 41, 6
+177	Left Caudal Lingual Gyrus	L.Cling	50.5,22.0,30.5	-11, -82, -11
+178	Right Caudal Lingual Gyrus	R.Cling	40.0,20.5,31.5	10, -85, -9
+179	Left Rostral Cuneus Gyrus	L.Rcung	47.5,22.5,41.0	-5, -81, 10
+180	Right Rostral Cuneus Gyrus	R.Rcung	41.5,25.0,41.5	7, -76, 11
+181	Left Caudal Cuneus Gyrus	L.Ccung	48.0,16.0,36.5	-6, -94, 1
+182	Right Caudal Cuneus Gyrus	R.Ccung	41.0,18.0,42.0	8, -90, 12
+183	Left Rostral Lingual Gyrus	L.Rling	53.5,33.0,33.0	-17, -60, -6
+184	Right Rostral Lingual Gyrus	R.Rling	36.0,33.0,32.5	18, -60, -7
+185	LeftVentromedial Parietooccipital Sulcus	L.Vmpos	51.5,29.0,42.0	-13, -68, 12
+186	RightVentromedial Parietooccipital Sulcus	R.Vmpos	37.5,31.5,42.0	15, -63, 12
+187	Left Middle Occipital Gyrus	L.Moccg	60.5,18.5,41.5	-31, -89, 11
+188	Right Middle Occipital Gyrus	R.Moccg	28.0,20.0,41.5	34, -86, 11
+189	Left Area V5/Mt+	L.V5/Mt+	68.0,26.0,37.5	-46, -74, 3
+190	Right Area V5/Mt+	R.V5/Mt+	21.0,28.0,35.5	48, -70, -1
+191	Left Occipital Polar Cortex	L.Opc	54.0,13.5,37.0	-18, -99, 2
+192	Right Occipital Polar Cortex	R.Opc	34.0,14.5,38.0	22, -97, 4
+193	Left Inferior Occipital Gyrus	L.Ioccg	60.0,19.0,30.0	-30, -88, -12
+194	Right Inferior Occipital Gyrus	R.Ioccg	29.0,20.5,30.0	32, -85, -12
+195	Left Medial Superior Occipital Gyrus	L.Msoccg	50.5,19.0,51.5	-11, -88, 31
+196	Right Medial Superior Occipital Gyrus	R.Msoccg	37.0,20.5,53.0	16, -85, 34
+197	Left Lateral Superior Occipital Gyrus	L.Lsoccg	56.0,24.5,54.0	-22, -77, 36
+198	Right Lateral Superior Occipital Gyrus	R.Lsoccg	30.5,25.5,54.0	29, -75, 36
+199	Left Medial Amygdala	L.Mamyg	54.5,62.0,26.0	-19, -2, -20
+200	Right Medial Amygdala	R.Mamyg	35.5,62.0,26.5	19, -2, -19
+201	Left Lateral Amygdala	L.Lamyg	58.5,61.0,26.0	-27, -4, -20
+202	Right Lateral Amygdala	R.Lamyg	31.0,61.5,26.0	28, -3, -20
+203	Left Rostral Hippocampus	L.Rhipp	56.0,56.0,26.5	-22, -14, -19
+204	Right Rostral Hippocampus	R.Rhipp	34.0,57.0,26.0	22, -12, -20
+205	Left Caudal Hippocampus	L.Chipp	59.0,48.0,31.0	-28, -30, -10
+206	Right Caudal Hippocampus	R.Chipp	30.5,49.5,31.0	29, -27, -10
+207	Left Medial Pre-Frontal Thalamus	L.Mpftha	48.5,57.0,38.5	-7, -12, 5
+208	Right Medial Pre-Frontal Thalamus	R.Mpftha	41.5,57.5,39.0	7, -11, 6
+209	Left Pre-Motor Thalamus	L.Mpmtha	54.0,56.5,37.5	-18, -13, 3
+210	Right Pre-Motor Thalamus	R.Mpmtha	39.0,56.0,36.5	12, -14, 1
+211	Left Sensory Thalamus	L.Stha	54.0,51.5,38.0	-18, -23, 4
+212	Right Sensory Thalamus	R.Stha	36.0,52.0,37.5	18, -22, 3
+213	Left Rostral Temporal Thalamus	L.Rttha	48.5,56.0,39.5	-7, -14, 7
+214	Right Rostral Temporal Thalamus	R.Rttha	43.5,56.5,38.5	3, -13, 5
+215	Left Posterior Parietal Thalamus	L.Pptha	53.0,51.0,39.0	-16, -24, 6
+216	Right Posterior Parietal Thalamus	R.Pptha	37.5,50.5,39.0	15, -25, 6
+217	Left Occipital Thalamus	L.Otha	52.5,49.0,38.0	-15, -28, 4
+218	Right Occipital Thalamus	R.Otha	38.5,49.5,40.0	13, -27, 8
+219	Left Caudal Temporal Thalamus	L.Cttha	51.0,52.0,42.5	-12, -22, 13
+220	Right Caudal Temporal Thalamus	R.Cttha	40.0,56.0,43.0	10, -14, 14
+221	Left Lateral Pre-Frontal Thalamus	L.Lpftha	50.5,56.0,37.0	-11, -14, 2
+222	Right Lateral Pre-Frontal Thalamus	R.Lpftha	38.5,55.0,39.5	13, -16, 7
