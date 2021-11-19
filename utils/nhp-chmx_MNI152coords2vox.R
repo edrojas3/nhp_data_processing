@@ -18,6 +18,6 @@ z1 <-  (1  / voxel_size[3]) * (z + 72)
 
 
 m <- cbind(x1,y1,z1)
-colnames(m) <- c("x","y","z")
+colnames(m) <- NULL
 
 print(as.data.frame(m))
