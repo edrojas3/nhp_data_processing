@@ -53,14 +53,14 @@ Index	Area	Abbreviation	Voxels	Coordinates
 52	Right Caudal Ventrolateral Area 6	R.A6cvl	19.5,66.5,51.0	51, 7, 30
 53	Left Area1/2/3 (Lower Limb Region)	L.A1/2/3ll	49.0,44.0,65.0	-8, -38, 58
 54	Right Area1/2/3 (Lower Limb Region)	R.A1/2/3ll	40.0,46.0,63.0	10, -34, 54
-55	Left Area 4	L.A4ll	47.0,51.5,66.5	-4, -23, 61
-56	Right Area 4	R.A4ll	42.5,52.5,66.5	5, -21, 61
+55	Left(Lower Limb Region)	L.A4ll;Area4	47.0,51.5,66.5	-4, -23, 61
+56	Right(Lower Limb Region)	R.A4ll;Area4	42.5,52.5,66.5	5, -21, 61
 57	Left Medial Area 38	L.A38m	61.0,70.0,19.0	-32, 14, -34
 58	Right Medial Area 38	R.A38m	29.5,70.5,19.0	31, 15, -34
 59	Left Area 41/42	L.A41/42	72.0,47.0,42.0	-54, -32, 12
 60	Right Area 41/42	R.A41/42	18.0,51.0,41.5	54, -24, 11
-61	LeftNA	L.Te1.0 And Te1.2	70.0,57.5,36.5	-50, -11, 1
-62	RightNA	R.Te1.0 And Te1.2	19.5,61.0,35.5	51, -4, -1
+61	LeftTe1.0 And Te1.2	L.Te1.0/Te1.2	70.0,57.5,36.5	-50, -11, 1
+62	RightTe1.0 And Te1.2	R.Te1.0/Te1.2	19.5,61.0,35.5	51, -4, -1
 63	Left Caudal Area 22	L.A22c	76.0,46.5,39.5	-62, -33, 7
 64	Right Caudal Area 22	R.A22c	12.0,53.0,39.0	66, -20, 6
 65	Left Lateral Area 38	L.A38l	67.5,68.5,26.0	-45, 11, -20
@@ -99,10 +99,10 @@ Index	Area	Abbreviation	Voxels	Coordinates
 98	Right Rostral Area 35/36	R.A35/36r	31.0,59.0,19.5	28, -8, -33
 99	Left Caudal Area 35/36	L.A35/36c	57.5,50.5,23.0	-25, -25, -26
 100	Right Caudal Area 35/36	R.A35/36c	32.0,51.5,22.5	26, -23, -27
-101	Left Area Tl (Lateral Pphc	L.Tl	59.0,47.0,27.0	-28, -32, -18
-102	Right Area Tl (Lateral Pphc	R.Tl	30.0,48.0,27.0	30, -30, -18
-103	Left Area 28/34 (Ec	L.A28/34	54.5,57.0,21.0	-19, -12, -30
-104	Right Area 28/34 (Ec	R.A28/34	35.5,58.0,21.0	19, -10, -30
+101	Left Area Tl (Lateral Pphc; Posterior Parahippocampal Gyrus)	L.Tl	59.0,47.0,27.0	-28, -32, -18
+102	Right Area Tl (Lateral Pphc; Posterior Parahippocampal Gyrus)	R.Tl	30.0,48.0,27.0	30, -30, -18
+103	Left Area 28/34 (Ec;Entorhinal Cortex)	L.A28/34	54.5,57.0,21.0	-19, -12, -30
+104	Right Area 28/34 (Ec;Entorhinal Cortex)	R.A28/34	35.5,58.0,21.0	19, -10, -30
 105	Left Area Ti(Temporal Agranular Insular Cortex)	L.Ti	56.5,64.0,20.0	-23, 2, -32
 106	Right Area Ti(Temporal Agranular Insular Cortex)	R.Ti	34.0,63.5,18.0	22, 1, -36
 107	Left Area Th (Medial Pphc)	L.Th	53.5,43.5,31.0	-17, -39, -10
@@ -141,8 +141,8 @@ Index	Area	Abbreviation	Voxels	Coordinates
 140	Right Dorsomedial Parietooccipital  Sulcus(Per)	R.Dmpos	37.0,31.0,48.5	16, -64, 25
 141	Left Area 31 (Lc1)	L.A31	48.0,35.5,53.0	-6, -55, 34
 142	Right Area 31 (Lc1)	R.A31	42.0,36.0,53.5	6, -54, 35
-143	Left Area 1/2/3(Upper Limb	L.A1/2/3ulhf	70.0,55.0,57.5	-50, -16, 43
-144	Right Area 1/2/3(Upper Limb	R.A1/2/3ulhf	20.0,56.0,58.0	50, -14, 44
+143	LeftArea 1/2/3(Upper Limb; Head And Face Region)	L.A1/2/3ulhf	70.0,55.0,57.5	-50, -16, 43
+144	RightArea 1/2/3(Upper Limb; Head And Face Region)	R.A1/2/3ulhf	20.0,56.0,58.0	50, -14, 44
 145	Left Area 1/2/3(Tongue And Larynx Region)	L.A1/2/3tonia	73.0,56.0,44.0	-56, -14, 16
 146	Right Area 1/2/3(Tongue And Larynx Region)	R.A1/2/3tonia	17.0,58.0,43.5	56, -10, 15
 147	Left Area 2	L.A2	68.0,48.0,61.0	-46, -30, 50

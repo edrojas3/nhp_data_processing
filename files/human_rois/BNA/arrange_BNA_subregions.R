@@ -34,13 +34,24 @@ inf_gyrus_limit <- c(gyrus_index[-1] -1, nrow(bn_areas))
 gyrus_times <- diff(c(0,inf_gyrus_limit))
 bn_areas$Gyrus<- map(1:24, ~rep(gyrus_names[.x],gyrus_times[.x])) %>%
   unlist() 
-# split the X column. 
 
+## arrange problematic strings
+bn_areas$X[34] <- "A4ll/Area4,(Lower Limb Region)"
+bn_areas$X[37] <- "Te1.0/Te1.2,Te1.0 And Te1.2"
+bn_areas$X[57] <- "Tl,Area Tl"
+bn_areas$X[58] <- "A28/34,Area 28/34"
+
+# split the X column. 
 bn_areas2 <- separate(bn_areas,`X`, into = c("Abbreviation","Area"),sep = ",") %>%
 separate(.,Gyrus,into = c("Gy.Abrevv","Gyrus"),sep = ",")
 bn_areas2$Gy.Abrevv <- toupper(bn_areas2$Gy.Abrevv)
 check_later <- c(34,37,57,58,78)
 ### we will now generate a diferent dataset for right and left hemispheres
+
+#arrange problematic rows
+
+
+
 
 # Left hemisfere
 
