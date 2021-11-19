@@ -1,0 +1,23 @@
+Index	Area	Abbreviation	Voxels	mm_human
+1	Area 9/46 dorsal	9/46d	24,81,55	42,36,38
+2	Area 44v	44v	19,73,40	52,20,8
+3	Supplementary Motor Cortex	SMA	43,61,66	4,-4,60
+4	Area 8 medial	8m 	47,81,64	-4,36,56
+5	Primary Motor Cortex	M1	66,54,60	-42,-18,48
+6	Primary Sensory Cortex	S1	67,48,65	-44,-30,58
+7	Parietal Operculum	ParOp	71,48,47	-52,-30,22
+8	Anterior inferior Parietal Sulcus	aIPS	73,51,58	-56,-24,44
+9	Posterior Inferior Parietal Sulcus	pIPL	62,39,57	-34,-48,42
+10	Posterior inferior Parietal Lobule	pIPL	55,25,58	-20,-76,44
+11	Area 23ab	23ab	46,53,54	-2,-20,36
+12	Retrosplenial Cortex	rsplC	49,39,41	-8,-48,10
+13	Lateral Occipital Cortex	latocc	73,33,31	-56,-60,-10
+14	Perirhinal Cortex	perirhinal	68,63,17	-46,0,-38
+15	Temporal pole	temPol	67,69,20	-44,12,-32
+16	Ventral Striatum	ventrStr	52,68,31	-14,10,-10
+17	Head of caudate nucleus	Caud	52,68,44	-14,10,16
+18	Putamen	put	31,66,33	28,6,-6
+19	Hippocampus	hippoc	58,53,28	-26,-20,-16
+20	Amygdala	amygd	57,61,27	-24,-4,-18
+21	Hypothalamus	hypoth	46,62,30	-2,-2,-12
+22	Ventral tegmental area	VTA	45,53,28	0,-20,-16
