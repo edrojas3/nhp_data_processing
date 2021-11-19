@@ -63,8 +63,8 @@ do
 		maxval=$(fslstats $workdir/target_corr_abs_temp.nii.gz -P 100)
 		
 		# TARGET AND SEED NAME
-		targetname=$(cat $targetstxt | awk -v ti="$target_index" '$1 == ti' | awk '{print $3}')
-		seedname=$(cat $seedstxt | awk -v si="$s" '$1 == si' | awk -F '\t' '{print $3}')
+		targetname=$(cat $targetstxt | awk -v ti="$target_index" '$1 == ti' | awk -F '\t' '{print $3}')
+		seedname=$(cat $seedstxt | awk -v si="$s" '$1 == si' | awk -F  '\t' '{print $3}')
 
 #		echo $maxval   $vox
 
