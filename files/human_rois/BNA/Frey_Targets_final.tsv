@@ -1,0 +1,25 @@
+Index	Area	Abbreviation	Voxels	Coordinates
+1	Right Nucleus Accumbens	R.Nac	54.5,62.0,26.0	15, 8, -9
+2	Left Nucleus Accumbens	L.Nac	35.5,62.0,26.5	-17, 3, -9
+3	Right Dorsal Caudate	R.Dca	56.0,56.0,26.5	14, 5, 14
+4	Left Dorsal Caudate	L.Dca	34.0,57.0,26.0	-14, 2, 16
+5	Right Ventral Caudate	R.Vca	62.0,72.0,36.5	15, 14, -2
+6	Left Ventral Caudate	L.Vca	27.0,72.0,36.5	-12, 14, 0
+7	Right Globus Pallidus	R.Gp	47.0,82.5,35.0	22, -2, 3
+8	Left Globus Pallidus	L.Gp	42.5,83.5,39.0	-22, -2, 4
+9	Right Ventromedial Putamen	R.Vmpu	50.0,72.0,26.5	22, 8, -1
+10	Left Ventromedial Putamen	L.Vmpu	40.5,73.0,26.5	-23, 7, -4
+11	Right Medial Area 10	R.A10m	48.0,89.0,26.5	8, 58, 13
+12	Left Medial Area 10	L.A10m	42.0,91.5,28.0	-8, 56, 15
+13	Right Medial Area 11	R.A11m	49.0,91.0,43.5	6, 57, -16
+14	Left Medial Area 11	L.A11m	41.0,92.0,42.5	-6, 52, -19
+15	Right Area 13	R.A13	56.5,66.5,34.0	9, 20, -19
+16	Left Area 13	L.A13	34.0,67.0,35.5	-10, 18, -19
+17	Right Subgenual Area 32	R.A32sg	56.0,62.0,38.0	5, 41, 6
+18	Left Subgenual Area 32	L.A32sg	34.0,62.0,37.5	-4, 39, -2
+19	Right Dorsal Agranular Insula	R.Dia	51.0,70.0,36.0	36, 18, 1
+20	Left Dorsal Agranular Insula	L.Dia	37.5,70.0,35.0	-34, 18, 1
+21	Right Rostral Hippocampus	R.Rhipp	52.0,64.0,44.0	22, -12, -20
+22	Left Rostral Hippocampus	L.Rhipp	38.0,65.5,43.0	-22, -14, -19
+23	Right Medial Amygdala	R.Mamyg	53.5,64.5,31.5	19, -2, -19
+24	Left Medial Amygdala	L.Mamyg	37.5,67.0,31.5	-19, -2, -20

@@ -36,10 +36,11 @@ bn_areas$Gyrus<- map(1:24, ~rep(gyrus_names[.x],gyrus_times[.x])) %>%
   unlist() 
 
 ## arrange problematic strings
-bn_areas$X[34] <- "A4ll/Area4,(Lower Limb Region)"
+bn_areas$X[34] <- "A4ll;Area4,(Lower Limb Region)"
 bn_areas$X[37] <- "Te1.0/Te1.2,Te1.0 And Te1.2"
-bn_areas$X[57] <- "Tl,Area Tl"
-bn_areas$X[58] <- "A28/34,Area 28/34"
+bn_areas$X[57] <- "Tl, Area Tl (Lateral Pphc; Posterior Parahippocampal Gyrus)"
+bn_areas$X[58] <-  "A28/34, Area 28/34 (Ec;Entorhinal Cortex)"
+bn_areas$X[78] <- "A1/2/3ulhf,Area 1/2/3(Upper Limb; Head And Face Region)"
 
 # split the X column. 
 bn_areas2 <- separate(bn_areas,`X`, into = c("Abbreviation","Area"),sep = ",") %>%
@@ -107,6 +108,7 @@ Seeds <- Seeds %>%
 write.table(Targets,"BNA_Targets.tsv",quote = F,row.names = F,sep = "\t")
 write.table(Seeds,"BNA_Seeds.tsv",quote = F,row.names = F,sep = "\t")
 
+save(list = c("bn_areas3"),file = "bn_areas3.Rdata")
 
 
 
