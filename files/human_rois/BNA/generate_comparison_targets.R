@@ -73,10 +73,10 @@ indexes <- bn_areas4$Area %>%
 
 indexes <- rev(indexes)
 
-write.table(bn_areas4$MNI.X.Y.Z[indexes],file = "Frey_rois.csv",
+write.table(bn_areas4$MNI.X.Y.Z[indexes],file = "Frey_rois_mni.csv",
           col.names = F,row.names = F,quote = F,sep = ',')
 
-voxels <- read.table("Frey_rois_vox.csv",sep = " ")
+voxels <- read.table("Frey_rois_vox.csv",sep = "\t")
 
 
 bn_areas_final <- bn_areas4[indexes,] %>%
