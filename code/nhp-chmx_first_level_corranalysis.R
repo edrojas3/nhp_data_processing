@@ -5,9 +5,6 @@
 # creates a table with the rvalues obtained from partial correlation 
 # 
 # It also saves a tsv file with a join of all the subject's corrtable files.
-# 
-# nhp-chmx_get_group_zvals_table.R sbcadir outfile
-#
 
 # Load libraries
 library(reshape2)
@@ -20,21 +17,25 @@ eigdir = args[1]
 outdir = args[2]
 
 # Load eigts file
+print("Loading eigts file")
 tsfile=paste(eigdir, 'eigts.tsv', sep = "/")
 ts_df = read.delim(tsfile)
 ts_df = na.omit(ts_df)
 
 # Load confound ts file
+print ("Loading confounds file")
 confile = paste(eigdir, 'confounds.txt', sep="/")
 conf_df = read.delim(confile)
 conf_df = na.omit(conf_df)
 
 # Correlation
+print ("Correlation...")
 ts_cor_wide = cor(ts_df)
-ts_cor_long = melt(ts_cor)
+ts_cor_long = melt(ts_cor_wide)
 colnames(ts_cor_long)<-c("roi1", "roi2", "rval")
 
 # Partial correlation
+print ("Partial correlation ...")
 roinames = colnames(ts_df)
 rval=c()
 pval=c()
@@ -45,8 +46,8 @@ roi2=c()
 for (ii in seq(1,length(roinames))){
   roi1 = append(roi1, rep(roinames[ii], times=length(roinames)))
   
-  for (jj in seq(1,length(targetnames))){
-    roi2 = append(roi2, targetnames[jj])
+  for (jj in seq(1,length(roinames))){
+    roi2 = append(roi2, roinames[jj])
     
     parcor_df = data.frame(ts_df[,c(ii,jj)], conf_df)
     pcor_results = pcor(parcor_df)
@@ -70,7 +71,8 @@ cor_pcor = data.frame(roi1, roi2, ts_cor_long$rval, ts_pcor_long$rval)
 colnames(cor_pcor) <- c("roi1", "roi2", "cor_rval", "pcor_rval")
 
 # HEATMAPS AND DENDROGRAMS
-# 
+
+print("heatmaps and dendrograms") 
 # Correlation heats and dends
 # 
 outimg=paste(outdir, 'corr_dend.png', sep="/")
@@ -104,8 +106,7 @@ ggplot(ts_pcor_ro_long, aes(Var1, Var2, fill = value)) +
 dev.off()
 
 # Save tsv's with correlation tables
-outdir = "/home/eduardo/mri/hahn2/site-ucdavis/target_net_ap_vox/sub-032132"
-
+print("Saving tables...")
 ## Correlation files
 outfile = paste(outdir, 'corr_long.tsv', sep='/')
 write.table(ts_cor_long, outfile, row.names = F, sep='\t')
