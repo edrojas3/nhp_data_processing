@@ -65,11 +65,11 @@ if [ ! -d $site/$s ]; then echo "No subject with id $s found in $site."; exit 1;
 if [ ! -d $data_aw ]; then echo "No folder $data_aw for @animal_warper output found for $s"; exit 1; fi
 
 refvol=$refdir/NMT*_SS.nii.gz
-s_epi=$(find $site/$s -type f -name "*bold.nii.gz" | sort)
-s_anat=$(ls $data_aw/${s}/*_ns.* | grep -v "_warp2std")
+s_epi=$((find $site/$s -type f -name "*bold.nii.gz" | sort -V))
+s_anat=$(ls $data_aw/${s}/*_nsu.* | grep -v "_warp2std")
 
 if [ -z $s_anat ]; then echo "No $s anatomical volume found."; exit 1; fi
-if [ -z $s_epi ]; then echo "No functional data found."; exit 1; fi
+if [ ${s_epi[@]} -eq 0 ]; then echo "No functional data found."; exit 1; fi
 
 if [ ! -d $outdir/$s ]; then mkdir -p $outdir/$s; fi
 
@@ -79,8 +79,8 @@ singularity exec -B /misc:/misc --cleanenv $container afni_proc.py \
 	-subj_id ${s} \
 	-script $outdir/$s/proc.$s -scr_overwrite \
 	-out_dir $outdir/$s/${s}.results \
-	-blocks tshift volreg blur mask scale regress despike align tlrc \
-	-dsets $s_epi \
+	-blocks despike tshift align tlrc volreg blur mask scale regress \
+	-dsets ${s_epi[@]} \
 	-copy_anat "${s_anat}" \
 	-anat_has_skull no \
 	-anat_uniform_method none \
