@@ -79,7 +79,7 @@ singularity exec -B /misc:/misc --cleanenv $container afni_proc.py \
 	-subj_id $s \
 	-script $outdir/$s/proc.$s -scr_overwrite \
 	-out_dir $outdir/$s/$s.results \
-	-blocks despike tshift align tlrc volreg mask scale regress \
+	-blocks tshift volreg blur mask scale regress despike align tlrc \
 	-dsets $s_epi \
 	-copy_anat "${s_anat}" \
 	-anat_has_skull no \
