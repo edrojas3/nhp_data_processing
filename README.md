@@ -1,5 +1,7 @@
 # <ins> **NHP-MXCH  project** </ins>
-![](https://github.com/edrojas3/nhp_data_processing/blob/main/media/monkey3.png)
+
+![](https://github.com/edrojas3/nhp_data_processing/blob/main/media/monkey3.png?raw=true)
+
 
 ### *Project administrators:*
 
@@ -12,9 +14,9 @@
 
 This repository is intended to serve as a container for code, analyses and results of the Mexican-Chinese non-human primate collaboration. Till now, the main goal of this project is to carry out comparisons of Fronto-Striatal network connectivity (functional and structural) between **macaques** (data obtained from the [PRIME-DE](https://fcon_1000.projects.nitrc.org/indi/indiPRIME.html) dataset) and **humans**  (data obtained from the [HCP](http://www.humanconnectomeproject.org/) or [ENIGMA](http://enigma.ini.usc.edu/)).
 
-### *Usage:* 
+### *Usage:*
 
-- scripts and code (till now): [code](https://github.com/edrojas3/nhp_data_processing/tree/main/code) folder. 
+- scripts and code (till now): [code](https://github.com/edrojas3/nhp_data_processing/tree/main/code) folder.
 
 
 # Image pre-processing steps
@@ -38,7 +40,7 @@ In this section  we will use the subject `sub-032125` of the site-ucdavis data a
 
 3. **Animal Warper (AFNI):** Performs non-linear registration from subject to standard space. It was the best option among other "available" pipelines like PREEMACS or cvet-macaque.
    **Basic usage**: `@animal_warper -input <anatomical image> -base <standard volume> -outdir <anatomical image registered to standard>`
- 
+
 4. **Functional preprocessing:** we used `afni_proc.py` for basic preprocessing steps:
     - align slices to the beginning of TR
     - registration to anatomical space
@@ -92,20 +94,15 @@ CODE:`nhp-chmx_get_confounds.sh`
 ## SBCA for every target
 CODE: part of `nhp-chmx_sbca.sh`
 - AFNI's`3dresample` to take the 3d nii files of the targets and seeds and into the subject's epi
-- `nhp-chmx_mask_from_roi_index.sh` to extract a single target 
+- `nhp-chmx_mask_from_roi_index.sh` to extract a single target
 - `fsl_sbca` to obtain the partial correlations between each single target and every seed. The `confounds.txt` (see **Getting confounds**) of each subject was used as input for the `--conf` option.
-  - `fsl_sbca` takes the eigen timeseries of the target as default, and calculates the partial correlation for every single voxel in the seeds mask. 
+  - `fsl_sbca` takes the eigen timeseries of the target as default, and calculates the partial correlation for every single voxel in the seeds mask.
 - The ouputs are 3dvolumnes, 1 for each target, and are located in a directory called `corr_files` inside the sbca/sub-id directory
-- `nhp-chmx_get_corrtable.sh` takes the target-seed sbca result, obtains the best correlated voxel for each seed, and place it in a table. 
+- `nhp-chmx_get_corrtable.sh` takes the target-seed sbca result, obtains the best correlated voxel for each seed, and place it in a table.
 
-## **Spider plots:** 
-The results of the sbca are represented with spider plots which show the correlation of a single target with every seed. 
+## **Spider plots:**
+The results of the sbca are represented with spider plots which show the correlation of a single target with every seed.
 - `nhp-chmx_spiderplots_from_corrtable.R` takes the `corrtable.tsv` of each subject and saves a png with the spider plot for each target.
 
 ## Group analysis
 - `nhp-chmx_get_group_zvals_table.R` joins the corrtables of every subject and performs a linear model to obtain a parameter estimate and z-value of each seed.
-
-   
-
-   
-
