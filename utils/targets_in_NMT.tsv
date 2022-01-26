@@ -1,0 +1,6 @@
+Index	Atlas	Atlas_index	Atlas_value	Area	Abbreviation	Voxels	Coordinates
+1	SARM	5	52	accumbens_R	R.Nac	72,103,42	4.250000,23.875000,13.125000
+2	SARM	5	52	accumbens_L	L.Nac	54,103,42	-4.750000,23.875000,13.125000
+3	SARM	6	46	caudate_head_R	R.caudHead	73,99,58	4.750000,21.875000,21.125000
+4	SARM	6	46	caudate_head_L	L.caudHead	52,99,58	-5.750000,21.875000,21.125000
+5	SARM	6	47	caudate_tail_R	R.caudTailR	88,72,40	12.250000,8.375000,12.125000
