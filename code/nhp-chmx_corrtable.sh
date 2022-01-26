@@ -1,4 +1,4 @@
-#!/bin/bas6
+#!/bin/bash
 
 help(){
 	echo 
@@ -65,6 +65,7 @@ do
 		# TARGET AND SEED NAME
 		targetname=$(cat $targetstxt | awk -v ti="$target_index" '$1 == ti' | awk -F '\t' '{print $6}')
 		seedname=$(cat $seedstxt | awk -v si="$s" '$1 == si' | awk -F  '\t' '{print $3}')
+		echo $seedname
 
 #		echo $maxval   $vox
 
