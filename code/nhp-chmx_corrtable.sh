@@ -64,8 +64,7 @@ do
 		
 		# TARGET AND SEED NAME
 		targetname=$(cat $targetstxt | awk -v ti="$target_index" '$1 == ti' | awk -F '\t' '{print $6}')
-		seedname=$(cat $seedstxt | awk -v si="$s" '$1 == si' | awk -F  '\t' '{print $3}')
-		echo $seedname
+		seedname=$(cat $seedstxt | awk -v si="$s" '$1 == si' | awk '{print $3}')
 
 #		echo $maxval   $vox
 
@@ -75,7 +74,6 @@ do
 		       "$seedname" \
 		       "$maxval" \
 		      " $(echo $vox | sed -e 's/ /,/g' -e 's/,$//')" >> $out.temp
-
 	done
 done
 
