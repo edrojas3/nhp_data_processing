@@ -10,10 +10,11 @@ help(){
 	echo "-S: site directory"
 	echo "-s: sub-id"
 	echo "-d: seed_base name for the seeds tsv and nii file. Example: path/to/repo/files/Neubert_seeds_in_NMT"
-	echo "-t: seed_base name for the targets tsv and nii file. Example: path/to/repo/files/targetst_in_NMT"
+	echo "-t: seed_base name for the targets nii file. Example: path/to/repo/files/targets_in_NMT.nii.gz"
 	echo
 	echo "OPTIONAL INPUTS"
 	echo "-o: output directory. Default site/sbca"
+	echo "-f: targets_in_NMT.tsv file. Default same/path/as/targets_nii_file/targets_in_NMT.tsv"
 	echo "-w: animal_warper results directory. Default: site/data_aw"
 	echo "-v: afni_proc.py results directory. Default: site/data_ap_vox"
 	echo "-c: container directory. Default: /misc/purcell/alfonso/tmp/container/afni.sif"
@@ -27,18 +28,20 @@ help(){
 ## defaults
 container=/misc/purcell/alfonso/tmp/container/afni.sif
 
-while getopts "S:s:d:t:o:w:v:c:" opt; do
+while getopts "S:s:d:t:o:f:w:v:c:" opt; do
 	case ${opt} in
 		S) site=${OPTARG};;
 		s) subj=${OPTARG};;
 		d ) seed=${OPTARG};;	
 		t ) target=${OPTARG};;
 		o ) outdir=${OPTARG};;
+		f) file=${OPTARG};;
 		w ) awdir=${OPTARG};;
 		v ) apvoxdir=${OPTARG};;
 		c ) container=${OPTARG}
 	esac	
 done
+
 
 # CHECK INPUT FILES AND DIRECTORIES
 if [ -z ${seed+x} ] || [ -z ${target+x} ] || [ $# -eq 0 ]; then
@@ -53,6 +56,11 @@ if [ ! -d $outdir/$subj ]; then mkdir -p $outdir/$subj; fi
 
 seedsvol=$seed.nii.gz
 seedstsv=$seed.tsv
+
+if [ -z ${file+x} ]
+then
+	file=${target%/*}/targets_in_NMT.tsv
+fi
 
 if [ ! -f $seedsvol -o ! -f $seedstsv ]; then
 	echo "Seeds files not found."
@@ -73,8 +81,8 @@ else
 	echo "Confounds file found."
 fi
 
-targetsvol=$target.nii.gz
-targetstsv=$target.tsv
+targetsvol=$target
+targetstsv=$file
 targets_n=$(tail $targetstsv -n +2 | wc -l)
 
 epi=$apvoxdir/$subj/${subj}.results/errts.$subj.tproject+tlrc.nii.gz

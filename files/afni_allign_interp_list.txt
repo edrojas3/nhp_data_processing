@@ -1,0 +1,4 @@
+NN
+linear
+cubic
+quintic
