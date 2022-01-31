@@ -1,25 +1,25 @@
 # Help function
-help() 
+help()
 {
-	echo 
+	echo
 	echo "Anatomical registration to NMT space using AFNI's @animal_warper."
 	echo
 	echo "USAGE: $(basename $0) <-S site_directory> <-s subject_id> [options]";
-	echo 
+	echo
 	echo "MNADATORY INPUTS:"
 	echo "-S: /path/to/site-directory"
 	echo "-s: subject id. Ex. sub-032202"
-	echo 
+	echo
 	echo "OPTIONAL INPUTS"
 	echo "-h: print help"
-	echo "-o: Output directory. DEFAULT: site/data_aw. If the output directory doesn't exist, the script will create one. The script also creates a folder inside of the output directory named as subject id where all the @animal_warper outputs will be saved." 
-	echo  "-r: NMT_v2 path. DEFAULT:/misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm. Inside of this folder a NMT*SS.nii.gz and a NMT*_brainmask.nii.gz must exist." 
+	echo "-o: Output directory. DEFAULT: site/data_aw. If the output directory doesn't exist, the script will create one. The script also creates a folder inside of the output directory named as subject id where all the @animal_warper outputs will be saved."
+	echo  "-r: NMT_v2 path. DEFAULT:/misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm. Inside of this folder a NMT*SS.nii.gz and a NMT*_brainmask.nii.gz must exist."
 	echo "-c: AFNI container directory. DEFAULT:/misc/purcell/alfonso/tmp/container/afni.sif."
-	echo "-b: Use a biased field corrected anatomical volume. It has to have a N4 identifier. EX. site-ion/sub-032202/anat/sub-032202_T1_N4.nii.gz. Use ANTS' N4BiasFieldCorrection  function to get one. THIS OPTION DOESN'T NEED AN ARGUMENT."	
+	echo "-b: Use a biased field corrected anatomical volume. It has to have a N4 identifier. EX. site-ion/sub-032202/anat/sub-032202_T1_N4.nii.gz. Use ANTS' N4BiasFieldCorrection  function to get one. THIS OPTION DOESN'T NEED AN ARGUMENT."
 	echo
 	echo "EX: use biased field corrected T1 volume of sub-032202 inside site-ion."
 	echo "$(basename $0) -S site-ion -s sub-032202 -b"
-	echo 
+	echo
 }
 
 # Defaults
@@ -73,9 +73,10 @@ refvol=$refdir/NMT*_SS.nii.gz
 #refseg_ab=(SEG VENT)
 refmask=$refdir/NMT*_brainmask.nii.gz
 refmask_ab=MASK
-	
+
 singularity exec -B /misc:/misc --cleanenv $container @animal_warper \
 	-echo \
+	-no_surfaces \
 	-input ${s_anat} \
 	-input_abbrev ${s}_anat \
 	-base ${refvol} \
@@ -86,4 +87,4 @@ singularity exec -B /misc:/misc --cleanenv $container @animal_warper \
 	-seg_abbrevs SEG VENT \
 	-skullstrip  ${refmask} \
 	-outdir $outdir/$s \
-	-ok_to_exist                   
+	-ok_to_exist
