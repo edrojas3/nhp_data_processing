@@ -30,10 +30,11 @@ help ()
 # SOME DEFAULTS
 refdir=/misc/hahn2/reduardo/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm
 container=/misc/purcell/alfonso/tmp/container/afni.sif
-cost_func='lpc+zz'
+cost_func='lpc+ZZ'
+multruns=0
 
 # OPTIONS
-while getopts "S:s:r:o:c:w:h" opt; do
+while getopts "S:s:r:o:c:w:mh" opt; do
 	case ${opt} in
 		S) site=${OPTARG};;
                 s) s=${OPTARG};;
@@ -41,6 +42,7 @@ while getopts "S:s:r:o:c:w:h" opt; do
                 o) outdir=${OPTARG};;
                 c) container=${OPTARG};;
 		w) data_aw=${OPTARG};;
+		m) multruns=1;;
                 h) help
                    exit
                    ;;
@@ -61,8 +63,9 @@ if [ -z $outdir ]; then outdir=$site/data_ap; fi
 
 echo "Checking if everything is in it's right place"
 refvol=$refdir/NMT*_SS.nii.gz
-s_epi=($(find $site/$s -type f -name "*bold.nii.gz" | sort))
+s_epi=($(find $site/$s -type f -name "*bold.nii.gz" | sort -V))
 s_anat=$(ls $data_aw/${s}/*_nsu.* | grep -v "_warp2std")
+
 
 if [ ! -d $refdir ]; then echo "No reference $ref found." ; exit 1; fi
 if [ ! -d $site ]; then echo "No site with name $site found."; exit 1; fi
@@ -73,51 +76,111 @@ if [ ${#s_epi} -eq 0 ]; then echo "No functional data found."; exit 1; fi
 
 if [ ! -d $outdir/$s ]; then mkdir -p $outdir/$s; fi
 
-echo "Enter the singularity..."
-echo "Preprocessing witn afni_proc.py"
-singularity exec -B /misc:/misc --cleanenv $container afni_proc.py \
-	-subj_id $s \
-	-script $outdir/$s/proc.$s -scr_overwrite \
-	-out_dir $outdir/$s/$s.results \
-	-blocks despike tshift align tlrc volreg blur mask scale regress \
-	-dsets ${s_epi[@]} \
-	-copy_anat "${s_anat}" \
-	-anat_has_skull no \
-	-anat_uniform_method none \
-	-radial_correlate_blocks tcat volreg \
-	-radial_correlate_opts -sphere_rad 14 \
-	-tcat_remove_first_trs 2 \
-	-volreg_align_to MIN_OUTLIER \
-	-volreg_align_e2a \
-	-volreg_tlrc_warp \
-	-volreg_warp_dxyz 1.25 \
-	-align_opts_aea -cost ${cost_func} -giant_move -check_flip \
-	                -cmass cmass -feature_size 0.5 \
-	-tlrc_base ${refvol} \
-	-tlrc_NL_warp \
-	-tlrc_NL_warped_dsets \
-	    ${data_aw}/$s/${s}*_warp2std_nsu.nii.gz \
-	    ${data_aw}/$s/${s}*_composite_linear_to_template.1D \
-	    ${data_aw}/$s/${s}*_shft_WARP.nii.gz \
-	-mask_epi_anat yes \
-	-regress_motion_per_run \
-	-regress_apply_mot_types demean deriv \
-	-regress_censor_motion 0.10 \
-	-regress_censor_outliers 0.02 \
-	-regress_est_blur_errts \
-	-regress_est_blur_epits \
-	-regress_run_clustsim no \
-	-html_review_style pythonic \
-	-execute
+if [ $multruns -eq 0 ]; then
 
-echo "Done..."
+	echo "Enter the singularity..."
+	echo "Preprocessing witn afni_proc.py"
+	singularity exec -B /misc:/misc --cleanenv $container afni_proc.py \
+		-subj_id $s \
+		-script $outdir/$s/proc.$s -scr_overwrite \
+		-out_dir $outdir/$s/$s.results \
+		-blocks despike tshift align tlrc volreg blur mask scale regress \
+		-dsets ${s_epi[@]} \
+		-copy_anat "${s_anat}" \
+		-anat_has_skull no \
+		-anat_uniform_method none \
+		-radial_correlate_blocks tcat volreg \
+		-radial_correlate_opts -sphere_rad 14 \
+		-tcat_remove_first_trs 2 \
+		-volreg_align_to MIN_OUTLIER \
+		-volreg_align_e2a \
+		-volreg_tlrc_warp \
+		-volreg_warp_dxyz 1.25 \
+		-align_opts_aea -cost ${cost_func} -giant_move -check_flip \
+		                -cmass cmass -feature_size 0.5 \
+		-tlrc_base ${refvol} \
+		-tlrc_NL_warp \
+		-tlrc_NL_warped_dsets \
+		    ${data_aw}/$s/${s}*_warp2std_nsu.nii.gz \
+		    ${data_aw}/$s/${s}*_composite_linear_to_template.1D \
+		    ${data_aw}/$s/${s}*_shft_WARP.nii.gz \
+		-mask_epi_anat yes \
+		-regress_motion_per_run \
+		-regress_apply_mot_types demean deriv \
+		-regress_censor_motion 0.10 \
+		-regress_censor_outliers 0.02 \
+		-regress_est_blur_errts \
+		-regress_est_blur_epits \
+		-regress_run_clustsim no \
+		-html_review_style pythonic \
+		-execute
+	
+	echo "Done..."
+	
+	echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
+	singularity exec -B /misc:/misc --cleanenv $container 3dAFNItoNIFTI \
+		-prefix $outdir/$s/$s.results/errts.$s.tproject+tlrc.nii.gz \
+		$outdir/$s/$s.results/errts.$s.tproject+tlrc.
+	
+	echo "This is the end my friend."
+	
+	duration=$SECONDS
+	echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
+else
+	for epi in ${s_epi[@]}; do
 
-echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
-singularity exec -B /misc:/misc --cleanenv $container 3dAFNItoNIFTI \
-	-prefix $outdir/$s/$s.results/errts.$s.tproject+tlrc.nii.gz \
-	$outdir/$s/$s.results/errts.$s.tproject+tlrc.
+		base=$(basename $epi)
+		ses=$(echo $base | cut -d_ -f2)
+		run=$(echo $base | cut -d_ -f4)
 
-echo "This is the end my friend."
+		echo "Enter the singularity..."
+		echo "Preprocessing witn afni_proc.py"
+		singularity exec -B /misc:/misc --cleanenv $container afni_proc.py \
+			-subj_id $s \
+			-script $outdir/$s/proc.${s}_${ses}_${run} -scr_overwrite \
+			-out_dir $outdir/$s/${s}_${ses}_${run}.results \
+			-blocks despike tshift align tlrc volreg blur mask scale regress \
+			-dsets $epi \
+			-copy_anat "${s_anat}" \
+			-anat_has_skull no \
+			-anat_uniform_method none \
+			-radial_correlate_blocks tcat volreg \
+			-radial_correlate_opts -sphere_rad 14 \
+			-tcat_remove_first_trs 2 \
+			-volreg_align_to MIN_OUTLIER \
+			-volreg_align_e2a \
+			-volreg_tlrc_warp \
+			-volreg_warp_dxyz 1.25 \
+			-align_opts_aea -cost ${cost_func} -giant_move -check_flip \
+			                -cmass cmass -feature_size 0.5 \
+			-tlrc_base ${refvol} \
+			-tlrc_NL_warp \
+			-tlrc_NL_warped_dsets \
+			    ${data_aw}/$s/${s}*_warp2std_nsu.nii.gz \
+			    ${data_aw}/$s/${s}*_composite_linear_to_template.1D \
+			    ${data_aw}/$s/${s}*_shft_WARP.nii.gz \
+			-mask_epi_anat yes \
+			-regress_motion_per_run \
+			-regress_apply_mot_types demean deriv \
+			-regress_censor_motion 0.10 \
+			-regress_censor_outliers 0.02 \
+			-regress_est_blur_errts \
+			-regress_est_blur_epits \
+			-regress_run_clustsim no \
+			-html_review_style pythonic \
+			-execute
+		
+		echo "Done..."
+		
+		echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
+		singularity exec -B /misc:/misc --cleanenv $container 3dAFNItoNIFTI \
+			-prefix $outdir/$s/${s}_${ses}_${run}.results/errts.$s.tproject+tlrc.nii.gz \
+			$outdir/$s/${s}_${ses}_${run}.results/errts.$s.tproject+tlrc.
+		
+		echo "This is the end my friend."
+		
+		duration=$SECONDS
+		echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
+	done
 
-duration=$SECONDS
-echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
+fi
