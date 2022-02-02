@@ -107,8 +107,8 @@ if [ $multruns -eq 0 ]; then
 		-mask_epi_anat yes \
 		-regress_motion_per_run \
 		-regress_apply_mot_types demean deriv \
-		-regress_censor_motion 0.10 \
-		-regress_censor_outliers 0.02 \
+		-regress_censor_motion 0.30 \
+		-regress_censor_outliers 0.05 \
 		-regress_est_blur_errts \
 		-regress_est_blur_epits \
 		-regress_run_clustsim no \
@@ -121,6 +121,9 @@ if [ $multruns -eq 0 ]; then
 	singularity exec -B /misc:/misc --cleanenv $container 3dAFNItoNIFTI \
 		-prefix $outdir/$s/$s.results/errts.$s.tproject+tlrc.nii.gz \
 		$outdir/$s/$s.results/errts.$s.tproject+tlrc.
+	
+	echo "Bringing down BRIKs and chopping HEADs..."
+	rm $outdir/$s/$s.results/*.BRIK $outdir/$s/$s.results/*.HEAD
 	
 	echo "This is the end my friend."
 	
@@ -162,8 +165,8 @@ else
 			-mask_epi_anat yes \
 			-regress_motion_per_run \
 			-regress_apply_mot_types demean deriv \
-			-regress_censor_motion 0.10 \
-			-regress_censor_outliers 0.02 \
+			-regress_censor_motion 0.30 \
+			-regress_censor_outliers 0.05 \
 			-regress_est_blur_errts \
 			-regress_est_blur_epits \
 			-regress_run_clustsim no \
@@ -182,5 +185,8 @@ else
 		duration=$SECONDS
 		echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
 	done
+
+	echo "Bringing down BRIKs and chopping HEADs..."
+	rm $outdir/$s/${s}_${ses}_${run}.results/*.BRIK $outdir/$s/${s}_${ses}_${run}.results/*.HEAD
 
 fi
