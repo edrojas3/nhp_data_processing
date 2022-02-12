@@ -11,8 +11,8 @@ Index	Atlas	Atlas_index	Atlas_value	Area	Abbreviation	roi_size	erode
 10	SARM	6	57	internal_globus_pallidus_L	L.iGlobPal	175	1
 11	SARM	5	48	putamen_R	R.putamen	3942	1
 12	SARM	5	48	putamen_L	L.putamen	3939	1
-13	SARM	5	60	ventral_pallidum_R	R.vPal	2	1
-14	SARM	5	60	ventral_pallidum_L	L.vPal	2	1
+13	SARM	5	60	ventral_pallidum_R	R.vPal	183	0
+14	SARM	5	60	ventral_pallidum_L	L.vPal	177	0
 15	CHARM	6	20	area_10mc_R	R.a10mc	124	1
 16	CHARM	6	20	area_10mc_L	L.a10mc	112	1
 17	CHARM	6	19	area_10mr_R	R.a10mr	182	1
