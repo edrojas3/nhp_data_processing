@@ -4,7 +4,7 @@ help ()
 {
 	echo
 	echo Gets the eigen timeseries of all indexed rois in a 3d volume.
-	echo USAGE: $(basename $0) epi roi [out.txt]
+	echo USAGE: $(basename $0) epi.nii.gz roi.nii.gz [out.txt] [roinames.txt]
 	echo
 	echo Default output = ./eigts.tsv
 	echo
@@ -14,6 +14,7 @@ help ()
 epi=$1
 roi=$2
 out=$3
+roinames=$4
 
 id=$(echo $epi | awk -F/ '{print $NF}' | awk -F. '{print $2}')
 
@@ -40,7 +41,17 @@ do
 done
 
 outfiles=$(ls ${id}_out_temp* | sort -V)
-paste $outfiles > $out
+paste $outfiles > ${id}_out_temp.txt
+
+if [ $# -eq 4 ]
+then
+	namearray=($(cat $roinames))
+	(IFS=$'\t'; echo "${roinames[*]}"; cat ${id}_out_temp.txt) > $out
+else
+	mv ${id}_out_temp.txt $out
+fi
+
+
 
 rm ${id}_out_temp*.txt 
 rm ${id}_*temp.nii.gz
