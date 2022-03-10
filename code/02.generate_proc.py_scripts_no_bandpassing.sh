@@ -19,7 +19,7 @@ help ()
 	echo "-w: path to animal_warper results directory. Default = site/data_aw"
        	echo "-o: Output directory. DEFAULT: site/data_ap. If the output directory\
 				doesn't exist, the script will create one. The script also creates a folder\
-				inside of the output directory named as the subject id. All the afni_proc.py outputs will be saved in this data_ap/sub-id path."
+				inside of the output directory named as the subject id. All the afni_proc.py outputs will be saved in this data_ap/nbp/sub-id path."
        	echo  "-r: NMT_v2 path. DEFAULT:/misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm. Inside of this folder a NMT*SS.nii.gz must exxist."
        	echo "-c: AFNI container directory. DEFAULT:/misc/purcell/alfonso/tmp/container/afni.sif."
        	echo
@@ -37,7 +37,8 @@ help ()
 # ----- make sure that arguments were provided for the script -----------------
 if [ $# -eq 0 ]
 then
-echo -e "\e[0;31m No arguments provided\e[0m"
+echo -e "\e[1;31m NO ARGUMENTS PROVIDED\e[0m"
+help
 exit 0
 fi
 
@@ -69,7 +70,7 @@ done
 
 
 #------- Find images and check that all variables are set correctly -----------
-
+export GZIP=-9
 # DEFAULT FOR SS WARPER R INPUTS AND OUTPUT DIRECTORY
 if [ -z $data_SSW ]
 then
@@ -82,7 +83,7 @@ outdir=${PWD}/$site
 fi
 
 # Define reference template
-if [ -z  $ref_template]
+if [ -z  $ref_template ]
 then
 ref_template=/misc/hahn2/alfonso/atlases_and_templates/MNI152_T1_2mm_brain.nii.gz
 fi
@@ -101,8 +102,8 @@ fi
 
 # --------------------- Prepare for the battle --------------------------------
 
- mkdir -p $outdir/data_ap/${s}
- cd $outdir/data_ap/${s}
+ mkdir -p $outdir/data_ap/nbp/${s}
+ cd $outdir/data_ap/nbp/${s}
 
 if [ $multruns -eq 0 ]
 then
@@ -111,9 +112,9 @@ then
 
 afni_proc.py	\
   -subj_id ${s}	\
-  -script ${outdir}/data_ap/${s}/proc_${s}.tsch \
+  -script ${outdir}/data_ap/nbp/${s}/proc_${s}.tsch \
   -scr_overwrite	\
-  -out_dir ${outdir}/data_ap/${s}/${s}.results		\
+  -out_dir ${outdir}/data_ap/nbp/${s}/${s}.results		\
   -dsets ${s_epi[@]}	\
   -tcat_remove_first_trs 4						\
   -blocks  despike align tlrc volreg mask scale regress	\
@@ -136,31 +137,43 @@ afni_proc.py	\
   -regress_apply_mot_types demean deriv	\
   -regress_censor_motion 0.3						\
   -regress_censor_outliers 0.1						\
-  -regress_bandpass 0.01 0.1						\
   -regress_est_blur_epits						\
   -regress_run_clustsim no	\
   -regress_est_blur_errts 	\
 	-html_review_style pythonic 	\
-	-execute |& tee ${outdir}/data_ap/${s}/afni_proc.logs
+	-execute |& tee ${outdir}/data_ap/nbp/${s}/afni_proc.logs
 
 
 	echo "Done..."
 
-errts_file=$(find ${outdir}/data_ap/${s}/${s}.results -type f -name "errts*HEAD")
+errts_file=$(find ${outdir}/data_ap/nbp/${s}/${s}.results -type f -name "errts*HEAD")
 
 if ! [ -z $errts_file ]
 then
 echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
-3dAFNItoNIFTI -prefix ${outdir}/data_ap/${s}/${s}.results/errts.${s}.\
+3dAFNItoNIFTI -prefix ${outdir}/data_ap/nbp/${s}/${s}.results/errts.${s}.\
 tproject+tlrc.nii.gz $errts_file
-cd ${outdir}/data_ap/${s}/${s}.results
+
+# Execute quality control scripts
+cd ${outdir}/data_ap/nbp/${s}/${s}.results
+
+# run quality control scripts
+
 tcsh @ss_review_html
-tcsh @ss_review_basic
+tcsh results/@ss_review_basic
+
+# Convert masks to Nifti
+for f in *mask*HEAD
+do
+3dAFNItoNIFTI $f
+done
+gzip *.nii
+
 cd $basedir
 
  	echo "Bringing down BRIKs and chopping HEADs..."
- 	rm $outdir/data_ap/${s}/${s}.results/*.BRIK ${outdir}/data_ap/$s/$s.results/*.HEAD
-
+ 	rm $outdir/data_ap/nbp/${s}/${s}.results/*.BRIK ${outdir}/data_ap/nbp/${s}/${s}.results/*.HEAD
+	rm $outdir/data_ap/nbp/${s}/${s}.results/*.BRIK ${outdir}/data_ap/nbp/${s}/${s}.results/*.BRIK
  	echo "This is the end my friend."
 
  	duration=$SECONDS
@@ -178,9 +191,9 @@ for epi in ${s_epi[@]}; do
 
 		afni_proc.py	\
 		  -subj_id ${s}	\
-		  -script ${outdir}/data_ap/${s}/proc.${s}_${ses}_${run}	\
+		  -script ${outdir}/data_ap/nbp/${s}/proc.${s}_${ses}_${run}	\
 		  -scr_overwrite	\
-			-out_dir ${outdir}/data_ap/${s}/${s}_${ses}_${run}.results	\
+			-out_dir ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results	\
 			-dsets $epi 	\
 		  -tcat_remove_first_trs 4						\
 		  -blocks  despike align tlrc volreg mask scale regress	\
@@ -203,37 +216,46 @@ for epi in ${s_epi[@]}; do
 		  -regress_apply_mot_types demean deriv	\
 		  -regress_censor_motion 0.3						\
 		  -regress_censor_outliers 0.1						\
-		  -regress_bandpass 0.01 0.1						\
 		  -regress_est_blur_epits						\
 		  -regress_run_clustsim no	\
 		  -regress_est_blur_errts 	\
 			-html_review_style pythonic 	\
-			-execute |& tee ${outdir}/data_ap/${s}/afni_proc.logs
+			-execute |& tee ${outdir}/data_ap/nbp/${s}/afni_proc.logs
 
 	echo "Done..."
 
-errts_file=$(find ${outdir}/data_ap/${s}/${s}_${ses}_${run}.results -type f -name "*errts*HEAD")
+errts_file=$(find ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results -type f -name "*errts*HEAD")
 
 
 if ! [ -z $errts_file ]
 then
 		echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
 
-		3dAFNItoNIFTI -prefix ${outdir}/data_ap/${s}/${s}_${ses}_${run}.results\
-/errts.${s}.tproject+tlrc.nii.gz $errts_file
+		3dAFNItoNIFTI -prefix ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results\
+/errts.nbp.${s}.${ses}.${run}.tproject+tlrc.nii.gz $errts_file
 
-cd ${outdir}/data_ap/${s}/${s}_${ses}_${run}.results/
+cd ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results/
+
+# run quality control scripts
 
 tcsh @ss_review_html
 tcsh results/@ss_review_basic
+
+# Convert mask to Nifti
+for f in *mask*HEAD
+do
+3dAFNItoNIFTI $f
+done
+gzip *.nii
+
 cd $basedir
 
 
-
+# remove all briks
 
 echo "Bringing down BRIKs and chopping HEADs..."
- rm ${outdir}/data_ap/$s/${s}_${ses}_${run}.results/*.BRIK \
-  ${outdir}/data_ap/$s/${s}_${ses}_${run}.results/*.HEAD
+ rm ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results/*.BRIK
+ rm ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results/*.HEAD
 fi
 
 done
