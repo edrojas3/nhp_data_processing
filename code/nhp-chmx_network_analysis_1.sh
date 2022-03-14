@@ -61,10 +61,9 @@ else
 	echo "Confounds file found."
 fi
 
-## Partial correlation
+## Correlation (partial and full rank) between nodes
 
-# group level
+nhp-chmx_corr_between_nodes.R $outdir/eigts.tsv $outdir/confounds.tsv $outdir/$sub
 
-# network plot
 
 

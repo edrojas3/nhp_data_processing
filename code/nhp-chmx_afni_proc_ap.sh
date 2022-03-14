@@ -63,7 +63,7 @@ if [ -z $outdir ]; then outdir=$site/data_ap; fi
 
 echo "Checking if everything is in it's right place"
 refvol=$refdir/NMT*_SS.nii.gz
-s_epi=($(find $site/$s -type f -name "*bold.nii.gz" | sort -V))
+s_epi=($(find $site/$s -type f -name "*bold_bet.nii.gz" | sort -V))
 s_anat=$(ls $data_aw/${s}/*_nsu.* | grep -v "_warp2std")
 
 
@@ -96,7 +96,7 @@ if [ $multruns -eq 0 ]; then
 		-volreg_align_e2a \
 		-volreg_tlrc_warp \
 		-volreg_warp_dxyz 1.25 \
-		-align_opts_aea -cost ${cost_func} -giant_move -check_flip \
+		-align_opts_aea -cost ${cost_func} -giant_move \
 		                -cmass cmass -feature_size 0.5 \
 		-tlrc_base ${refvol} \
 		-tlrc_NL_warp \
@@ -122,8 +122,8 @@ if [ $multruns -eq 0 ]; then
 		-prefix $outdir/$s/$s.results/errts.$s.tproject+tlrc.nii.gz \
 		$outdir/$s/$s.results/errts.$s.tproject+tlrc.
 	
-	echo "Bringing down BRIKs and chopping HEADs..."
-	rm $outdir/$s/$s.results/*.BRIK $outdir/$s/$s.results/*.HEAD
+	#echo "Bringing down BRIKs and chopping HEADs..."
+	#rm $outdir/$s/$s.results/*.BRIK $outdir/$s/$s.results/*.HEAD
 	
 	echo "This is the end my friend."
 	
@@ -186,7 +186,7 @@ else
 		echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
 	done
 
-	echo "Bringing down BRIKs and chopping HEADs..."
-	rm $outdir/$s/${s}_${ses}_${run}.results/*.BRIK $outdir/$s/${s}_${ses}_${run}.results/*.HEAD
+	#echo "Bringing down BRIKs and chopping HEADs..."
+	#rm $outdir/$s/${s}_${ses}_${run}.results/*.BRIK $outdir/$s/${s}_${ses}_${run}.results/*.HEAD
 
 fi

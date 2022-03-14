@@ -46,12 +46,13 @@ paste $outfiles > ${id}_out_temp.txt
 if [ $# -eq 4 ]
 then
 	namearray=($(cat $roinames))
-	(IFS=$'\t'; echo "${roinames[*]}"; cat ${id}_out_temp.txt) > $out
+	(IFS=$'\t'; echo "${namearray[*]}"; cat ${id}_out_temp.txt) > $out
 else
 	mv ${id}_out_temp.txt $out
 fi
 
 
+sed -i -e '/^[[:space:]]*$/d' $out
 
 rm ${id}_out_temp*.txt 
 rm ${id}_*temp.nii.gz

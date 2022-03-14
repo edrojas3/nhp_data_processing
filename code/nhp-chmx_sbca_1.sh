@@ -2,7 +2,7 @@
 
 help(){
 	echo
-	echo "$(basename "$0") <-S site> <-s sub-id> <-d seed_base> <-t target_base> [-o outdir | -w awdir | -v apvoxdir | -c containerdir]"
+	echo "$(basename "$0") <-S site> <-s sub-id> <-d seed_base> <-t target.nii.gz> [-o outdir | -w awdir | -v apvoxdir | -c containerdir]"
 	echo
 	echo "Performs seed-based correlation analysis including: tissue segmentation (csf and wm), fsl_sbca, and spiderplots"
 	echo
@@ -10,7 +10,7 @@ help(){
 	echo "-S: site directory"
 	echo "-s: sub-id"
 	echo "-d: seed_base name for the seeds tsv and nii file. Example: path/to/repo/files/Neubert_seeds_in_NMT"
-	echo "-t: seed_base name for the targets nii file. Example: path/to/repo/files/targets_in_NMT.nii.gz"
+	echo "-t: nii file with targets. Example: path/to/repo/files/targets_in_NMT.nii.gz"
 	echo
 	echo "OPTIONAL INPUTS"
 	echo "-o: output directory. Default site/sbca"
@@ -112,7 +112,7 @@ then
 			-s $outdir/${subj}/seeds_in_${subj}_epi.nii.gz \
 			-t $outdir/${subj}/target_mask.nii.gz \
 			-o $outdir/${subj}/corr_files/target_${n} \
-			--conf=$outdir/${subj}/confounds.txt 
+			--conf=$outdir/${subj}/confounds.tsv 
 	
 		rm $outdir/${subj}/target_mask*nii.gz
 	done

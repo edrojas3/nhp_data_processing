@@ -70,25 +70,25 @@ if [ ! -f $epi ]; then
 	singularity exec -B /misc:/misc --cleanenv $container 3dAFNItoNIFTI -prefix $epi $apv/errts.${subj}.tproject+tlrc.
 fi
 
-## resample tissue to subject epi
-#echo "+ Tissue masks"
-#
-#echo "++ Segmenting..."
-#fast -o $outdir/$subj $aw/${subj}_anat_warp2std_nsu.nii.gz
-#
-#echo "++ Creating CSF and WM masks..."
-#singularity exec -B /misc:/misc --cleanenv $container 3dresample -input $outdir/*pve_0*.nii.gz -master $epi -prefix $outdir/pve_0_in_${subj}.nii.gz
-#fslmaths $outdir/pve_0_in_${subj}.nii.gz -thr 0.5 $outdir/csf_in_${subj}_epi
-#fslmaths $outdir/csf_in_${subj}_epi.nii.gz -bin $outdir/csf_in_${subj}_mask
-#fslmaths $outdir/csf_in_${subj}_epi.nii.gz -ero $outdir/csf_in_${subj}_mask_ero
-# 
-#singularity exec -B /misc:/misc --cleanenv $container 3dresample -input $outdir/*pve_2*.nii.gz -master $epi -prefix $outdir/pve_2_in_${subj}.nii.gz
-#fslmaths $outdir/pve_2_in_${subj}.nii.gz -thr 0.5 $outdir/wm_in_${subj}_epi
-#fslmaths $outdir/wm_in_${subj}_epi.nii.gz -bin $outdir/wm_in_${subj}_mask
-#fslmaths $outdir/wm_in_${subj}_epi.nii.gz -ero $outdir/wm_in_${subj}_mask_ero
-#
-#csf=$outdir/csf_in_${subj}_mask_ero.nii.gz
-#wm=$outdir/wm_in_${subj}_mask_ero.nii.gz
+# resample tissue to subject epi
+echo "+ Tissue masks"
+
+echo "++ Segmenting..."
+fast -o $outdir/$subj $aw/${subj}_anat_warp2std_nsu.nii.gz
+
+echo "++ Creating CSF and WM masks..."
+singularity exec -B /misc:/misc --cleanenv $container 3dresample -input $outdir/*pve_0*.nii.gz -master $epi -prefix $outdir/pve_0_in_${subj}.nii.gz
+fslmaths $outdir/pve_0_in_${subj}.nii.gz -thr 0.5 $outdir/csf_in_${subj}_epi
+fslmaths $outdir/csf_in_${subj}_epi.nii.gz -bin $outdir/csf_in_${subj}_mask
+fslmaths $outdir/csf_in_${subj}_epi.nii.gz -ero $outdir/csf_in_${subj}_mask_ero
+ 
+singularity exec -B /misc:/misc --cleanenv $container 3dresample -input $outdir/*pve_2*.nii.gz -master $epi -prefix $outdir/pve_2_in_${subj}.nii.gz
+fslmaths $outdir/pve_2_in_${subj}.nii.gz -thr 0.5 $outdir/wm_in_${subj}_epi
+fslmaths $outdir/wm_in_${subj}_epi.nii.gz -bin $outdir/wm_in_${subj}_mask
+fslmaths $outdir/wm_in_${subj}_epi.nii.gz -ero $outdir/wm_in_${subj}_mask_ero
+
+csf=$outdir/csf_in_${subj}_mask_ero.nii.gz
+wm=$outdir/wm_in_${subj}_mask_ero.nii.gz
 
 echo "+ Tissue to $subj epi..."
 wm_nmt=$aw/NMT_WM.nii.gz
@@ -113,9 +113,19 @@ motion=$apv/dfile_rall.1D
 cp $motion $outdir/motion_params.txt
 
 # join files to create confounds.txt file
+echo Joining files
+paste -d '\t' $outdir/CSF_eigts.txt $outdir/WM_eigts.txt $outdir/motion_params.txt > $outdir/confounds_temp.txt 
 
-paste $outdir/CSF_eigts.txt $outdir/WM_eigts.txt $outdir/motion_params.txt | sed -e 's/ \{2,\}/\t/g' > $outdir/confounds.txt 
+echo Setting tab as separator
+sed -i 's/ /\t/g' $outdir/confounds_temp.txt
 
+echo "Getting rid of extra tabs"
+tr -s '\t' '\t' < $outdir/confounds_temp.txt > $outdir/confounds.tsv 
+
+echo "Deleting empty lines if needed"
+sed -i '/^[[:space:]]*$/d' $outdir/confounds.tsv
+
+rm $outdir/confounds_temp.txt
 
 echo "+ DONE"
 
