@@ -74,7 +74,7 @@ fi
 
 if [ -z $outdir ]
 then
-outdir=$site/data_ssw
+outdir=$site/data_SSW
 fi
 sswarper_file=$(which @SSwarper)
 
@@ -103,7 +103,7 @@ exit 1
 fi
 
 # outdir
-if [ ! -d $outdir/${s} ]; then mkdir -p $outdir/${s} ; fi
+if [ ! -d $outdir/data_SSW/${s} ]; then mkdir -p $outdir/data_SSW/${s} ; fi
 
 
 echo -e "\e[0m"
@@ -124,17 +124,17 @@ fi
 
 @SSwarper	\
 -input $s_anat	\
--odir ${outdir}/${s}	\
+-odir ${outdir}/data_SSW/${s}	\
 -subid ${s}	\
 -base $ref_template		\
 -giant_move		\
 -echo			\
--verb |& tee ${outdir}/${s}/${s}_sswarper.logs
+-verb |& tee ${outdir}/data_SSW/${s}/${s}_sswarper.logs
 
 
 # --------- compress *.nii files ----------------------------------------------
 
-cd ${outdir}/${s}
+cd ${outdir}/data_SSW/${s}
 gzip *.nii
 cd $basedir
 
@@ -142,7 +142,7 @@ cd $basedir
 echo -e "\e[0;33m"
 echo THIS SCRIPT FOR SUBJECT ${s} WAS EXECUTED IN HOST: $(hostname). \
 RELATED IP ADRESS IS: $(hostname -I | awk '{print $1}') \
->> ${outdir}/${s}/${s}_sswarper.logs
+>> ${outdir}/data_SSW/${s}/${s}_sswarper.logs
 
 echo -e "\e[0m"
 
