@@ -49,6 +49,9 @@ if (!dir.exists(outdir)) {
   dir.create(outdir)
 }
 
+print(paste("sbca set at", sbcadir))
+print(paste("outdir set at", outdir))
+
 ##### JOIN CORRTABLES OF EACH SUBJECT IN ONE DATA FRAME
 print("Joining corrtables")
 
@@ -69,7 +72,7 @@ seeds = unique(sbca_df$seed)
 nseeds = length(seeds) 
 sbca_df$sub = rep(subs, each = ntargets*nseeds)
 
-sbca_df_name = paste(site, outdir, "sbca_all_subjects.tsv", sep="/")
+sbca_df_name = paste(outdir, "sbca_all_subjects.tsv", sep="/")
 write_tsv(sbca_df, file=sbca_df_name)
 
 #### LINEAR MODEL PER TARGET
@@ -96,7 +99,7 @@ lm_df = data.frame(rep(targets, each = nseeds),
                    stat)
 colnames(lm_df)<-c("target", "seed", "beta", "stat")
 
-lm_file = paste(site, outdir, "linmod_results.tsv", sep="/")
+lm_file = paste(outdir, "linmod_results.tsv", sep="/")
 write_tsv(lm_df, file=lm_file)
 
 ##### Spider plots
@@ -131,15 +134,16 @@ for (t in target_list){
   valradar = round(c(statmin, statmid, statmax),2)
   
   # Create and save spider/radar plot
-  plotname = paste(site, "ggradar_test.png", sep="/")
-  png(plotname)
-    ggradar(target_wide,
-            values.radar = valradar,
-            grid.min=statmin, 
-            grid.mid=statmid, 
-            grid.max=statmax,
-            gridline.mid.colour = "gray",
-            group.line.width = 0.8,
-            group.point.size = 2)
-  dev.off()
+  plotname = paste(outdir, t, sep="/")
+  plotname = paste(plotname, "png", sep=".")
+  print(plotname)
+  ggradar(target_wide,
+          values.radar = valradar,
+          grid.min=statmin, 
+          grid.mid=statmid, 
+          grid.max=statmax,
+          gridline.mid.colour = "gray",
+          group.line.width = 0.8,
+          group.point.size = 2)
+  ggsave(plotname)
 }
