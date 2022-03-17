@@ -69,7 +69,7 @@ seeds = unique(sbca_df$seed)
 nseeds = length(seeds) 
 sbca_df$sub = rep(subs, each = ntargets*nseeds)
 
-sbca_df_fname = paste(site, outdir, "sbca_all_subjects.tsv", sep="/")
+sbca_df_name = paste(site, outdir, "sbca_all_subjects.tsv", sep="/")
 write_tsv(sbca_df, file=sbca_df_name)
 
 #### LINEAR MODEL PER TARGET
