@@ -50,14 +50,13 @@ multruns=0
 basedir=${PWD}
 # -------------- case options ------------------------------------------------
 
-while getopts "S:s:r:o:w:v:mh" opt; do
+while getopts "S:s:r:o:w:mh" opt; do
 	case ${opt} in
 		S) site=${OPTARG};;
     s) s=${OPTARG};;
     r) ref_template=${OPTARG};;
     o) outdir=${OPTARG};;
 		w) data_SSW=${OPTARG};;
-		v) ventricle_mask=${OPTARG};;
 		m) multruns=1;;
 								h) help
 			 						exit
@@ -78,14 +77,8 @@ then
 data_SSW=${PWD}/${site}/data_SSW
 fi
 
-# ventricle mask
-
-if [ -z $ventricle_mask ]
-then
-ventricle_mask=/misc/hahn2/alfonso/atlases_and_templates/MNI152_T1_2mm_ventricle_mask.nii.gz
-fi
-
 # output directory.
+
 if [ -z $outdir ]
 then
 outdir=${PWD}/$site

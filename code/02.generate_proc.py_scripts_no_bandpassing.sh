@@ -54,7 +54,7 @@ while getopts "S:s:r:o:w:mh" opt; do
 	case ${opt} in
 		S) site=${OPTARG};;
                 s) s=${OPTARG};;
-                r) refdir=${OPTARG};;
+                r) ref_template=${OPTARG};;
                 o) outdir=${OPTARG};;
 		w) data_SSW=${OPTARG};;
 		m) multruns=1;;

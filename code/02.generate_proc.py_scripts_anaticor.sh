@@ -54,7 +54,7 @@ while getopts "S:s:r:o:w:mh" opt; do
 	case ${opt} in
 		S) site=${OPTARG};;
     s) s=${OPTARG};;
-    r) refdir=${OPTARG};;
+    r) ref_template=${OPTARG};;
     o) outdir=${OPTARG};;
 		w) data_SSW=${OPTARG};;
 		m) multruns=1;;
@@ -82,7 +82,7 @@ fi
 
 if [ -z $ventricle_mask ]
 then
-ventricle_mask=${HOME}/abin/MNI152_T1_2mm_ventricle_mask.nii.gz
+ventricle_mask=/misc/hahn2/alfonso/atlases_and_templates/MNI152_T1_2mm_ventricle_mask.nii.gz
 fi
 
 # output directory.
