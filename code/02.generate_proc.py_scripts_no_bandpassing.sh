@@ -163,7 +163,7 @@ tcsh @ss_review_html
 tcsh results/@ss_review_basic
 
 # Convert masks to Nifti
-for f in *mask*HEAD
+for f in *mask*BRIK
 do
 3dAFNItoNIFTI $f
 done
@@ -242,7 +242,7 @@ tcsh @ss_review_html
 tcsh results/@ss_review_basic
 
 # Convert mask to Nifti
-for f in *mask*HEAD
+for f in *mask*BRIK
 do
 3dAFNItoNIFTI $f
 done
