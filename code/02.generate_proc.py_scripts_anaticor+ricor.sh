@@ -120,8 +120,8 @@ fi
 
 # --------------------- Prepare for the battle --------------------------------
 
- mkdir -p $outdir/data_ap/anaticor+ricor/${s}
- cd $outdir/data_ap/anaticor+ricor/${s}
+ mkdir -p $outdir/data_ap/ricor/${s}
+ cd $outdir/data_ap/ricor/${s}
 
 if [ $multruns -eq 0 ]
 then
@@ -130,9 +130,9 @@ then
 
 afni_proc.py	\
   -subj_id ${s}	\
-  -script ${outdir}/data_ap/anaticor+ricor/${s}/proc_${s}.tsch \
+  -script ${outdir}/data_ap/ricor/${s}/proc_${s}.tsch \
   -scr_overwrite	\
-  -out_dir ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results		\
+  -out_dir ${outdir}/data_ap/ricor/${s}/${s}.results		\
   -dsets ${s_epi[@]}	\
   -tcat_remove_first_trs 4						\
   -blocks  despike ricor align tlrc volreg mask scale regress \
@@ -170,21 +170,21 @@ afni_proc.py	\
   -regress_run_clustsim yes	\
   -regress_est_blur_errts 	\
 	-html_review_style pythonic 	\
-	-execute |& tee ${outdir}/data_ap/anaticor+ricor/${s}/afni_proc.logs
+	-execute |& tee ${outdir}/data_ap/ricor/${s}/afni_proc.logs
 
 
 	echo "Done..."
 
-errts_file=$(find ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results -type f -name "errts*HEAD")
+errts_file=$(find ${outdir}/data_ap/ricor/${s}/${s}.results -type f -name "errts*HEAD")
 
 if ! [ -z $errts_file ]
 then
 echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
-3dAFNItoNIFTI -prefix ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results/errts.${s}.anaticor+ricor.\
+3dAFNItoNIFTI -prefix ${outdir}/data_ap/ricor/${s}/${s}.results/errts.${s}.ricor.\
 tproject+tlrc.nii.gz $errts_file
 
 # Execute quality control scripts
-cd ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results
+cd ${outdir}/data_ap/ricor/${s}/${s}.results
 
 # run quality control scripts
 
@@ -192,7 +192,7 @@ tcsh @ss_review_html
 tcsh results/@ss_review_basic
 
 # Convert masks to Nifti
-for f in *mask*HEAD
+for f in *mask*BRIK
 do
 3dAFNItoNIFTI $f
 done
@@ -201,8 +201,8 @@ gzip *.nii
 cd $basedir
 
  	echo "Bringing down BRIKs and chopping HEADs..."
- 	rm $outdir/data_ap/anaticor+ricor/${s}/${s}.results/*.BRIK ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results/*.HEAD
-	rm $outdir/data_ap/anaticor+ricor/${s}/${s}.results/*.BRIK ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results/*.BRIK
+ 	rm $outdir/data_ap/ricor/${s}/${s}.results/*.BRIK ${outdir}/data_ap/ricor/${s}/${s}.results/*.HEAD
+	rm $outdir/data_ap/ricor/${s}/${s}.results/*.BRIK ${outdir}/data_ap/ricor/${s}/${s}.results/*.BRIK
  	echo "This is the end my friend."
 
  	duration=$SECONDS
@@ -222,9 +222,9 @@ for epi in ${s_epi[@]}; do
 
 		afni_proc.py	\
 		  -subj_id ${s}	\
-		  -script ${outdir}/data_ap/anaticor+ricor/${s}/proc.${s}_${ses}_${run}	\
+		  -script ${outdir}/data_ap/ricor/${s}/proc.${s}_${ses}_${run}	\
 		  -scr_overwrite	\
-			-out_dir ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results	\
+			-out_dir ${outdir}/data_ap/ricor/${s}/${s}_${ses}_${run}.results	\
 			-dsets $epi 	\
 		  -tcat_remove_first_trs 4						\
 			-blocks  despike ricor align tlrc volreg mask scale regress	\
@@ -262,21 +262,21 @@ for epi in ${s_epi[@]}; do
 			 -regress_run_clustsim yes	\
 			 -regress_est_blur_errts 	\
 			 -html_review_style pythonic 	\
-			-execute |& tee ${outdir}/data_ap/anaticor+ricor/${s}/afni_proc.logs
+			-execute |& tee ${outdir}/data_ap/ricor/${s}/afni_proc.logs
 
 	echo "Done..."
 
-errts_file=$(find ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results -type f -name "*errts*HEAD")
+errts_file=$(find ${outdir}/data_ap/ricor/${s}/${s}_${ses}_${run}.results -type f -name "*errts*HEAD")
 
 
 if ! [ -z $errts_file ]
 then
 		echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
 
-		3dAFNItoNIFTI -prefix ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results\
-/errts.${s}.${ses}.${run}.anaticor+ricor.tproject+tlrc.nii.gz $errts_file
+		3dAFNItoNIFTI -prefix ${outdir}/data_ap/ricor/${s}/${s}_${ses}_${run}.results\
+/errts.${s}.${ses}.${run}.ricor.tproject+tlrc.nii.gz $errts_file
 
-cd ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results/
+cd ${outdir}/data_ap/ricor/${s}/${s}_${ses}_${run}.results/
 
 # run quality control scripts
 
@@ -296,8 +296,8 @@ cd $basedir
 # remove all briks
 
 echo "Bringing down BRIKs and chopping HEADs..."
- rm ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results/*.BRIK
- rm ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results/*.HEAD
+ rm ${outdir}/data_ap/ricor/${s}/${s}_${ses}_${run}.results/*.BRIK
+ rm ${outdir}/data_ap/ricor/${s}/${s}_${ses}_${run}.results/*.HEAD
 fi
 
 done

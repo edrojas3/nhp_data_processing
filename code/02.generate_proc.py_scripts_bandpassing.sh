@@ -102,8 +102,8 @@ fi
 
 # --------------------- Prepare for the battle --------------------------------
 
- mkdir -p $outdir/data_ap/${s}
- cd $outdir/data_ap/${s}
+ mkdir -p $outdir/data_ap/bp/${s}
+ cd $outdir/data_ap/bp/${s}
 
 if [ $multruns -eq 0 ]
 then
@@ -112,9 +112,9 @@ then
 
 afni_proc.py	\
   -subj_id ${s}	\
-  -script ${outdir}/data_ap/${s}/proc_${s}.tsch \
+  -script ${outdir}/data_ap/bp/${s}/proc_${s}.tsch \
   -scr_overwrite	\
-  -out_dir ${outdir}/data_ap/${s}/${s}.results		\
+  -out_dir ${outdir}/data_ap/bp/${s}/${s}.results		\
   -dsets ${s_epi[@]}	\
   -tcat_remove_first_trs 4						\
   -blocks  despike align tlrc volreg mask scale regress	\
@@ -142,21 +142,21 @@ afni_proc.py	\
 	-regess_bandpass 0.01 0.08 \
   -regress_est_blur_errts 	\
 	-html_review_style pythonic 	\
-	-execute |& tee ${outdir}/data_ap/${s}/afni_proc.logs
+	-execute |& tee ${outdir}/data_ap/bp/${s}/afni_proc.logs
 
 
 	echo "Done..."
 
-errts_file=$(find ${outdir}/data_ap/${s}/${s}.results -type f -name "errts*HEAD")
+errts_file=$(find ${outdir}/data_ap/bp/${s}/${s}.results -type f -name "errts*HEAD")
 
 if ! [ -z $errts_file ]
 then
 echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
-3dAFNItoNIFTI -prefix ${outdir}/data_ap/${s}/${s}.results/errts.${s}.\
+3dAFNItoNIFTI -prefix ${outdir}/data_ap/bp/${s}/${s}.results/errts.${s}.bp.\
 tproject+tlrc.nii.gz $errts_file
 
 # Execute quality control scripts
-cd ${outdir}/data_ap/${s}/${s}.results
+cd ${outdir}/data_ap/bp/${s}/${s}.results
 
 # run quality control scripts
 
@@ -164,7 +164,7 @@ tcsh @ss_review_html
 tcsh results/@ss_review_basic
 
 # Convert masks to Nifti
-for f in *mask*HEAD
+for f in *mask*BRIK
 do
 3dAFNItoNIFTI $f
 done
@@ -173,8 +173,8 @@ gzip *.nii
 cd $basedir
 
  	echo "Bringing down BRIKs and chopping HEADs..."
- 	rm $outdir/data_ap/${s}/${s}.results/*.BRIK ${outdir}/data_ap/${s}/${s}.results/*.HEAD
-	rm $outdir/data_ap/${s}/${s}.results/*.BRIK ${outdir}/data_ap/${s}/${s}.results/*.BRIK
+ 	rm $outdir/data_ap/bp/${s}/${s}.results/*.BRIK ${outdir}/data_ap/bp/${s}/${s}.results/*.HEAD
+	rm $outdir/data_ap/bp/${s}/${s}.results/*.BRIK ${outdir}/data_ap/bp/${s}/${s}.results/*.BRIK
  	echo "This is the end my friend."
 
  	duration=$SECONDS
@@ -192,9 +192,9 @@ for epi in ${s_epi[@]}; do
 
 		afni_proc.py	\
 		  -subj_id ${s}	\
-		  -script ${outdir}/data_ap/${s}/proc.${s}_${ses}_${run}	\
+		  -script ${outdir}/data_ap/bp/${s}/proc.${s}_${ses}_${run}	\
 		  -scr_overwrite	\
-			-out_dir ${outdir}/data_ap/${s}/${s}_${ses}_${run}.results	\
+			-out_dir ${outdir}/data_ap/bp/${s}/${s}_${ses}_${run}.results	\
 			-dsets $epi 	\
 		  -tcat_remove_first_trs 4						\
 		  -blocks  despike align tlrc volreg mask scale regress	\
@@ -222,21 +222,21 @@ for epi in ${s_epi[@]}; do
 		  -regress_est_blur_errts 	\
 
 			-html_review_style pythonic 	\
-			-execute |& tee ${outdir}/data_ap/${s}/afni_proc.logs
+			-execute |& tee ${outdir}/data_ap/bp/${s}/afni_proc.logs
 
 	echo "Done..."
 
-errts_file=$(find ${outdir}/data_ap/${s}/${s}_${ses}_${run}.results -type f -name "*errts*HEAD")
+errts_file=$(find ${outdir}/data_ap/bp/${s}/${s}_${ses}_${run}.results -type f -name "*errts*HEAD")
 
 
 if ! [ -z $errts_file ]
 then
 		echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
 
-		3dAFNItoNIFTI -prefix ${outdir}/data_ap/${s}/${s}_${ses}_${run}.results\
-/errts.${s}.${ses}.${run}.tproject+tlrc.nii.gz $errts_file
+		3dAFNItoNIFTI -prefix ${outdir}/data_ap/bp/${s}/${s}_${ses}_${run}.results\
+/errts.${s}.${ses}.${run}.bp.tproject+tlrc.nii.gz $errts_file
 
-cd ${outdir}/data_ap/${s}/${s}_${ses}_${run}.results/
+cd ${outdir}/data_ap/bp/${s}/${s}_${ses}_${run}.results/
 
 # run quality control scripts
 
@@ -244,7 +244,7 @@ tcsh @ss_review_html
 tcsh results/@ss_review_basic
 
 # Convert mask to Nifti
-for f in *mask*HEAD
+for f in *mask*BRIK
 do
 3dAFNItoNIFTI $f
 done
@@ -256,8 +256,8 @@ cd $basedir
 # remove all briks
 
 echo "Bringing down BRIKs and chopping HEADs..."
- rm ${outdir}/data_ap/${s}/${s}_${ses}_${run}.results/*.BRIK
- rm ${outdir}/data_ap/${s}/${s}_${ses}_${run}.results/*.HEAD
+ rm ${outdir}/data_ap/bp/${s}/${s}_${ses}_${run}.results/*.BRIK
+ rm ${outdir}/data_ap/bp/${s}/${s}_${ses}_${run}.results/*.HEAD
 fi
 
 done

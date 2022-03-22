@@ -50,15 +50,15 @@ multruns=0
 basedir=${PWD}
 # -------------- case options ------------------------------------------------
 
-while getopts "S:s:r:o:w:mh" opt; do
+while getopts "S:s:r:o:w:v:mh" opt; do
 	case ${opt} in
 		S) site=${OPTARG};;
     s) s=${OPTARG};;
     r) ref_template=${OPTARG};;
     o) outdir=${OPTARG};;
 		w) data_SSW=${OPTARG};;
-		m) multruns=1;;
 		v) ventricle_mask=${OPTARG};;
+		m) multruns=1;;
                 h) help
                    exit
                    ;;
