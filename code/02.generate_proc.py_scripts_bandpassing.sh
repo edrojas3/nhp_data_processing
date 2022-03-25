@@ -212,7 +212,7 @@ for epi in ${s_epi[@]}; do
 		 	 ${data_SSW}/${s}/anatQQ.${s}.nii.gz			\
 		 	 ${data_SSW}/${s}/anatQQ.${s}.aff12.1D			\
 		 	 ${data_SSW}/${s}/anatQQ.${s}_WARP.nii.gz			\
-			 -mask_epi_anat yes	\
+			-mask_epi_anat yes	\
 		  -regress_motion_per_run						\
 		  -regress_apply_mot_types demean deriv	\
 		  -regress_censor_motion 0.3						\
@@ -220,7 +220,6 @@ for epi in ${s_epi[@]}; do
 		  -regress_est_blur_epits						\
 		  -regress_run_clustsim no	\
 		  -regress_est_blur_errts 	\
-
 			-html_review_style pythonic 	\
 			-execute |& tee ${outdir}/data_ap/bp/${s}/afni_proc.logs
 
