@@ -140,8 +140,8 @@ afni_proc.py	\
   -regress_est_blur_epits						\
   -regress_run_clustsim no	\
   -regress_est_blur_errts 	\
-	-html_review_style pythonic 	\
-	-execute |& tee ${outdir}/data_ap/nbp/${s}/afni_proc.logs
+  -html_review_style pythonic 	\
+  -execute |& tee ${outdir}/data_ap/nbp/${s}/afni_proc.logs
 
 
 	echo "Done..."
@@ -219,8 +219,8 @@ for epi in ${s_epi[@]}; do
 		  -regress_est_blur_epits						\
 		  -regress_run_clustsim no	\
 		  -regress_est_blur_errts 	\
-			-html_review_style pythonic 	\
-			-execute |& tee ${outdir}/data_ap/nbp/${s}/afni_proc.logs
+		  -html_review_style pythonic 	\
+		  -execute |& tee ${outdir}/data_ap/nbp/${s}/afni_proc.logs
 
 	echo "Done..."
 
