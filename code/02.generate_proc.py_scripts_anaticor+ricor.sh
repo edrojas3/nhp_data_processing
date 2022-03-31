@@ -19,7 +19,7 @@ help ()
 	echo "-w: path to animal_warper results directory. Default = site/data_aw"
        	echo "-o: Output directory. DEFAULT: site/data_ap. If the output directory\
 				doesn't exist, the script will create one. The script also creates a folder\
-				inside of the output directory named as the subject id. All the afni_proc.py outputs will be saved in this data_ap/nbp/sub-id path."
+				inside of the output directory named as the subject id. All the afni_proc.py outputs will be saved in this data_ap/anaticor/sub-id path."
        	echo  "-r: NMT_v2 path. DEFAULT:/misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm. Inside of this folder a NMT*SS.nii.gz must exxist."
        	echo "-c: AFNI container directory. DEFAULT:/misc/purcell/alfonso/tmp/container/afni.sif."
        	echo
@@ -50,21 +50,22 @@ multruns=0
 basedir=${PWD}
 # -------------- case options ------------------------------------------------
 
-while getopts "S:s:r:o:w:mh" opt; do
+while getopts "S:s:r:o:w:v:mh" opt; do
 	case ${opt} in
 		S) site=${OPTARG};;
-                s) s=${OPTARG};;
-                r) ref_template=${OPTARG};;
-                o) outdir=${OPTARG};;
+    s) s=${OPTARG};;
+    r) ref_template=${OPTARG};;
+    o) outdir=${OPTARG};;
 		w) data_SSW=${OPTARG};;
+		v) ventricle_mask=${OPTARG};;
 		m) multruns=1;;
-                h) help
-                   exit
-                   ;;
-                \?) help
-                    exit
-
-    esac
+								h) help
+			 						exit
+			 						;;
+								\?) help
+								exit
+								;;
+	esac
 done
 
 
@@ -77,6 +78,14 @@ then
 data_SSW=${PWD}/${site}/data_SSW
 fi
 
+# ventricle mask
+
+if [ -z $ventricle_mask ]
+then
+ventricle_mask=/misc/hahn2/alfonso/atlases_and_templates/MNI152_T1_2mm_ventricle_mask.nii.gz
+fi
+
+# output directory.
 if [ -z $outdir ]
 then
 outdir=${PWD}/$site
@@ -89,8 +98,17 @@ ref_template=/misc/hahn2/alfonso/atlases_and_templates/MNI152_T1_2mm_brain.nii.g
 fi
 
 echo "Checking if everything is in it's right place"
+
+# s_epi
 s_epi=$(find $site/$s -type f -name "*bold.nii.gz" | sort -V )
 # s_anat=$(ls $data_SSW/${s}/anatQQ.sub-* | grep -v "_warp2std")
+
+# slice based regressors for cardio and respiration
+
+ricor_files=$(find $site/${s} -type f -name "*.slibase.1D")
+
+
+# sswarper directoria
 
 if [ -z "$(find $data_SSW -name "anatQQ*")" ]
 then
@@ -102,8 +120,8 @@ fi
 
 # --------------------- Prepare for the battle --------------------------------
 
- mkdir -p $outdir/data_ap/nbp/${s}
- cd $outdir/data_ap/nbp/${s}
+ mkdir -p $outdir/data_ap/anaticor+ricor/${s}
+ cd $outdir/data_ap/anaticor+ricor/${s}
 
 if [ $multruns -eq 0 ]
 then
@@ -112,20 +130,27 @@ then
 
 afni_proc.py	\
   -subj_id ${s}	\
-  -script ${outdir}/data_ap/nbp/${s}/proc_${s}.tsch \
+  -script ${outdir}/data_ap/anaticor+ricor/${s}/proc_${s}.tsch \
   -scr_overwrite	\
-  -out_dir ${outdir}/data_ap/nbp/${s}/${s}.results		\
+  -out_dir ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results		\
   -dsets ${s_epi[@]}	\
   -tcat_remove_first_trs 4						\
-  -blocks  despike align tlrc volreg mask scale regress	\
-  -radial_correlate_blocks tcat volreg	\
-  -copy_anat ${data_SSW}/${s}/anatSS.${s}.nii.gz	\
+  -blocks  despike ricor align tlrc volreg mask scale regress \
+	-ricor_regs_nfirst 4  \
+	-ricor_regs  $ricor_files  \
+	-ricor_regress_method per-run  \
+  -radial_correlate_blocks tcat volreg	 \
+  -copy_anat ${data_SSW}/${s}/anatSS.${s}.nii.gz	 \
   -anat_has_skull no	\
   -align_opts_aea -cost $cost_func -giant_move -check_flip -cmass cmass	\
   -volreg_align_to MIN_OUTLIER	\
   -volreg_align_e2a	\
   -volreg_tlrc_warp	\
   -volreg_warp_dxyz 2.0 	\
+	-mask_segment_anat yes \
+	-mask_segment_erode yes  \
+	-mask_import Tvent $ventricle_mask \
+	-mask_intersect Svent CSFe Tvent \
   -tlrc_base $ref_template	\
   -tlrc_NL_warp 	\
   -tlrc_NL_warped_dsets	\
@@ -134,28 +159,32 @@ afni_proc.py	\
  	 ${data_SSW}/${s}/anatQQ.${s}_WARP.nii.gz			\
 	 -mask_epi_anat yes	\
   -regress_motion_per_run						\
+	-regress_ROI_PC Svent 3 \
+	-regress_ROI_PC_per_run Svent \
+	-regress_make_corr_vols WMe Svent \
+	-regress_anaticor_fast \
   -regress_apply_mot_types demean deriv	\
   -regress_censor_motion 0.3						\
   -regress_censor_outliers 0.1						\
   -regress_est_blur_epits						\
-  -regress_run_clustsim no	\
+  -regress_run_clustsim yes	\
   -regress_est_blur_errts 	\
-  -html_review_style pythonic 	\
-  -execute |& tee ${outdir}/data_ap/nbp/${s}/afni_proc.logs
+	-html_review_style pythonic 	\
+	-execute |& tee ${outdir}/data_ap/anaticor+ricor/${s}/afni_proc.logs
 
 
 	echo "Done..."
 
-errts_file=$(find ${outdir}/data_ap/nbp/${s}/${s}.results -type f -name "errts*HEAD")
+errts_file=$(find ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results -type f -name "errts*HEAD")
 
 if ! [ -z $errts_file ]
 then
 echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
-3dAFNItoNIFTI -prefix ${outdir}/data_ap/nbp/${s}/${s}.results/errts.${s}.\
+3dAFNItoNIFTI -prefix ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results/errts.${s}.anaticor+ricor.\
 tproject+tlrc.nii.gz $errts_file
 
 # Execute quality control scripts
-cd ${outdir}/data_ap/nbp/${s}/${s}.results
+cd ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results
 
 # run quality control scripts
 
@@ -172,8 +201,8 @@ gzip *.nii
 cd $basedir
 
  	echo "Bringing down BRIKs and chopping HEADs..."
- 	rm $outdir/data_ap/nbp/${s}/${s}.results/*.BRIK ${outdir}/data_ap/nbp/${s}/${s}.results/*.HEAD
-	rm $outdir/data_ap/nbp/${s}/${s}.results/*.BRIK ${outdir}/data_ap/nbp/${s}/${s}.results/*.BRIK
+ 	rm $outdir/data_ap/anaticor+ricor/${s}/${s}.results/*.BRIK ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results/*.HEAD
+	rm $outdir/data_ap/anaticor+ricor/${s}/${s}.results/*.BRIK ${outdir}/data_ap/anaticor+ricor/${s}/${s}.results/*.BRIK
  	echo "This is the end my friend."
 
  	duration=$SECONDS
@@ -189,22 +218,31 @@ for epi in ${s_epi[@]}; do
 		ses=$(echo $base | cut -d_ -f2)
 		run=$(echo $base | cut -d_ -f4)
 
+		ricor_file=$(echo $ricor_files |sed 's/ /\n/g' | grep $run)
+
 		afni_proc.py	\
 		  -subj_id ${s}	\
-		  -script ${outdir}/data_ap/nbp/${s}/proc.${s}_${ses}_${run}	\
+		  -script ${outdir}/data_ap/anaticor+ricor/${s}/proc.${s}_${ses}_${run}	\
 		  -scr_overwrite	\
-			-out_dir ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results	\
+			-out_dir ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results	\
 			-dsets $epi 	\
 		  -tcat_remove_first_trs 4						\
-		  -blocks  despike align tlrc volreg mask scale regress	\
+			-blocks  despike ricor align tlrc volreg mask scale regress	\
+ 	 		-ricor_regs_nfirst 4 \
+ 	 		-ricor_regs  $ricor_file \
+ 	 		-ricor_regress_method per-run \
 		  -radial_correlate_blocks tcat volreg	\
 		  -copy_anat ${data_SSW}/${s}/anatSS.${s}.nii.gz	\
 		  -anat_has_skull no	\
 		  -align_opts_aea -cost $cost_func -giant_move -check_flip -cmass cmass	\
-		  -volreg_align_to MIN_OUTLIER	\
+			-volreg_align_to MIN_OUTLIER	\
 		  -volreg_align_e2a	\
 		  -volreg_tlrc_warp	\
 		  -volreg_warp_dxyz 2.0 	\
+			-mask_segment_anat yes \
+			-mask_segment_erode  yes \
+			-mask_import Tvent $ventricle_mask \
+			-mask_intersect Svent CSFe Tvent \
 			-tlrc_base $ref_template	\
 		  -tlrc_NL_warp 	\
 		  -tlrc_NL_warped_dsets	\
@@ -212,29 +250,33 @@ for epi in ${s_epi[@]}; do
 		 	 ${data_SSW}/${s}/anatQQ.${s}.aff12.1D			\
 		 	 ${data_SSW}/${s}/anatQQ.${s}_WARP.nii.gz			\
 			 -mask_epi_anat yes	\
-		  -regress_motion_per_run						\
-		  -regress_apply_mot_types demean deriv	\
-		  -regress_censor_motion 0.3						\
-		  -regress_censor_outliers 0.1						\
-		  -regress_est_blur_epits						\
-		  -regress_run_clustsim no	\
-		  -regress_est_blur_errts 	\
-		  -html_review_style pythonic 	\
-		  -execute |& tee ${outdir}/data_ap/nbp/${s}/afni_proc.logs
+			 -regress_motion_per_run						\
+			 -regress_ROI_PC Svent 3 \
+			 -regress_ROI_PC_per_run Svent \
+			 -regress_make_corr_vols WMe Svent \
+			 -regress_anaticor_fast \
+			 -regress_apply_mot_types demean deriv	\
+			 -regress_censor_motion 0.3						\
+			 -regress_censor_outliers 0.1						\
+			 -regress_est_blur_epits						\
+			 -regress_run_clustsim yes	\
+			 -regress_est_blur_errts 	\
+			 -html_review_style pythonic 	\
+			-execute |& tee ${outdir}/data_ap/anaticor+ricor/${s}/afni_proc.logs
 
 	echo "Done..."
 
-errts_file=$(find ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results -type f -name "*errts*HEAD")
+errts_file=$(find ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results -type f -name "*errts*HEAD")
 
 
 if ! [ -z $errts_file ]
 then
 		echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
 
-		3dAFNItoNIFTI -prefix ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results\
-/errts.nbp.${s}.${ses}.${run}.tproject+tlrc.nii.gz $errts_file
+		3dAFNItoNIFTI -prefix ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results\
+/errts.${s}.${ses}.${run}.anaticor+ricor.tproject+tlrc.nii.gz $errts_file
 
-cd ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results/
+cd ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results/
 
 # run quality control scripts
 
@@ -242,7 +284,7 @@ tcsh @ss_review_html
 tcsh results/@ss_review_basic
 
 # Convert mask to Nifti
-for f in *mask*BRIK
+for f in *mask*HEAD
 do
 3dAFNItoNIFTI $f
 done
@@ -254,8 +296,8 @@ cd $basedir
 # remove all briks
 
 echo "Bringing down BRIKs and chopping HEADs..."
- rm ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results/*.BRIK
- rm ${outdir}/data_ap/nbp/${s}/${s}_${ses}_${run}.results/*.HEAD
+ rm ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results/*.BRIK
+ rm ${outdir}/data_ap/anaticor+ricor/${s}/${s}_${ses}_${run}.results/*.HEAD
 fi
 
 done
