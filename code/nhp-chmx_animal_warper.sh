@@ -1,25 +1,29 @@
 # Help function
 help()
 {
-	echo
-	echo "Anatomical registration to NMT space using AFNI's @animal_warper."
-	echo
-	echo "USAGE: $(basename $0) <-S site_directory> <-s subject_id> [options]";
-	echo
-	echo "MNADATORY INPUTS:"
-	echo "-S: /path/to/site-directory"
-	echo "-s: subject id. Ex. sub-032202"
-	echo
-	echo "OPTIONAL INPUTS"
-	echo "-h: print help"
-	echo "-o: Output directory. DEFAULT: site/data_aw. If the output directory doesn't exist, the script will create one. The script also creates a folder inside of the output directory named as subject id where all the @animal_warper outputs will be saved."
-	echo  "-r: NMT_v2 path. DEFAULT:/misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm. Inside of this folder a NMT*SS.nii.gz and a NMT*_brainmask.nii.gz must exist."
-	echo "-c: AFNI container directory. DEFAULT:/misc/purcell/alfonso/tmp/container/afni.sif."
-	echo "-b: Use a biased field corrected anatomical volume. It has to have a N4 identifier. EX. site-ion/sub-032202/anat/sub-032202_T1_N4.nii.gz. Use ANTS' N4BiasFieldCorrection  function to get one. THIS OPTION DOESN'T NEED AN ARGUMENT."
-	echo
-	echo "EX: use biased field corrected T1 volume of sub-032202 inside site-ion."
-	echo "$(basename $0) -S site-ion -s sub-032202 -b"
-	echo
+echo "
+Anatomical registration to NMT space using AFNI's @animal_warper.
+
+USAGE: $(basename $0) <-S site_directory> <-s subject_id> [options];
+
+MNADATORY INPUTS:
+		-S: /path/to/site-directory
+		-s: subject id. Ex. sub-032202
+
+OPTIONAL INPUTS
+		-h: print help
+		-o: Output directory. DEFAULT: site/data_aw. If the output directory doesn't exist, the script will create one. The script also creates a folder inside of the output directory named as subject id where all the @animal_warper outputs will be saved.
+		-r: NMT_v2 path. DEFAULT:/misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm. Inside of this folder a NMT*SS.nii.gz and a NMT*_brainmask.nii.gz must exist.
+		-c: AFNI container directory. DEFAULT:/misc/purcell/alfonso/tmp/container/afni.sif.
+		-b: Use a biased field corrected anatomical volume, if you have any. It has to have a N4 identifier, ex: site-ion/sub-032202/anat/sub-032202_T1_N4.nii.gz.
+				- Can be done with ANTS' N4BiasFieldCorrection. THIS OPTION DOESN'T NEED AN ARGUMENT.
+				- @animal_warper does it for you, so no need for this option really.
+
+EX: use biased field corrected T1 volume of sub-032202 inside site-ion.
+$(basename $0) -S site-ion -s sub-032202 -b
+
+"
+	
 }
 
 # Defaults
@@ -88,3 +92,5 @@ singularity exec -B /misc:/misc --cleanenv $container @animal_warper \
 	-skullstrip  ${refmask} \
 	-outdir $outdir/$s \
 	-ok_to_exist
+
+echo DONE.

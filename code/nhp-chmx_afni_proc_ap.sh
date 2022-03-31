@@ -2,28 +2,29 @@
 
 help ()
 {
-	echo 
-       	echo "Functional preprocessing with afni_proc.py WITHOUT VOXEL SMOOTHING. If you like it smooth, try nhp-chmx_afni_proc_ap_vox.sh"
-       	echo
-       	echo "USAGE: $(basename $0) <-S site_directory> <-s subject_id> [options]";
-       	echo 
-       	echo "MNADATORY INPUTS:"
-       	echo "-S: /path/to/site-directory"
-       	echo "-s: subject id. Ex. sub-032202"
-       	echo 
-       	echo "OPTIONAL INPUTS"
-       	echo "-h: print help"
-	echo "-w: path to animal_warper results directory. Default = site/data_aw"
-       	echo "-o: Output directory. DEFAULT: site/data_ap. If the output directory doesn't exist, the script will create one. The script also creates a folder inside of the output directory named as the subject id. All the afni_proc.py outputs will be saved in this data_ap/sub-id path." 
-       	echo  "-r: NMT_v2 path. DEFAULT:/misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm. Inside of this folder a NMT*SS.nii.gz must exxist."
-       	echo "-c: AFNI container directory. DEFAULT:/misc/purcell/alfonso/tmp/container/afni.sif."
-       	echo
-       	echo "EXample: use afni_proc.py to preprocess the functional data of sub-032202 of site-blah and save the output in another folder/data_ap."
-       	echo "$(basename $0) -S site-blah -s sub-032202 -w site-blah/data_aw -o other_folder/data_ap"
-       	echo 
-	echo NOTES
-	echo "- The script takes all the functional images in path/to/site/sub-id/ses*/func/*bold.nii.gz"
-	echo "- The cost function is fixed a lpc+zz option."
+	echo " 
+Functional preprocessing with afni_proc.py WITHOUT VOXEL SMOOTHING. If you like it smooth, try nhp-chmx_afni_proc_ap_vox.sh
+       	
+USAGE: $(basename $0) <-S site_directory> <-s subject_id> [options];
+
+MNADATORY INPUTS:
+		-S: /path/to/site-directory
+		-s: subject id. Ex. sub-032202
+
+OPTIONAL INPUTS
+		-h: print help
+		-w: path to animal_warper results directory. Default = specified/site-directory/data_aw
+		-o: Output directory. DEFAULT: s/data_ap. If the output directory doesn't exist, the script will create one. The script also creates a folder inside of the output directory named as the subject id. All the afni_proc.py outputs will be saved in this data_ap/sub-id path. 
+		-r: NMT_v2 path. DEFAULT:/misc/tezca/reduardo/resources/atlases_and_templates/NMT_v2.0_sym/NMT_v2.0_sym_05mm. Inside of this folder a NMT*SS.nii.gz must exxist.
+		-c: AFNI container directory. DEFAULT:/misc/purcell/alfonso/tmp/container/afni.sif.
+
+Example: use afni_proc.py to preprocess the functional data of sub-032202 of site-blah and save the output in another folder/data_ap.
+$(basename $0) -S site-blah -s sub-032202 -w site-blah/data_aw -o other_folder/data_ap
+       	 
+NOTES
+		- The cost function is fixed at lpc+zz.
+
+	 "
 
 }
 
@@ -56,7 +57,7 @@ SECONDS=0
 
 if [ "$#" -eq 0 ]; then help; exit 0; fi
 
-# DEFAULT FOR ANIMAL_WARPER INPUTS AND OUTPUT DIRECTORY
+# DEFAULTS FOR ANIMAL_WARPER INPUTS AND OUTPUT DIRECTORY
 if [ -z $data_aw ]; then data_aw=$site/data_aw; fi
 if [ -z $outdir ]; then outdir=$site/data_ap; fi
 
@@ -76,6 +77,7 @@ if [ ${#s_epi} -eq 0 ]; then echo "No functional data found."; exit 1; fi
 
 if [ ! -d $outdir/$s ]; then mkdir -p $outdir/$s; fi
 
+# afni_proc.py using all runs
 if [ $multruns -eq 0 ]; then
 
 	echo "Enter the singularity..."
@@ -115,21 +117,17 @@ if [ $multruns -eq 0 ]; then
 		-html_review_style pythonic \
 		-execute
 	
-	echo "Done..."
+	echo "Done."
 	
 	echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
 	singularity exec -B /misc:/misc --cleanenv $container 3dAFNItoNIFTI \
 		-prefix $outdir/$s/$s.results/errts.$s.tproject+tlrc.nii.gz \
 		$outdir/$s/$s.results/errts.$s.tproject+tlrc.
 	
-	#echo "Bringing down BRIKs and chopping HEADs..."
-	#rm $outdir/$s/$s.results/*.BRIK $outdir/$s/$s.results/*.HEAD
-	
 	echo "This is the end my friend."
-	
-	duration=$SECONDS
-	echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
-else
+
+else # afni_proc.py for each run
+
 	for epi in ${s_epi[@]}; do
 
 		base=$(basename $epi)
@@ -175,18 +173,13 @@ else
 		
 		echo "Done..."
 		
-		echo "Converting errts.$s.tproject+tlrc to NIFTI because who uses BRIK?"
+		echo "Converting errts.$s.tproject+tlrc to NIFTI. "
 		singularity exec -B /misc:/misc --cleanenv $container 3dAFNItoNIFTI \
 			-prefix $outdir/$s/${s}_${ses}_${run}.results/errts.$s.tproject+tlrc.nii.gz \
 			$outdir/$s/${s}_${ses}_${run}.results/errts.$s.tproject+tlrc.
 		
 		echo "This is the end my friend."
 		
-		duration=$SECONDS
-		echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
 	done
-
-	#echo "Bringing down BRIKs and chopping HEADs..."
-	#rm $outdir/$s/${s}_${ses}_${run}.results/*.BRIK $outdir/$s/${s}_${ses}_${run}.results/*.HEAD
 
 fi

@@ -31,6 +31,10 @@ done
 [ -z $outdir ] && outdir=$site/network_analysis
 [ ! -d $outdir/$sub ] &&  mkdir -p $outdir/$sub
 
+# Create temp directory for files created during the process.
+tempdir=$outdir/$sub/temp
+mkdir $tempdir
+
 ########## SINGLE SUBJECT NETWORK ANALYSIS ###################
 
 # TRANSFORM ROI FILE TO SUBJECT EPI
@@ -49,7 +53,7 @@ cp $roi $outdir/$sub/rois_in_NMT.nii.gz
 nhp-chmx_eigts_from_roi.sh $epi $outdir/$sub/rois_in_epi.nii.gz $outdir/$sub/eigts.tsv $roinames
 
 
-# SINGLE SUBJECT CORRELATION ANALYSIS: PARTIAL CORRELATION
+# CORRELATION ANALYSIS
 
 ## Confound regressors
 echo "Check for confounds txt file..."
@@ -62,7 +66,6 @@ else
 fi
 
 ## Correlation (partial and full rank) between nodes
-
 nhp-chmx_corr_between_nodes.R $outdir/eigts.tsv $outdir/confounds.tsv $outdir/$sub
 
 

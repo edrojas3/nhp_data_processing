@@ -1,12 +1,12 @@
 #!/usr/bin/Rscript
 # Calculate full rank correlation and partial correlation with specified subject timeseries.
 # 
-# USAGE: nhp-chmx_network_correlation_1.R <timeseries_file.txt> <confounds_file.txt> <output_basename>
+# USAGE: nhp-chmx_correlation_between_nodes.R <timeseries_file.tsv> <confounds_file.tsv > <outdir>
 #
 # INPUTS:
 # timeseries_file: tab separated file with the timeseries of each roi per column. 
 # confounds_file: tab separated file with the timeseries of each confound variable per column
-# output_basename: prefix to add to output files (ex: path/to/sub-001)
+# output_basename: outdir to add to output files (ex: path/to/sub-001)
 # 
 # OUTPUTS:
 # cormat_wide.tsv: full rank correlation matrix between columns of timeseries file. Presented in wide format. 
@@ -19,7 +19,7 @@
 args <- commandArgs(T)
 ts_file = as.character(args[1]) # File with time series of each ROI
 conf_file = as.character(args[2]) # File with time series of confound variables
-outdir = as.character(args[3]) # Add this prefix to ouput files (ex: path/to/sub-001)
+outdir = as.character(args[3]) # Add this outdir to ouput files (ex: path/to/outdir_file.tsv)
 
 ############ LIBRARIES ############
 
@@ -99,7 +99,7 @@ pcormat_long$rval[round(abs(pcormat_long$rval)) == 1] = NA
 pcormat = reshape(pcormat_long, idvar="roi1", timevar="roi2", direction="wide")
 colnames(pcormat) = (c("roi", targetnames))
 
-## Save partial correlation matrices with prefix
+## Save partial correlation matrices with outdir
 print("Saving...")
 widefile=paste(outdir, "pcormat_wide.tsv", sep="/")
 write.table(cormat, file=widefile, sep="\t", row.names = F)
