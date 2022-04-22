@@ -147,7 +147,7 @@ afni_proc.py	\
  	 ${data_SSW}/${s}/anatQQ.${s}_WARP.nii.gz			\
 	 -mask_epi_anat yes	\
   -regress_motion_per_run						\
-	-regress_ROI_PC Svent 3 \
+	-regress_ROI_PC_per_run Svent 3 \
 	-regress_ROI_PC_per_run Svent \
 	-regress_make_corr_vols WMe Svent \
 	-regress_anaticor_fast \
