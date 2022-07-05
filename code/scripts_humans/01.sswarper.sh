@@ -1,47 +1,46 @@
 #!/bin/bash
 
+# Notes: Script created with the purpuse of skullstrip functional images and warp then to standard 
+# space.
+# Make sure to run the 00.N4Biasfield.sh script first
+
+
 
 
 # ------------------------- Helper function -----------------------------------
 help()
 {
   echo
-	echo "Anatomical registration to NMT space using AFNI's @animal_warper."
+	echo "Anatomical registratio"
 	echo
 	echo "USAGE: $(basename $0) <-S site_directory> <-s subject_id> [options]";
 	echo
-	echo "MNADATORY INPUTS:"
+	echo "Compulsory arguments:"
 	echo "-S: /path/to/site-directory"
 	echo "-s: subject id. Ex. sub-032202"
 	echo
 	echo "OPTIONAL INPUTS"
 	echo "-h: print help"
-	echo "-o: Output directory. DEFAULT: site/data_aw. If the output directory \
+	echo "-o: Output directory. DEFAULT: site/data_SSW. If the output directory \
   doesn't exist, the script will create one. The script also creates a folder \
   inside of the output directory named as subject id where all the \
-  @animal_warper outputs will be saved."
-	echo  "-r: NMT_v2 path. DEFAULT:\
-  /misc/hahn2/alfonso/atlases_and_templates/MNI152_T1_2mm_template1.0_SSW.nii.gz.\
-Inside of this folder a NMT*SS.nii.gz and a NMT*_brainmask.nii.gz must exist."
-	echo "-b: Use a biased field corrected anatomical volume. It has to have a N4\
-identifier. EX. site-ion/sub-032202/anat/sub-032202_T1_N4.nii.gz. Use ANTS' \
-N4BiasFieldCorrection  function to get one. THIS OPTION DOESN'T NEED AN ARGUMENT."
-	echo
-	echo "EX: use biased field corrected T1 volume of sub-032202 inside site-ion."
-	echo "$(basename $0) -S site-ion -s sub-032202 -b"
-	echo
+  @SSwarper outputs will be saved."
+
 }
 
-# --------------------------- Set Reference template --------------------------
-export GZIP=-9
-basedir=$PWD
-ref_template=/misc/hahn2/alfonso/atlases_and_templates/\
-MNI152_T1_2mm_template1.0_SSW.nii.gz
+# Limit the maximum number of CPU threads by setting this variable.
 
-bfc=0
+export OMP_NUM_THREADS=4
+
+# --------------------------- Set Reference template and some variables --------------------------
+
+export GZIP=-9
+export basedir=$PWD
+export ref_template=/AFNI/abin/MNI152_2009_template_SSW.nii.gz
+export sswarper_file=$(which @SSwarper)
 
 # ------ Enable some optional options for the script --------------------------
-while getopts "S:s:h:r:o:b" opt; do
+while getopts "S:s:h:r:o" opt; do
 	case ${opt} in
 		S) site=${OPTARG};;
 		s) s=${OPTARG};;
@@ -50,33 +49,25 @@ while getopts "S:s:h:r:o:b" opt; do
 		h) help
 		   exit
 		   ;;
-		b) bfc=1;;
 		\?) help
 	            exit
 		    ;;
 	esac
 done
 
-# ------- Make sure to provide aruguments for the function --------------------
+# ------- Make sure to provide arGUuments for the function --------------------
 
 if [ "$#" -eq 0 ]; then help; exit 0; fi
 
-# ------ Control for N4BiasFieldCorrection option -----------------------------
-
-if [ $bfc -eq 0 ]
-then
-	s_anat=$(find $site -type f \( -name "${s}*T1*nii*" -not -name "*N4*" \))
-else
-	s_anat=$(find $site -type f -name "${s}*N4*nii*")
-fi
-
+# ------ Find N4BiasField Correction output    -----------------------------
+	s_anat=$(find $site -type f -name "${s}*N4*nii*"
 # --------------- set output directory ----------------------------------------
 
 if [ -z $outdir ]
 then
 outdir=$site/data_SSW
 fi
-sswarper_file=$(which @SSwarper)
+)
 
 #---------------- make sure that some files and directories exist -------------
 
@@ -96,29 +87,8 @@ echo "Couldn't found @SSwarper script"
 exit 1
 fi
 
-# Antspath
-if [ -z $ANTSPATH ]; then
-echo "Couldn't found ANTS PATH script"
-exit 1
-fi
-
 # outdir
-if [ ! -d $outdir/data_SSW/${s} ]; then mkdir -p $outdir/data_SSW/${s} ; fi
-
-
-echo -e "\e[0m"
-
-# --------------------- start biasfield correction ----------------------------
-
-if [ $bfc -eq 0 ]
-then
-bfc_anat=$(echo $s_anat | sed 's/.nii.gz/_N4.nii.gz/g')
-
-N4BiasFieldCorrection -v -i $s_anat -o $bfc_anat
-
-s_anat=$(echo $bfc_anat)
-
-fi
+ mkdir -p $outdir/data_SSW/${s}
 
 # ----------------- Now run @SSwarper script ----------------------------------
 
