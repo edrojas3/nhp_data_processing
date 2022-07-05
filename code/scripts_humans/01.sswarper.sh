@@ -65,7 +65,7 @@ if [ "$#" -eq 0 ]; then help; exit 0; fi
 
 if [ -z $outdir ]
 then
-outdir=$site/data_SSW/${s}
+outdir=$site/data_SSW
 mkdir -p $outdir
 fi
 )
@@ -87,6 +87,8 @@ echo "Couldn't found @SSwarper script"
 exit 1
 fi
 
+# create subject directory
+mkdir -p ${outdir}/${s}
 # ----------------- Now run @SSwarper script ----------------------------------
 
 @SSwarper	\
