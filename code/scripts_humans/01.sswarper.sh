@@ -66,6 +66,7 @@ if [ "$#" -eq 0 ]; then help; exit 0; fi
 if [ -z $outdir ]
 then
 outdir=$site/data_SSW
+mkdir -p $outdir
 fi
 )
 
@@ -93,7 +94,7 @@ fi
 
 @SSwarper	\
 -input $s_anat	\
--odir ${outdir}/data_SSW/${s}	\
+-odir ${outdir}/${s}	\
 -subid ${s}	\
 -base $ref_template		\
 -giant_move		\
