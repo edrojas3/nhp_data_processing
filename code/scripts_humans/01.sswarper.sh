@@ -64,7 +64,7 @@ if [ "$#" -eq 0 ]; then help; exit 0; fi
 
 if [ -z $outdir ]
 then
-outdir=${site}/data_SSW
+export outdir=${site}/data_SSW
 mkdir -p $outdir
 fi
 )
