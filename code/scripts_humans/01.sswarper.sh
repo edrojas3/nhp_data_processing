@@ -65,7 +65,7 @@ if [ "$#" -eq 0 ]; then help; exit 0; fi
 
 if [ -z $outdir ]
 then
-outdir=$site/data_SSW
+outdir=$site/data_SSW/${s}
 mkdir -p $outdir
 fi
 )
@@ -86,9 +86,6 @@ if [ -z $sswarper_file ]; then
 echo "Couldn't found @SSwarper script"
 exit 1
 fi
-
-# outdir
- mkdir -p $outdir/data_SSW/${s}
 
 # ----------------- Now run @SSwarper script ----------------------------------
 
