@@ -11,7 +11,7 @@
 help()
 {
   echo
-	echo "Anatomical registratio"
+	echo "Anatomical registration"
 	echo
 	echo "USAGE: $(basename $0) <-S site_directory> <-s subject_id> [options]";
 	echo
@@ -45,12 +45,12 @@ while getopts "S:s:o:rh" opt; do
 		s) s=${OPTARG};;
 		o) outdir=${OPTARG};;
 		r) ref_template=${OPTARG};;
-		h) help
-		   exit
-		   ;;
-		\?) help
-	            exit
-		    ;;
+						h) help
+		   				exit
+		   					;;
+						\?) help
+	           				 exit
+		    				;;
 	esac
 done
 
@@ -59,15 +59,14 @@ done
 if [ "$#" -eq 0 ]; then help; exit 0; fi
 
 # ------ Find N4BiasField Correction output    -----------------------------
-	s_anat=$(find $site -type f -name "${s}*N4*nii*"
+	s_anat=$(find $site -type f -name "${s}*N4*nii*")
 # --------------- set output directory ----------------------------------------
 
 if [ -z $outdir ]
-then
-export outdir=${site}/data_SSW
+then 
+outdir=${site}/data_SSW
 mkdir -p $outdir
 fi
-)
 
 #---------------- make sure that some files and directories exist -------------
 
