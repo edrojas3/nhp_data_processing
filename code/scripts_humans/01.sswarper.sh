@@ -64,7 +64,7 @@ if [ "$#" -eq 0 ]; then help; exit 0; fi
 
 if [ -z $outdir ]
 then
-outdir=$site/data_SSW
+outdir=${site}/data_SSW
 mkdir -p $outdir
 fi
 )
@@ -81,11 +81,15 @@ exit 1; fi
 if [ -z "$s_anat" ]; then echo "Couldn't found an anatomical volume for $s.";
 exit 1; fi
 # SSwarper file
+
 if [ -z $sswarper_file ]; then
 echo "Couldn't found @SSwarper script"
 exit 1
 fi
 
+mkdir -p $outdir/${s}
+
+echo  outdir is: $outdir
 # ----------------- Now run @SSwarper script ----------------------------------
 
 @SSwarper	\
