@@ -71,7 +71,6 @@ fi
 
 #---------------- make sure that some files and directories exist -------------
 
-echo -e "\e[0;31m"
 if [ ! -f $ref_template ]; then echo "No reference $ref_template found."
 exit 1; fi
 
