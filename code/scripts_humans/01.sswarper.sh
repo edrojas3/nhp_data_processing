@@ -34,7 +34,6 @@ export OMP_NUM_THREADS=4
 
 # --------------------------- Set Reference template and some variables --------------------------
 
-export GZIP=-9
 export basedir=$PWD
 export ref_template=/AFNI/abin/MNI152_2009_template_SSW.nii.gz
 export sswarper_file=$(which @SSwarper)
@@ -87,8 +86,6 @@ echo "Couldn't found @SSwarper script"
 exit 1
 fi
 
-# create subject directory
-mkdir -p ${outdir}/${s}
 # ----------------- Now run @SSwarper script ----------------------------------
 
 @SSwarper	\
@@ -98,12 +95,12 @@ mkdir -p ${outdir}/${s}
 -base $ref_template		\
 -giant_move		\
 -echo			\
--verb |& tee ${outdir}/data_SSW/${s}/${s}_sswarper.logs
+-verb |& tee ${outdir}/${s}/${s}_sswarper.logs
 
 
 # --------- compress *.nii files ----------------------------------------------
 
-cd ${outdir}/data_SSW/${s}
+cd ${outdir}/${s}
 gzip *.nii
 cd $basedir
 
