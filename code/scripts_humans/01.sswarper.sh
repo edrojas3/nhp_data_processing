@@ -111,7 +111,7 @@ cd $basedir
 echo -e "\e[0;33m"
 echo THIS SCRIPT FOR SUBJECT ${s} WAS EXECUTED IN HOST: $(hostname). \
 RELATED IP ADRESS IS: $(hostname -I | awk '{print $1}') \
->> ${outdir}/data_SSW/${s}/${s}_sswarper.logs
+>> ${outdir}/${s}/${s}_sswarper.logs
 
 echo -e "\e[0m"
 
