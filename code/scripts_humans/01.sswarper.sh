@@ -39,7 +39,7 @@ export ref_template=/AFNI/abin/MNI152_2009_template_SSW.nii.gz
 export sswarper_file=$(which @SSwarper)
 
 # ------ Enable some optional options for the script --------------------------
-while getopts "S:s:h:r:o" opt; do
+while getopts "S:s:h:r:oh" opt; do
 	case ${opt} in
 		S) site=${OPTARG};;
 		s) s=${OPTARG};;
