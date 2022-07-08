@@ -38,7 +38,7 @@ export basedir=$PWD
 export ref_template=/AFNI/abin/MNI152_2009_template_SSW.nii.gz
 export sswarper_file=$(which @SSwarper)
 
-# ------ Enable some optional options for the script --------------------------
+# ------ Enable some optional args for the script --------------------------
 while getopts "S:s:o:rh" opt; do
 	case ${opt} in
 		S) site=${OPTARG};;
@@ -58,8 +58,6 @@ done
 
 if [ "$#" -eq 0 ]; then help; exit 0; fi
 
-# ------ Find N4BiasField Correction output    -----------------------------
-	s_anat=$(find $site -type f -name "${s}*N4*nii*")
 # --------------- set output directory ----------------------------------------
 
 if [ -z $outdir ]
@@ -71,14 +69,28 @@ fi
 #---------------- make sure that some files and directories exist -------------
 
 if [ ! -f $ref_template ]; then echo "No reference $ref_template found."
-exit 1; fi
+exit 1 
+fi
 
-if [ ! -d $site ]; then echo "No site with name $site found.";
-exit 1; fi
-if [ ! -d $site/$s ]; then echo "No subject with id $s found in $site."
-exit 1; fi
-if [ -z "$s_anat" ]; then echo "Couldn't found an anatomical volume for $s.";
-exit 1; fi
+if [ ! -d $site ]; then 
+ echo "No site with name $site found."
+	exit 1 
+fi
+
+if [ ! -d $site/$s ]; then
+ echo "No subject with id $s found in $site."
+exit 1 
+fi
+
+
+# ------ Find T1w Correction output    -----------------------------
+        s_anat=$(find ${site}/${s} -name "${s}*T1w.nii.gz")
+
+if [ -z $s_anat ]; then 
+echo "Couldn't found an anatomical volume for $s.";
+exit 1 
+fi
+
 # SSwarper file
 
 if [ -z $sswarper_file ]; then
