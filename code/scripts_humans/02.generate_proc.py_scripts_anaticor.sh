@@ -47,6 +47,7 @@ fi
 
 cost_func='lpc+ZZ'
 basedir=${PWD}
+export OMP_NUM_THREADS=4
 # -------------- case options ------------------------------------------------
 
 while getopts "S:s:r:o:w:vh" opt; do
