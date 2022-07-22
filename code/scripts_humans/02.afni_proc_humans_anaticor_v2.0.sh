@@ -91,7 +91,7 @@ fi
 
 # ventricle mask 
 if [ -z $ventricle_mask ] ; then
-    ventricle_mask="/AFNI/abin/MNI152_T1_2mm_ventricle_mask.nii.gz"    
+    ventricle_mask="/AFNI/abin/MNI152_2009_template_ventricle_mask.nii.gz"
 fi
 
 if [ ! -f $ventricle_mask ]; then
