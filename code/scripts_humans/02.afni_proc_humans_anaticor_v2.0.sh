@@ -227,19 +227,19 @@ afni_proc.py	\
   -volreg_align_e2a	\
   -volreg_tlrc_warp	\
   -volreg_warp_dxyz 2.0 	\
-	-mask_import Tvent_Mask $ventricle_mask \
     -anat_follower_ROI WM_Mask epi ${ssw_dir}/anatSS.${subject_id}.WM.nii.gz  \
-	-anat_follower_ROI CSF_Mask epi ${ssw_dir}/anatSS.${subject_id}.CSF.nii.gz \
-    -mask_intersect Svent_Mask Tvent_Mask CSF_Mask \
-	-mask_union Svent_WM_Mask Svent_Mask WM_Mask   \
+    -anat_follower_ROI CSF_Mask epi ${ssw_dir}/anatSS.${subject_id}.CSF.nii.gz \
     -anat_follower_erode WM_Mask CSF_Mask \
+    -mask_import Tvent_Mask $ventricle_mask \
+    -mask_intersect  Svent_Mask Tvent_Mask CSF_Mask \
+    -mask_union Svent_WM_Mask Svent_Mask WM_Mask \
+    -mask_epi_anat yes	\
         -tlrc_base $ref_template	\
         -tlrc_NL_warp 	\
         -tlrc_NL_warped_dsets	\
  	${ssw_dir}/anatQQ.${subject_id}.nii.gz			\
  	 ${ssw_dir}/anatQQ.${subject_id}.aff12.1D			\
  	 ${ssw_dir}/anatQQ.${subject_id}_WARP.nii.gz			\
-	 -mask_epi_anat yes	\
   	-regress_motion_per_run \
 	-regress_ROI_PC_per_run Svent_Mask 3 \
 	-regress_ROI_PC_per_run WM_Mask 3 \
@@ -273,6 +273,6 @@ if [ -f $epi_nifti ]; then
  rm $(find ${output_dir}/${subject_id} -name "errts*BRIK")
 fi
 
-echo "  ++DONE: Preprecessing was executed in $(hostname -I)"
+echo "  ++DONE: Preprecessing was executed in $(hostname -i)"
 
 exit 0
