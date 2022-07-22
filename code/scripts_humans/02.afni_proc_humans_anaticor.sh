@@ -114,7 +114,7 @@ fi
 
 	echo -e  "\e[0;32mCreating Preprocessing script\e[0m"
 
-afni_proc.py	\
+  afni_proc.py	\
   -subj_id ${s}	\
   -script ${outdir}/data_ap/anaticor/${s}/proc_${s}.tsch \
   -scr_overwrite	\
