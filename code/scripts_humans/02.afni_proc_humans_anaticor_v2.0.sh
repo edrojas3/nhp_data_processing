@@ -261,12 +261,11 @@ echo
 
 # convert preprocessed file to Nifti
 
-epi_preproc=$(find ${output_dir}/${subject_id} -name "errts*HEAD"  )
-epi_nifti=$(echo $epi_preproc | sed "s/.HEAD/.nii.gz/g")
+epi_preproc=$(find ${output_dir}/${subject_id} -name "errts*HEAD")
+epi_nifti=$(echo  $epi_preproc | sed "s/.HEAD/.nii.gz/g")
 
-if [ -f $epi_preproc ]
+if [ -f $epi_preproc ]; then
 3dAFNItoNIFTI -prefix $epi_nifti $epi_preproc
-
 fi
 # remove 
 if [ -f $epi_nifti ]; then
