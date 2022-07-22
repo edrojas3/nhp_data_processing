@@ -261,7 +261,7 @@ echo
 
 # convert preprocessed file to Nifti
 
-epi_preproc=$(find ${output_dir}/${subject_id} -name "errts*HEAD")
+epi_preproc=$(find ${output_dir}/${subject_id} -name "errts*${subject_id}*HEAD")
 epi_nifti=$(echo  $epi_preproc | sed "s/.HEAD/.nii.gz/g")
 
 if [ -f $epi_preproc ]; then
