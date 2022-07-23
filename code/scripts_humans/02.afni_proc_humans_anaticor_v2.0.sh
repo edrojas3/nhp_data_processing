@@ -268,10 +268,10 @@ echo
 
 summary_file=$(find ${output_dir}/${subject_id} -name "out.ss_review.${subject_id}.txt")
 
-if [ -f $summary_file ]; then
+if ! [[  -z $summary_file ]]; then
  
  # search for final time series file
- search_epi=$(sed -n "10p" $summary_file | cut -d ":" -f 2 )
+ search_epi=$(sed -n "10p" $summary_file | cut -d ":" -f 2 | sed "s/ //g")
  epi_preproc=$(find ${output_dir}/${subject_id} -name "$search_epi" )
 
 epi_nifti=$(echo  $epi_preproc | sed "s/.HEAD/.nii.gz/g")
@@ -279,7 +279,7 @@ epi_nifti=$(echo  $epi_preproc | sed "s/.HEAD/.nii.gz/g")
 3dAFNItoNIFTI  $epi_preproc -prefix $epi_nifti
     
     # remove errts BRIKS if final errts exists
-    if [ -f "$epi_nifti" ]; then
+    if  [ -f "$epi_nifti" ]; then
     rm $(find ${output_dir}/${subject_id} -name "errts*BRIK")
     fi
 
