@@ -277,7 +277,7 @@ if ! [[  -z $summary_file ]]; then
 
 epi_nifti=$(echo  $epi_preproc | sed "s/.HEAD/.nii.gz/g")
 
-3dAFNItoNIFTI  prefix $epi_nifti $epi_preproc 
+3dAFNItoNIFTI  -prefix $epi_nifti $epi_preproc 
     
     # remove errts BRIKS if final errts exists
     if  [ -f "$epi_nifti" ]; then
