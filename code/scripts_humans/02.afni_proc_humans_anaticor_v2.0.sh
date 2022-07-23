@@ -295,7 +295,7 @@ echo " SUMMARY::::::::::::::::::::::::::::::::::::::::::::::::::::
         ++ Epi Dataset(s): $(basename $s_epi)
         ++ Reference template: $ref_template
         ++ Output Directory: ${output_dir}/${subject_id}
-        ++ Preproc file(s) name: $(basename $ epi_nifti)
+        ++ Preproc file(s) name: $(basename $epi_nifti)
         ++ Executed on: $(hostname -i)
         ++ Started at: $start_time
         ++ Finished at: $(date)
