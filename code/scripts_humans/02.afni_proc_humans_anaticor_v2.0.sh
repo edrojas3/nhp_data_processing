@@ -11,6 +11,8 @@
 
 # -----------------helper function---------------------------------------------------------
 
+start_time=$(date)
+
 export OMP_NUM_THREADS=4 
 help(){
 echo -e "\e[0;33m"
@@ -261,18 +263,59 @@ echo
 
 # convert preprocessed file to Nifti
 
-epi_preproc=$(find ${output_dir}/${subject_id} -name "errts*${subject_id}*HEAD")
+
+# ------------------- search for the summary file -------------------------------------------------------------------
+
+summary_file=$(find ${output_dir}/${subject_id} -name "out.ss_review.${subject_id}.txt")
+
+if [-f $summary_file ]; then
+ 
+ # search for final time series file
+ search_epi=$(sed -n "10p" $summary_file | cut -d ":" -f 2 )
+ epi_preproc=$(find ${output_dir}/${subject_id} -name "$search_epi" )
+
 epi_nifti=$(echo  $epi_preproc | sed "s/.HEAD/.nii.gz/g")
 
-if [ -f $epi_preproc ]; then
-3dAFNItoNIFTI -prefix $epi_nifti $epi_preproc
-fi
-# remove 
-if [ -f $epi_nifti ]; then
- rm $(find ${output_dir}/${subject_id} -name "errts*HEAD")
- rm $(find ${output_dir}/${subject_id} -name "errts*BRIK")
+3dAFNItoNIFTI  $epi_preproc -prefix $epi_nifti
+    
+    # remove errts BRIKS if final errts exists
+    if [ -f "$epi_nifti" ]; then
+    rm $(find ${output_dir}/${subject_id} -name "errts*BRIK")
+    fi
+
 fi
 
-echo "  ++DONE: Preprecessing was executed in $(hostname -i)"
+
+# ------------------------------ Summmary -------------------------------------------------------------
+echo " SUMMARY::::::::::::::::::::::::::::::::::::::::::::::::::::
+        ++ OMP_NUM_THREADS: $OMP_NUM_THREADS 
+        ++ Site: $site 
+        ++ Subject ID: $subject_id
+        ++ Epi Dataset(s): $(basename $s_epi)
+        ++ Reference template: $ref_template
+        ++ Output Directory: ${output_dir}/${subject_id}
+        ++ Preproc file(s) name: $(basename $ epi_nifti)
+        ++ Executed on: $(hostname -i)
+        ++ Started at: $start_time
+        ++ Finished at: $(date)
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" >> ${output_dir}/${subject_id}/output.proc_${subject_id}.tcsh
+
+
+
+
+
+
+
+
+### --------------------------------------summary section ---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 exit 0
