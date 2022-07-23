@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 # ----------------------SCRIPT INFO ----------------------#
 # Author: Alfonso Fajardo (https://github.com/alffajardo) #
@@ -125,6 +125,7 @@ echo "  ++  T1w file: $(basename $s_anat)."
 echo
 echo -e "\e[0m"
 
+sleep 10s
 
 # ----------------- Now run @SSwarper script ----------------------------------
 
