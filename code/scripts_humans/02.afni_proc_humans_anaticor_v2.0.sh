@@ -266,8 +266,8 @@ echo
 
 # ------------------- search for the summary file -------------------------------------------------------------------
 
-cd ${output_dir}/${subject_id}
-summary_file=$(find ${output_dir}/${subject_id} -name "out.ss_review.${subject_id}.txt")
+cd ${output_dir}/${subject_id}/${subject_id}.results
+summary_file=$(find output_dir}/${subject_id}/${subject_id}.results -name "out.ss_review.${subject_id}.txt")
 
 if ! [[  -z $summary_file ]]; then
  
@@ -277,7 +277,7 @@ if ! [[  -z $summary_file ]]; then
 
 epi_nifti=$(echo  $epi_preproc | sed "s/.HEAD/.nii.gz/g")
 
-3dAFNItoNIFTI  $epi_preproc -prefix $epi_nifti
+3dAFNItoNIFTI  prefix $epi_nifti $epi_preproc 
     
     # remove errts BRIKS if final errts exists
     if  [ -f "$epi_nifti" ]; then
