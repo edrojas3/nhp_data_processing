@@ -268,7 +268,7 @@ echo
 
 summary_file=$(find ${output_dir}/${subject_id} -name "out.ss_review.${subject_id}.txt")
 
-if [-f $summary_file ]; then
+if [ -f $summary_file ]; then
  
  # search for final time series file
  search_epi=$(sed -n "10p" $summary_file | cut -d ":" -f 2 )
