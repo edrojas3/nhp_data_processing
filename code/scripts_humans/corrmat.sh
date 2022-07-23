@@ -14,11 +14,11 @@
 fmri_file=$1
 rois_mask=$2
 prefix=$3
-method=$4
+brain_mask=$4
+method=$5
 
 nrois=$(3dBrickStat -slow -max $rois_mask )
 
-brain_mask=/AFNI/abin/MNI152_2009_template_brainmask.nii.gz
 
 if [ -f $brain_mask ] 
 then
