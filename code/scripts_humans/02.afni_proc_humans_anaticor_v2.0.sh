@@ -300,7 +300,7 @@ echo " SUMMARY::::::::::::::::::::::::::::::::::::::::::::::::::::
         ++ Started at: $start_time
         ++ Finished at: $(date)
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" >> ${output_dir}/${subject_id}/output.proc_${subject_id}.tcsh
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" >> ${output_dir}/${subject_id}/output.proc_${subject_id}.tsch
 
 
 
