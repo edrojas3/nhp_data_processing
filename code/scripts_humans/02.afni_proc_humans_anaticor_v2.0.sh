@@ -267,7 +267,7 @@ echo
 # ------------------- search for the summary file -------------------------------------------------------------------
 
 
-summary_file=$(find output_dir}/${subject_id}/${subject_id}.results -name "out.ss_review.${subject_id}.txt")
+summary_file=$(find ${output_dir}/${subject_id}/${subject_id}.results -name "out.ss_review.${subject_id}.txt")
 
 if ! [[  -z $summary_file ]]; then
  
