@@ -20,10 +20,7 @@ method=$5
 nrois=$(3dBrickStat -slow -max $rois_mask )
 
 
-if [ -f $brain_mask ] 
-then
-
-
+ 
 3dNetCorr -fish_z  -inset $fmri_file  -in_rois $rois_mask  -prefix  $prefix \
  -mask $brain_mask
 
@@ -48,13 +45,6 @@ then
 
 	fi
 
-else
-echo
-echo -e "++ERROR: file $brain_mask doesn't exists. Set up the brain_mask variable within this script" 
-
-exit 1
-
-fi
 
 
 
