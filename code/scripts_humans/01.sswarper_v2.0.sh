@@ -11,6 +11,8 @@
 
 # -----------------helper function---------------------------------------------------------
 
+start_time=$(date)
+
 export OMP_NUM_THREADS=4
 help(){
 echo -e "\e[0;33m"
@@ -23,6 +25,7 @@ echo -e "\e[0;33m"
  echo " OPTIONAL ARGUMENTS:"
  echo " -o: Ouput directory. Default is '<Site>/data_SSW'." 
  echo " -r: Provide the path to the template. Dafault is MNI152_2009_template_SSW.nii.gz"
+ echo " -b: Perform ANTs Bias Field correction before SSwarper"
  echo
 
 
@@ -40,7 +43,7 @@ fi
 # ------------------------------------------------------------------------------------------
 
 # Case optional flags
-optstring=":S:s:o:r:h"
+optstring=":S:s:o:r:b:h"
 
 while getopts $optstring options ; do
 
@@ -53,7 +56,8 @@ while getopts $optstring options ; do
         ;; 
         r) ref_template=${OPTARG}
         ;;
-
+        b) bfc=1
+        ;;
         h) help
            exit 0 
         ;;
@@ -104,11 +108,28 @@ fi
 
 # -------------------------------- Search for anatomicals ---------------------------------------
 
-s_anat=$(find ${site}/${subject_id} -name "${subject_id}*T1w.nii.gz")
 
+
+s_anat=$(find ${site}/${subject_id} -name "${subject_id}*T1w.nii.gz")
 if [ -z $s_anat ]; then 
 echo "Couldn't found an anatomical volume for $s.";
 exit 1 
+fi
+
+# ------------------------------- control for ANTS bias field correction
+if [ bfc -eq 1 ] ; then
+abfc="Yes"
+bfc_out=$(echo $s_anat | sed "s/.nii.gz/_N4.nii.gz/g")
+echo
+echo -e "   \e[6;36mRunning ANTs N4BiasFieldCorrection:\e[0m"
+
+N4BiasFieldCorrection -v -i $s_anat -o $bfc_out
+
+s_anat=$bfc_out
+
+else 
+abfc="No"
+
 fi
 
 # --------------------------------------- Print basic info----------------------------------
@@ -121,6 +142,7 @@ echo "  ++ Site: $site"
 echo "  ++ Subject ID: $subject_id"
 echo "  ++ Reference template: $ref_template"
 echo "  ++ Output Directory: ${output_dir}/${subject_id}"
+echo "  ++ ANTs N4 BiasField COrrection: $abfc"
 echo "  ++  T1w file: $(basename $s_anat)."
 echo
 echo -e "\e[0m"
@@ -146,16 +168,17 @@ cd $basedir
 
 # ----------------------------------------script summary--------------------------
 
-echo " SUMMARY:::::::::::::::::::::::::::::::::::::::::::::
+echo " ::::::::::::::::::SUMMARY::::::::::::::::::::::::::::::::::
         ++ OMP_NUM_THREADS: $OMP_NUM_THREADS 
         ++ Site: $site 
         ++ Subject ID: $subject_id
         ++ Reference template: $ref_template
         ++ Output Directory: ${output_dir}/${subject_id}
-        ++ T1w file: $(basename $s_anat).
-        ++ Executed on: $(hostname -i) 
-        ++Date: $(date)
-
+        ++ T1w file: $(basename $s_anat)
+        ++ ANTs N4 BiasField COrrection: $abfc
+        ++ Executed on: $(hostname -i)
+        ++ Started: $start_time 
+        ++ Finished: $(date)
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" >> ${output_dir}/${subject_id}/${subject_id}_sswarper.logs
 
 
