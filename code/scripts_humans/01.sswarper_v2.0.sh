@@ -116,12 +116,13 @@ echo "Couldn't found an anatomical volume for $s.";
 exit 1 
 fi
 
-# ------------------------------- control for ANTS bias field correction
+# ------------------------------- control for ANTS bias field correction--------------------------
 if [ bfc -eq 1 ] ; then
+
 abfc="Yes"
 bfc_out=$(echo $s_anat | sed "s/.nii.gz/_N4.nii.gz/g")
 echo
-echo -e "   \e[6;36mRunning ANTs N4BiasFieldCorrection:\e[0m"
+echo -e "\e[6;36mRunning ANTs N4BiasFieldCorrection:\e[0m"
 
 N4BiasFieldCorrection -v -i $s_anat -o $bfc_out
 
