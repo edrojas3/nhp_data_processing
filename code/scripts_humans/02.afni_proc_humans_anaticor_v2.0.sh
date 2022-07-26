@@ -145,7 +145,7 @@ fi
 
 # Search for ecoplanar (functional images)
 
-s_epi=$(find $site/$subject_id -type f -name "${subject_id}*bold.nii.gz" | sort -V )
+s_epi=$(find $site/$subject_id -name "${subject_id}*bold.nii.gz" | sort -V )
 
 if [ -z $s_epi ]; then
 echo -e "\e[0;31mERROR: No epis found.\e[0m"
