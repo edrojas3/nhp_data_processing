@@ -145,7 +145,7 @@ echo "  ++ Subject ID: $subject_id"
 echo "  ++ Reference template: $ref_template"
 echo "  ++ Output Directory: ${output_dir}/${subject_id}"
 echo "  ++ ANTs N4 BiasField COrrection: $abfc"
-echo "  ++  T1w file: $(basename $s_anat)."
+echo "  ++ T1w file: $(basename $s_anat)."
 echo
 echo -e "\e[0m"
 
