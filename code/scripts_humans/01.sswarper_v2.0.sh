@@ -57,7 +57,7 @@ while getopts $optstring options ; do
         r) ref_template=${OPTARG}
         ;;
         B) bfc=${OPTARG}
-           bcf=1
+           bfc=1
         ;;
         h) help
            exit 0 
@@ -112,13 +112,14 @@ fi
 
 
 s_anat=$(find ${site}/${subject_id} -name "${subject_id}*T1w.nii.gz")
+
 if [ -z $s_anat ]; then 
 echo "Couldn't found an anatomical volume for $s.";
 exit 1 
 fi
 
 # ------------------------------- control for ANTS bias field correction--------------------------
-if [ bfc -eq 1 ] ; then
+if [ $bfc -eq 1 ] ; then
 
 abfc="Yes"
 bfc_out=$(echo $s_anat | sed "s/.nii.gz/_N4.nii.gz/g")
