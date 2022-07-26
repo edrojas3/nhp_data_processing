@@ -43,7 +43,7 @@ fi
 # ------------------------------------------------------------------------------------------
 
 # Case optional flags
-optstring=":S:s:o:r:b:h"
+optstring=":S:s:o:r:B:h"
 
 while getopts $optstring options ; do
 
