@@ -25,7 +25,7 @@ echo -e "\e[0;33m"
  echo " OPTIONAL ARGUMENTS:"
  echo " -o: Ouput directory. Default is '<Site>/data_SSW'." 
  echo " -r: Provide the path to the template. Dafault is MNI152_2009_template_SSW.nii.gz"
- echo " -b: Perform ANTs Bias Field correction before SSwarper"
+ echo " -B: Perform ANTs Bias Field correction before SSwarper"
  echo
 
 
