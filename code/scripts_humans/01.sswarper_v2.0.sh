@@ -25,7 +25,7 @@ echo -e "\e[0;33m"
  echo " OPTIONAL ARGUMENTS:"
  echo " -o: Ouput directory. Default is '<Site>/data_SSW'." 
  echo " -r: Provide the path to the template. Dafault is MNI152_2009_template_SSW.nii.gz"
- echo " -B: Perform ANTs Bias Field correction before SSwarper"
+ echo " -B: Perform ANTs Bias Field correction before SSwarper. Default is 0 ".
  echo
 
 
@@ -56,8 +56,7 @@ while getopts $optstring options ; do
         ;; 
         r) ref_template=${OPTARG}
         ;;
-        B) bfc=${OPTARG}
-           bfc=1
+        B) bfc=1;;
         ;;
         h) help
            exit 0 
