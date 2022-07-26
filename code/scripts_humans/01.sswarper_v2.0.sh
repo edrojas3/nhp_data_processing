@@ -56,7 +56,8 @@ while getopts $optstring options ; do
         ;; 
         r) ref_template=${OPTARG}
         ;;
-        b) bfc=1
+        B) bfc=${OPTARG}
+           bcf=1
         ;;
         h) help
            exit 0 
