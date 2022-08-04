@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # ----------------------SCRIPT INFO ----------------------#
 # Author: Alfonso Fajardo (https://github.com/alffajardo) #
@@ -14,6 +14,7 @@
 start_time=$(date)
 
 export OMP_NUM_THREADS=4
+
 help(){
 echo -e "\e[0;33m"
  echo " USAGE: $0 [flags]"
