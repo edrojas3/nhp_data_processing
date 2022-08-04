@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 # ----------------------SCRIPT INFO ----------------------#
 # Author: Alfonso Fajardo (https://github.com/alffajardo) #
