@@ -292,10 +292,11 @@ echo " SUMMARY::::::::::::::::::::::::::::::::::::::::::::::::::::
         ++ OMP_NUM_THREADS: $OMP_NUM_THREADS 
         ++ Site: $site 
         ++ Subject ID: $subject_id
-        ++ Epi Dataset(s): $(basename $s_epi)
+        ++ Input Epi Dataset(s): $(basename $s_epi)
         ++ Reference template: $ref_template
+	++ Ventricle mask: $ventricle_mask
         ++ Output Directory: ${output_dir}/${subject_id}
-        ++ Preproc file(s) name: $(basename $epi_nifti)
+        ++ Output Preproc Epi Datasets(s) name: $(basename $epi_nifti)
         ++ Executed on: $(hostname -i)
         ++ Started at: $start_time
         ++ Finished at: $(date)
