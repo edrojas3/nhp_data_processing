@@ -1,7 +1,33 @@
 #!/bin/bash
 
+
+# ----------------- HELP FUNCTION -----------------
+help (){
+
+echo "
+
+USAGE: $(basename $0) <site-id> <sub-id>
+
+$(basename $0) uses AFNI's 3dNetCorr to calculate the pearson's correlation between ROIs and between each ROI and the rest of the brain. 
+
+INPUT ARGUEMENTS:
+-site-id: path/to/site-id
+-sub-id: sub-id
+
+Inside site-id directory a data_ap directory must exists (afni_proc.py output). $(basename $0) takes from here the epi and anatomical data in standard space
+
+From the time being, $(basename $0) takes the ROI file(s) from a fixed directory. If you want to change the directory and roi files' names, look for the respective variables in the 'CONTROL VARIABLES' section. I hope to eventually change this to a more flexible wat to specify these things.
+
+The ROI files must have one volume with all the ROIs in it. Each ROI is identified with an integer and with a label (presumably with the abbreviation of the brain region). If the ROI file you want to use doesn't have these characteristics, probably the script named 'create_roi_file.sh' in the 'utils' directory of this repository might help. But BEWARE! By the time and date this help was written it was still not commented! 
+
+ERH, 12.08.2022
+		"
+}
+
+if [ $# -eq 0 ]; then help; exit 0; fi
+
 # ----------------- CHANGE SHELL OPTIONS -----------------
-#set -v
+set -v
 
 
 # ----------------- CONTROL VARIABLES -----------------
@@ -10,7 +36,9 @@ subj=$2
 
 data_ap=$site/data_ap/$subj/$subj.results
 outdir=$site/connectivity/netcorr_1/${subj}_netcorr
-roidir=/misc/tezca/reduardo/data/rois
+roidir=/misc/tezca/reduardo/data/rois/nmt_rois
+roi_left=$roidir/ROIS_left+tlrc
+roi_right=$roidir/ROIS_right+tlrc
 
 #data_ap=~/mri/tezca/data/site-ucdavis/data_ap/$subj/$subj.results
 #outdir=~/mri/tezca/data/site-ucdavis/connectivity/$subj
@@ -26,8 +54,8 @@ roidir=/misc/tezca/reduardo/data/rois
 3dcopy $data_ap/errts.${subj}.tproject+tlrc $outdir/errts.${subj}.tproject
 
 ## ROIs in standard space
-3dcopy $roidir/nmt_rois/ROIS_left+tlrc $outdir/ROIS_left
-3dcopy $roidir/nmt_rois/ROIS_right+tlrc $outdir/ROIS_right
+3dcopy $roi_left $outdir/ROIS_left
+3dcopy $roi_right $outdir/ROIS_right
 
 # ----------------- RESAMPLE ROIs IMAGES TO EPI RESOLUTION -----------------
 # Resample ROIs
