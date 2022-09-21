@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+set -veu
 # ----------------- HELP FUNCTION -----------------
 help (){
 
@@ -8,7 +8,7 @@ echo "
 
 USAGE: $(basename $0) <site-id> <sub-id>
 
-$(basename $0) uses AFNI's 3dNetCorr to calculate the pearson's correlation between ROIs and between each ROI and the rest of the brain. 
+$(basename $0) uses AFNI's 3dNetCorr to calculate ROI-wise correlation and. 
 
 INPUT ARGUEMENTS:
 -site-id: path/to/site-id
@@ -36,15 +36,16 @@ subj=$2
 
 data_ap=$site/data_ap/$subj/$subj.results
 outdir=$site/connectivity/netcorr_1/${subj}_netcorr
-roidir=/misc/tezca/reduardo/data/rois/nmt_rois
-roi_left=$roidir/ROIS_left+tlrc
-roi_right=$roidir/ROIS_right+tlrc
+roifile=/misc/tezca/reduardo/data/rois/addiction_rois/ROIS_LR+tlrc
 
 #data_ap=~/mri/tezca/data/site-ucdavis/data_ap/$subj/$subj.results
 #outdir=~/mri/tezca/data/site-ucdavis/connectivity/$subj
 #roidir=~/mri/tezca/data/rois
 
 
+if [ ! -d $outdir ]; then
+		mkdir -p $outdir
+fi
 # ----------------- COPY NECESSARY FILES TO OUTPUT DIRECTORY -----------------
 
 ## anatomical in standard space
@@ -54,26 +55,19 @@ roi_right=$roidir/ROIS_right+tlrc
 3dcopy $data_ap/errts.${subj}.tproject+tlrc $outdir/errts.${subj}.tproject
 
 ## ROIs in standard space
-3dcopy $roi_left $outdir/ROIS_left
-3dcopy $roi_right $outdir/ROIS_right
+3dcopy $roifile $outdir/ROIS_LR
 
 # ----------------- RESAMPLE ROIs IMAGES TO EPI RESOLUTION -----------------
 # Resample ROIs
 3dresample -master $outdir/errts.${subj}.tproject+tlrc \
-		-prefix $outdir/ROIS_left2epi                  \
-		-input $outdir/ROIS_left+tlrc
-
-3dresample -master $outdir/errts.${subj}.tproject+tlrc \
-		-prefix $outdir/ROIS_right2epi                 \
-		-input $outdir/ROIS_right+tlrc
+		-prefix $outdir/ROIS_LR2epi                  \
+		-input $outdir/ROIS_LR+tlrc
 
 # Copy labels
-3drefit -copytables $outdir/ROIS_left+tlrc $outdir/ROIS_left2epi+tlrc
-3drefit -copytables $outdir/ROIS_right+tlrc $outdir/ROIS_right2epi+tlrc
+3drefit -copytables $outdir/ROIS_LR+tlrc $outdir/ROIS_LR2epi+tlrc
 
 # Set label values to integers
-3drefit -cmap INT_CMAP $outdir/ROIS_left2epi+tlrc
-3drefit -cmap INT_CMAP $outdir/ROIS_right2epi+tlrc
+3drefit -cmap INT_CMAP $outdir/ROIS_LR2epi+tlrc
 
 # ----------------- MASK EPI -----------------
 # Mask from anatomical volume
@@ -98,20 +92,22 @@ roi_right=$roidir/ROIS_right+tlrc
 
 
 # ----------------- CORRELATION ANALYSIS FOR EVERY ROI IN ROI VOLUME -----------------
-rois=($outdir/ROIS_left2epi+tlrc $outdir/ROIS_right2epi+tlrc)
-c=1
-for roi in ${rois[@]}; do
-		if [ $c -eq 1 ]; then hem=left; else hem=right; fi
-		3dNetCorr -echo_edu                                         \
-				-overwrite                                          \
-				-prefix $outdir/netcorr_$hem                        \
-				-fish_z                                             \
-				-inset $outdir/errts.${subj}.tproject.masked+tlrc   \
-				-in_rois $roi                                       \
-				-ts_wb_corr                                         \
-				-ts_wb_Z                                            \
-				-ts_wb_strlabel
+rois=$outdir/ROIS_LR2epi+tlrc
+3dNetCorr -echo_edu                                         \
+		-overwrite                                          \
+		-prefix $outdir/netcorr_                            \
+		-fish_z                                             \
+		-inset $outdir/errts.${subj}.tproject.masked+tlrc   \
+		-in_rois $rois                                       \
+		-ts_out												\
+		-ts_wb_corr                                         \
+		-ts_wb_Z                                            \
+		-ts_wb_strlabel										\
+		-push_thru_many_zeros
 
-		c=$(($c+1))
-done
-
+fat_mat2d_plot.py 	\
+		-input $outdir/netcorr__000.netcc \
+		-pars 'CC'						  \
+		-vmin -0.8 \
+		-vmax 0.8 \
+		-prefix $outdir/CC_mat
