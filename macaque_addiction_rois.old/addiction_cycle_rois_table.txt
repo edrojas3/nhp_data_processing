@@ -1,0 +1,14 @@
+SARM	46	CdH caudate_head	6
+SARM	47	CdT caudate_tail	6
+SARM	52	Acb	accumbens	5
+SARM	55	GP	globus_pallidus	5
+SARM	119	MD	mediodorsal_thalamus 4
+SARM	12	Hi	hippocampus	5
+SARM	16	Amy	amygdala	2
+SARM	65	ST	bed_nucleus_of_the_stria_terminalis	4
+CHARM	54	dlPFC	dordolateral_prefrontal_cortex	4
+CHARM	16	med_OFC medial_orbita_frontal_cortex	3
+CHARM	3	ACC anterior_cingulate_cortex	3
+CHARM	125	PMC	posterior_medial_cortex	2
+CHARM	229	Ig	granular_insula	6
+CHARM	228 Ia	agranular_insula 6

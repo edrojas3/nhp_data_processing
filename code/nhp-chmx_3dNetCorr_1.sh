@@ -36,7 +36,9 @@ subj=$2
 
 data_ap=$site/data_ap/$subj/$subj.results
 outdir=$site/connectivity/netcorr_1/${subj}_netcorr
-roifile=/misc/tezca/reduardo/data/rois/addiction_rois/ROIS_LR+tlrc
+roifile=/misc/m/mchakrav/afajardo/github/nhp_data_processing/macaque_addiction_rois/ROIS_LR+tlrc
+
+#roifile=/misc/tezca/reduardo/data/rois/addiction_rois/ROIS_LR+tlrc
 
 #data_ap=~/mri/tezca/data/site-ucdavis/data_ap/$subj/$subj.results
 #outdir=~/mri/tezca/data/site-ucdavis/connectivity/$subj

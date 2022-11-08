@@ -1,0 +1,157 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+```{r}
+library(tidyverse)
+library(tidyr)
+library(pheatmap)
+library(reshape2)
+library(heatmaply)
+library(corrr)
+```
+
+```{r}
+# Paths and files
+setwd("/home/eduardo/mri/niagara/PRIME-DE/data/site-ucdavis/connectivity/netcorr_1")
+netts_files = list.files(path = "netts", pattern="*.netts")
+roidat_files = list.files(path = "roidat", pattern="*.roidat")
+
+# Empty dataframe to save everything
+netts_df = data.frame(rois1=character(),
+                   rois2=character(),
+                   zval=double())
+
+# LOOP to open and polish data
+n = length(netts_files)
+for (ii in 1:n) {
+
+  # Read a single netts file
+  netts_file=paste("netts", netts_files[ii], sep="/")
+  netts = read.table(netts_file, header=F)
+  
+  roidat_file=paste("roidat", roidat_files[ii], sep="/")
+  roidat = read.table(roidat_file, header = T)
+  
+  # Add roinames to dataframe
+  netts = cbind(roidat$ROI_label, netts)
+  
+  # netts in long format with the bold timeseries of each ROI
+  netts_long = netts %>% 
+    pivot_longer(!`roidat$ROI_label`, names_to="t", values_to="bold")
+  
+  timesamps_n = dim(netts)[2]-1
+  t = 1:timesamps_n
+  netts_long$t = rep(t, times=length(roidat$ROI_label))
+  colnames(netts_long) <- c("rois", "t", "bold") 
+  
+  # transform to wide: each column of netts_wide has the timeseries of each ROI 
+  netts_wide = netts_long  %>%
+    pivot_wider(names_from = rois, values_from = bold) %>% 
+    select(-t)
+  
+ # Correlation matrix and fisher z transform between columns of netts_wide 
+  netts_corr = cor(netts_wide)  %>% 
+    na_if(1)
+  
+  netts_fishz = log((1+netts_corr)/(1-netts_corr)) / 2
+  netts_fishz_long = melt(netts_fishz)
+  colnames(netts_fishz_long) <- c("rois1", "rois2", "zval")
+  
+  if (ii == 1) {
+    netts_df = rbind(netts_df, netts_fishz_long)
+  }
+  
+  # Sum the current fisher z values to the previous ones 
+  netts_df$zval = netts_df$zval + netts_fishz_long$zval 
+}
+
+# Average of fisher z values
+netts_df$zval = netts_df$zval/n
+```
+
+```{r}
+netts_tile = ggplot(netts_df, aes(rois1, rois2, fill=zval)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white") +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+```{r}
+netts_df_wide = netts_df %>% 
+  pivot_wider(names_from = rois1, values_from = zval) %>% 
+  select(-rois2)  %>% 
+  as.data.frame()
+rownames(netts_df_wide) <- colnames(netts_df_wide)
+# heatmaply(netts_df_wide, k_col=4, k_row = 4)
+```
+
+```{r}
+netts_dist = dist(netts_df_wide, method="manhattan")
+netts_hc = hclust(netts_dist)
+plot(netts_hc)
+```
+
+```{r}
+netts_df_wide_ro = netts_df_wide[netts_hc$order, netts_hc$order]
+netts_df_long_ro = as.data.frame(melt(as.matrix(netts_df_wide_ro)))
+colnames(netts_df_long_ro) <- c("roi1", "roi2", "zval") 
+
+head(netts_df_long_ro)
+```
+
+```{r}
+library(wesanderson)
+pal <- wes_palette("Zissou1", 100, type = "continuous")
+
+ggplot(netts_df_long_ro, aes(roi1, roi2, fill=zval)) +
+  geom_tile() +
+  scale_fill_gradient2(low="#2c7fb8",
+                      mid = "#7fcdbb",
+                      high="#edf8b1",
+                      limits = c(-0.09, 0.85),
+                      midpoint=0.4) + 
+  scale_x_discrete(expand = c(0, 0)) +
+  scale_y_discrete(expand = c(0, 0)) + 
+  coord_equal() +
+  theme(axis.text.x=element_text(angle=90,hjust=1)) 
+
+```
+
+```{r}
+netts_df_wide_ro_ = netts_df_wide_ro - abs(min(netts_df_wide_ro, na.rm = T))
+netts_df_wide_ro_scale01 = netts_df_wide_ro_ / max(netts_df_wide_ro_, na.rm=T)
+network_plot(netts_df_wide_ro_scale01, min_cor = 0.05,  
+             colors = c("#f0f0f0", "#2c7fb8","#edf8b1"))
+```
+# GRAPH THEORY
+
+## Edge list
+
+```{r}
+library(igraph)
+```
+
+```{r}
+netts_g = graph_from_adjacency_matrix(as.matrix(netts_df_wide),
+                                      mode='undirected',
+                                      weighted = TRUE)
+netts_edge_list = as_data_frame(netts_g, 'edges')
+netts_edge_list = netts_edge_list[complete.cases(netts_edge_list),]
+             
+netts_edge_sig = netts_edge_list[netts_edge_list$weight > 0.2,]
+
+
+netts_g_sig = graph_from_data_frame(netts_edge_sig, directed=F)
+```
+
+```{r}
+netts_g_between = betweenness(netts_g_sig, directed=F)
+netts_g_plot = plot(netts_g_sig,
+     vertex.size = 2*(netts_g_between+4),
+     layout=layout.circle(netts_g_sig))
+```
+
+

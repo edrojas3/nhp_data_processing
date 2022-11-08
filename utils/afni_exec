@@ -1,11 +1,11 @@
 #!/bin/bash
 
 input=$1
-container=/misc/tezca/alfonso/tmp/containers/afni.sif
+container=/scratch/m/mchakrav/afajardo/containers/afni.sif
 
 [ ! -f $container ] && echo "Container doesn't exist." && exit 1
 
-command="singularity exec -B /misc:/misc $container $input"
+command="singularity exec -B /scratch:/misc $container $input"
 
 eval $command
 
