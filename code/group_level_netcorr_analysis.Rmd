@@ -2,7 +2,7 @@
 title: "R Notebook"
 output: html_notebook
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 ```{r}
 library(tidyverse)
@@ -15,7 +15,7 @@ library(corrr)
 
 ```{r}
 # Paths and files
-setwd("/home/eduardo/mri/niagara/PRIME-DE/data/site-ucdavis/connectivity/netcorr_1")
+setwd("/home/eduardo/mri/niagara/PRIME-DE/data/site-HCP100/connectivity/netcorr_1")
 netts_files = list.files(path = "netts", pattern="*.netts")
 roidat_files = list.files(path = "roidat", pattern="*.roidat")
 
@@ -141,7 +141,7 @@ netts_g = graph_from_adjacency_matrix(as.matrix(netts_df_wide),
 netts_edge_list = as_data_frame(netts_g, 'edges')
 netts_edge_list = netts_edge_list[complete.cases(netts_edge_list),]
              
-netts_edge_sig = netts_edge_list[netts_edge_list$weight > 0.2,]
+netts_edge_sig = netts_edge_list[netts_edge_list$weight > 0.05]
 
 
 netts_g_sig = graph_from_data_frame(netts_edge_sig, directed=F)
