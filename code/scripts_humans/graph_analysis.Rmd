@@ -1,0 +1,32 @@
+---
+title: "Graph theory analysis"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+## Load packages
+```{r}
+library(neurobase)
+library(tidyverse)
+library(viridis)
+library(corrplot)
+```
+Import all data and transform to a 3d array
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+corrmats_FZ <- read.csv("all_addiction_corrmat_FZ.csv",header = F) %>%
+  as.matrix() %>%
+  t() %>%
+array(dim = c(84,84,45))
+
+par(mfrow = c(5,4),mar = c(0,0,0,0))
+map(1:45,
+    ~corrplot(corrmats_FZ[,,.x],col = plasma(100),
+              is.corr = F,method = 'color',tl.pos = "n",
+              mar = c(0,0,0,0),cl.pos = "n"))
+
+```
+
+
